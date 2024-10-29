@@ -1,13 +1,131 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+.vh-100 {
+  height: 100vh;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Main container with background spanning both sections */
+.container-fluid {
+  background: linear-gradient(270deg, #ff7e5f, #feb47b, #ff7e5f);
+  background-size: 600% 600%;
+  animation: moveBackground 10s ease infinite;
+  color: white;
+  position: relative;
+  padding: 20px;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+/* Keyframes to animate the background */
+@keyframes moveBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Left section styling */
+.left-section {
+  color: white;
+  z-index: 2; /* Ensure the text is on top of the background */
+  padding: 20px;
+}
+
+/* Right section (form) styling */
+.form-section {
+  background: #ffffff;
+  color: #333;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 2;
+  margin-top: 20px;
+}
+
+/* Ensure form takes up the full width */
+form .form-control {
+  width: 100%;
+}
+
+/* Customize the buttons */
+button {
+  font-weight: bold;
+  padding: 10px;
+  color: #333;
+}
+
+/* Adjust the layout */
+.width80 {
+  width: 80%;
+}
+
+.left110 {
+  left: 110px;
+}
+
+body {
+  padding-top: 56px;
+}
+
+/* Media Queries for Responsive Design */
+
+/* Medium screens (tablets) */
+@media (max-width: 992px) {
+  .container-fluid {
+    padding: 15px;
+  }
+  .left-section, .form-section {
+    width: 90%;
+    margin: auto;
+  }
+  .left110 {
+    left: 0;
+  }
+}
+
+/* Small screens (phones) */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 10px;
+  }
+  .left-section, .form-section {
+    width: 100%;
+    padding: 15px;
+  }
+  .vh-100 {
+    height: auto;
+    padding-bottom: 20px;
+  }
+  .left110 {
+    left: 0;
+  }
+
+  /* Stack sections vertically */
+  .row.align-items-center {
+    flex-direction: column;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 576px) {
+  .container-fluid {
+    padding: 10px;
+  }
+  .left-section h1, .left-section h2 {
+    font-size: 1.5rem;
+  }
+  .left-section p {
+    font-size: 0.9rem;
+  }
+  button {
+    font-size: 12px;
+    padding: 6px;
+  }
+  .d-flex.gap-3 {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
