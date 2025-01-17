@@ -75,9 +75,9 @@ const YourComponent = () => {
                     ))}
         
                 </div>
-                <a href="#" className="btn-base cta-btn">
+                <a href="#" className=" cta-btn">
                   <span className="btn-group">
-                    <span className="btn-text">Buy Now</span>
+                    <span className="btn btn-danger">Buy Now</span>
                     <svg aria-hidden="true" className="btn-svg" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
                       <path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
                     </svg>
@@ -100,7 +100,7 @@ const YourComponent = () => {
                       <p className="card-desc">{desc}</p>
                     </figcaption>
                   </figure>
-                  <a href="#" className="btn-base">Buy Now</a>
+                  <a href="#" className="btn btn-danger">Buy Now</a>
                 </li>
               ))}
             </ul>

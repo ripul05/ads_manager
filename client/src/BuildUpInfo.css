@@ -51,8 +51,8 @@
 
 @layer layout {
     .section {
-        background-color: var(--surface-1);
-        color: var(--text-1);
+        /* background-color: var(--surface-1);
+        color: var(--text-1); */
         inline-size: 100%;
         min-block-size: min(600px, 100svb);
 
