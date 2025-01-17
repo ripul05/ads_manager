@@ -1,5 +1,5 @@
 const express = require("express");
-const connectDB = require("./config/db");
+const connectDB = require("./config/database/db");
 const routes = require("./routes/index"); // Import the index.js from routes folder
 
 const PORT = 3001;
