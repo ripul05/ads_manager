@@ -1,24 +1,23 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import './index.css'; // Your custom CSS
-import LandingForm from './LandingForm'; // Assuming LandingForm is in the same folder
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+import LandingForm from './LandingForm';
 import NavBar from './NavBar';
 import Vcards from './BuildUpInfo';
 import SecondPage from './SecondPage';
-
+import CarouselBackground from './Carousel';
 
 function App() {
   return (
     <>
-      <div className="">
-        <NavBar/>
-        <div className="row align-items-center vh-100">
-          {/* Left Div: Content with animated background */}
-          <div className="col-md-6 ">
-            <div className="me-3 text-black p-5 width80 left110 left-section" id='leftInside'>
+      <NavBar/>
 
-              <img src="logo.png" alt="Logo" className="mb-4" /> {/* Replace with your logo */}
-              <h1>Extreme Specialists in Google Ads</h1>
+      <div className="position-relative" style={{ height: '120%' }}>
+        <div className="row align-items-center position-absolute top-0 start-0 w-100" style={{ zIndex: 2 }}>
+          <div className="col-md-6">
+            <div className="me-3 text-black p-5 width80 left110 left-section" id='leftInside'>
+              <img src="logo.png" alt="Logo" className="mb-4" />
+              <h1 style={{ fontWeight: 'bold' }}>Extreme Specialists in Google Ads</h1>
               <h2>We see what others can’t</h2>
               <p>Our entire business primarily specialises in Google Ads and Google Analytics 4. Google Ads is complex, mysterious even, but in the right capable hands...</p>
               <div className="d-flex gap-3 mt-3">
@@ -28,20 +27,18 @@ function App() {
             </div>
           </div>
 
-          {/* Right Div: Form */}
-          <div className="col-md-6 ">
+          {/* <div className="col-md-6">
             <div className='bg-light p-5 width80 form-section' id='rightInside'>
               <h3>Request a FREE 30 Min Account Review Call</h3>
               <LandingForm />
-
             </div>
-          </div>
+          </div> */}
         </div>
 
+        <CarouselBackground />
       </div>
-      
-      {/* <Vcards></Vcards> */}
-      <SecondPage></SecondPage>
+
+      <SecondPage />
     </>
   );
 }
