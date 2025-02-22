@@ -1,36 +1,92 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
+const Navbar = () => {
+  const [scrolling, setScrolling] = useState(false);
 
-function NavBar() {
-    return (
-    <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top p-1">
-            <a className="navbar-brand" style={nameStyle} href="#">Kshitij's Agency</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav ms-auto">
-                    <li className="nav-item">
-                        <a className="nav-link" style={{ ...nameStyle, marginLeft: '0' }} href="#home">Home</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link"style={{ ...nameStyle, marginLeft: '0' }} href="#about">About</a>
-                    </li>
-                    <li className="nav-item">
-                    <a className="nav-link" style={{ ...nameStyle, marginLeft: '0' }} href="#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+  const handleScroll = () => {
+    if (window.scrollY > 50) {
+      setScrolling(true);
+    } else {
+      setScrolling(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div style={{ ...navbarStyle, backgroundColor: scrolling ? '#E1E1E1' : 'transparent' }}>
+      <div style={imgLinksStyle}>
+        <h1 style={h1Style}>Kshitij's Agency</h1>
+      </div>
+      <div style={navLinksStyle}>
+        <NavLink href="#EducationPage">Home</NavLink>
+        <NavLink href="#SkillsPage">About</NavLink>
+        <NavLink href="#ExperiencePage">Contact</NavLink>
+      </div>
     </div>
-
-    );
-}
-
-const nameStyle={
-    fontWeight: 'bold',
-    marginLeft: '1%',
+  );
 };
 
-export default NavBar
+const imgLinksStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '6px',
+};
+
+const h1Style = {
+  fontSize: '26px',
+  paddingTop: '10px',
+  paddingLeft: '10px',
+  fontWeight: 'bold'
+};
+
+const imgStyle = {
+  borderRadius: '5px',
+  width: '31px',
+  height: '31px',
+  marginBottom: '2%',
+};
+
+const NavLink = styled.a`
+  color: black;
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: bold;
+  position: relative;
+  padding: 4.5px 20px;
+  border-radius: 25px;
+  transition: 0.8s;
+
+  &:hover {
+    background-color: #0a5bbf;
+    border-radius: 25px;
+    color: #fff;
+  }
+`;
+
+const navbarStyle = {
+  position: 'fixed',
+  top: '20px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  width: '95%',
+  padding: '10px 20px',
+  color: 'black',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  borderRadius: '35px',
+  zIndex: 3,
+  transition: 'background-color 0.5s ease',  // Added transition for background color
+};
+
+const navLinksStyle = {
+  display: 'flex',
+  gap: '20px',
+};
+
+export default Navbar;

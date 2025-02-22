@@ -24,7 +24,7 @@ const CarouselBackground = () => {
   ];
 
   return (
-    <Carousel controls={false} indicators={false} interval={7000} fade={true}>
+    <Carousel controls={false} indicators={false} interval={7000} fade={true} className="carousel-container">
       {slides.map(slide => (
         <Carousel.Item key={slide.id}>
           <div
@@ -32,10 +32,11 @@ const CarouselBackground = () => {
               backgroundImage: `linear-gradient(to bottom right, rgba(192, 192, 192, 0.8), rgba(255, 255, 255, 0.8)), url(${slide.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              height: '110vh',
+              height: '100vh',
               width: '100vw',
-              transition: 'opacity 1s ease-in-out',  
-            }}                       
+              position: 'relative',  // Ensure carousel content is behind navbar
+              transition: 'opacity 1s ease-in-out',
+            }}
           >
           </div>
         </Carousel.Item>
