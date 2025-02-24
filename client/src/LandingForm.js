@@ -65,16 +65,16 @@ function LandingForm() {
   };
 
   return (
-    <form id="ContactSection" onSubmit={handleSubmit}>
+    <form  onSubmit={handleSubmit}>
       <div className="mb-3">
-        <label htmlFor="fullName" className="form-label">
+        {/* <label htmlFor="fullName" className="form-label">
           Full Name <span className="text-danger">*</span>
-        </label>
+        </label> */}
         <input
           type="text"
           className="form-control"
           id="fullName"
-          placeholder="Full Name"
+          placeholder="Full Name *"
           required
           value={formData.fullName}
           onChange={handleInputChange}
@@ -82,14 +82,14 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="email" className="form-label">
+        {/* <label htmlFor="email" className="form-label">
           Email <span className="text-danger">*</span>
-        </label>
+        </label> */}
         <input
           type="email"
           className="form-control"
           id="email"
-          placeholder="Email"
+          placeholder="Email *"
           required
           value={formData.email}
           onChange={handleInputChange}
@@ -97,9 +97,9 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="companyName" className="form-label">
+        {/* <label htmlFor="companyName" className="form-label">
           Company Name
-        </label>
+        </label> */}
         <input
           type="text"
           className="form-control"
@@ -111,9 +111,9 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="phone" className="form-label">
+        {/* <label htmlFor="phone" className="form-label">
           Phone <span className="text-danger">*</span>
-        </label>
+        </label> */}
         <PhoneInput
           international
           placeholder="Enter phone number"
@@ -126,9 +126,9 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="websiteLink" className="form-label">
+        {/* <label htmlFor="websiteLink" className="form-label">
           Website Link
-        </label>
+        </label> */}
         <input
           type="url"
           className="form-control"
@@ -140,9 +140,9 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="message" className="form-label">
+        {/* <label htmlFor="message" className="form-label">
           Message
-        </label>
+        </label> */}
         <textarea
           className="form-control"
           id="message"

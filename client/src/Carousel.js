@@ -29,7 +29,7 @@ const CarouselBackground = () => {
         <Carousel.Item key={slide.id}>
           <div
             style={{
-              backgroundImage: `linear-gradient(to bottom right, rgba(192, 192, 192, 0.8), rgba(255, 255, 255, 0.8)), url(${slide.image})`,
+              backgroundImage: `linear-gradient(to bottom right, rgba(220, 220, 220, 0.8), rgba(240, 240, 240, 0.8)), url(${slide.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               height: '100vh',

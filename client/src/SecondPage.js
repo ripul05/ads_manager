@@ -1,9 +1,10 @@
 import React from "react";
-import './SecondPage.css'
+import './SecondPage.css';
+import LandingForm from './LandingForm';
 
 function SecondPage() {
     return (
-        <section id="AboutSection" class="creative-cards style-one">
+        <section id="AboutSection" class="creative-cards style-one" style={{ paddingBottom: '0', height: '100vh' }}>
             <div class="container">
                 <div class="row">
                     <a href="https://www.fiverr.com/aliali44" className="card-column">
@@ -19,7 +20,7 @@ function SecondPage() {
                         </div>
                     </a>
 
-                    <a href="https://www.fiverr.com/aliali44" className="card-column">
+                    {/* <a href="https://www.fiverr.com/aliali44" className="card-column">
                         <div className="card-details">
                             <div className="card-icons">
                                 <img className="light-icon" src="/images/meta.png" alt="icon" />
@@ -43,8 +44,10 @@ function SecondPage() {
                                 <i className="fa-solid fa-angles-right"></i>
                             </span>
                         </div>
-                    </a>
-
+                    </a> */}
+                    <div className='bg-light p-5 width80 form-section col-md-4' id='rightInside' style={{ marginLeft: 'auto' }}>
+                        <LandingForm />
+                    </div>
 
                 </div>
             </div>
