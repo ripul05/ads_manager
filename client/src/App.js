@@ -23,8 +23,17 @@ function App() {
               <h2>We see what others can’t</h2>
               <p>Our entire business primarily specialises in Google Ads and Google Analytics 4. Google Ads is complex, mysterious even, but in the right capable hands...</p>
               <div className="d-flex gap-3 mt-3">
-                <EmailBtn href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Email us</EmailBtn>
-                <ContactBtn href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Call Us Now</ContactBtn>
+                <EmailBtn
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=yuktimainali2@gmail.com&su=Inquiry%20Email&body=Hi,%20I%20would%20like%20to%20inquire%20about%20Google%20Ads%20services."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Email us
+                </EmailBtn>
+
+
+                <ContactBtn href="tel:+918076016758" rel="noopener noreferrer">Call us now</ContactBtn>
+
 
               </div>
 
@@ -59,13 +68,13 @@ function App() {
 const EmailBtn = styled.a`
   color: white;
   text-decoration: none;
-  background-color: #0a5bbf;
+  background-color: rgba(10, 91, 191, 0.8);
   padding: 5px 20px;
   border-radius: 20px;
   transition: 0.5s;
 
   &:hover {
-    background-color: #0a3c66;
+    background-color: rgba(10, 91, 191, 1);
   }
 `;
 
@@ -83,13 +92,13 @@ const imageStyle = {
 const ContactBtn = styled.a`
   color: white;
   text-decoration: none;
-  background-color: rgb(17, 139, 80);
+  background-color: rgba(17, 139, 80, 0.8); 
   padding: 5px 18px;
   border-radius: 20px;
   transition: 0.5s;
 
   &:hover {
-    background-color: rgb(8, 75, 42);
+    background-color: rgb(17, 139, 80);
   }
 `;
 
