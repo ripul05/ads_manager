@@ -3,7 +3,7 @@ import './SecondPage.css'
 
 function SecondPage() {
     return (
-        <section class="creative-cards style-one">
+        <section id="AboutSection" class="creative-cards style-one">
             <div class="container">
                 <div class="row">
                     <a href="https://www.fiverr.com/aliali44" className="card-column">

@@ -34,18 +34,19 @@ function App() {
 
 
 
-          <div className="col-md-6">
-            {/* <div className='bg-light p-5 width80 form-section' id='rightInside'>
-              <h3>Request a FREE 30 Min Account Review Call</h3>
-              <LandingForm />
-            </div> */}
-          </div>
+          
         </div>
 
         <CarouselBackground />
       </div>
 
       <SecondPage />
+      <div id="ContactSection" className="col-md-6">
+            <div className='bg-light p-5 width80 form-section' id='rightInside'>
+              <h3>Request a FREE 30 Min Account Review Call</h3>
+              <LandingForm />
+            </div>
+          </div>
     </>
   );
 }

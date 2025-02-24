@@ -65,7 +65,7 @@ function LandingForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form id="ContactSection" onSubmit={handleSubmit}>
       <div className="mb-3">
         <label htmlFor="fullName" className="form-label">
           Full Name <span className="text-danger">*</span>

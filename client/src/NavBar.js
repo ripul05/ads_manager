@@ -23,9 +23,9 @@ const Navbar = () => {
         <h1 style={h1Style}>Kshitij's Agency</h1>
       </div>
       <div style={navLinksStyle}>
-        <NavLink href="#EducationPage">Home</NavLink>
-        <NavLink href="#SkillsPage">About</NavLink>
-        <NavLink href="#ExperiencePage">Contact</NavLink>
+        <NavLink href="#">Home</NavLink>
+        <NavLink href="#AboutSection">About</NavLink>
+        <NavLink href="#ContactSection">Contact</NavLink>
       </div>
     </div>
   );
@@ -74,7 +74,7 @@ const navbarStyle = {
   left: '50%',
   transform: 'translateX(-50%)',
   width: '95%',
-  padding: '10px 20px',
+  padding: '5px 20px',
   color: 'black',
   display: 'flex',
   justifyContent: 'space-between',
