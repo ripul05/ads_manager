@@ -31,11 +31,14 @@ body{
 }
 .creative-cards .container .row .card-column {
     flex: 0 0 auto;
+    text-decoration: none;
+    color: black;
     width: 33.33333333%;
     text-align: center;
     max-width: 100%;
     padding-right: 15px;
     padding-left: 15px;
+    
 }
 .card-details {
     width: 80%;
@@ -139,6 +142,7 @@ body{
     flex: 0 0 auto;
     width: 50%;
     margin-bottom: 40px;
+    text-decoration: none;
 }
 }
 
@@ -148,13 +152,15 @@ body{
     flex: 0 0 auto;
     width: 100%;
     margin-bottom: 20px;
+    text-decoration: none;
 }
 .card-details{
     width: 100%;
 }
 .read-more-btn{
-        transform: translateX(0px);
+    transform: translateX(0px);
     opacity: 1;
     visibility: visible;
 }
+
 }

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import Swal from "sweetalert2";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 function LandingForm() {
   const [formData, setFormData] = useState({
@@ -23,15 +25,25 @@ function LandingForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Validate form
-    if (!formData.phone) {
-      alert("Please enter a valid phone number.");
-      return;
-    }else{
-      alert(`Form Number :: ${formData.phone}`)
-    }
+ // Extract country and validate phone number from form.phone
+ const phoneNumber = parsePhoneNumberFromString(formData.phone);
 
+ if (!phoneNumber || !phoneNumber.isValid()) {
+   Swal.fire({
+     icon: "warning",
+     title: "Validation Error",
+     text: "Please enter a valid phone number.",
+     toast: true,
+     position: "bottom-end",
+     timer: 5000,
+     timerProgressBar: true,
+     showConfirmButton: false,
+   });
+   return;
+ }
+  
     try {
       const response = await fetch("/requestCallback", {
         method: "POST",
@@ -40,15 +52,27 @@ function LandingForm() {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
-        throw new Error("Failed to submit the form.");
+        const errorData = await response.json(); // Read response body as text
+        throw new Error(errorData.message || "Something went wrong");
       }
-
+  
       const result = await response.json();
-      alert("Form submitted successfully!");
       console.log("Server response:", result);
-
+  
+      // Show success alert
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "We'll get back to you soon",
+        toast: true,
+        position: "bottom-end",      // Bottom-right corner
+        timer: 5000,                 // Display duration (5 seconds)
+        timerProgressBar: true, 
+        showConfirmButton: false,
+      });
+  
       // Reset the form
       setFormData({
         fullName: "",
@@ -60,21 +84,34 @@ function LandingForm() {
       });
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("An error occurred. Please try again.");
+  
+      // Show error alert
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: error.message || "An error occurred. Please try again.",
+        toast: true,                 // Enables toast-style notification
+        position: "bottom-end",      // Bottom-right corner
+        timer: 5000,                 // Display duration (5 seconds)
+        timerProgressBar: true,      // ✅ Shows progress bar
+        showConfirmButton: false,
+      });
+      
+      
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form  onSubmit={handleSubmit}>
       <div className="mb-3">
-        <label htmlFor="fullName" className="form-label">
+        {/* <label htmlFor="fullName" className="form-label">
           Full Name <span className="text-danger">*</span>
-        </label>
+        </label> */}
         <input
           type="text"
           className="form-control"
           id="fullName"
-          placeholder="Full Name"
+          placeholder="Full Name *"
           required
           value={formData.fullName}
           onChange={handleInputChange}
@@ -82,14 +119,14 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="email" className="form-label">
+        {/* <label htmlFor="email" className="form-label">
           Email <span className="text-danger">*</span>
-        </label>
+        </label> */}
         <input
           type="email"
           className="form-control"
           id="email"
-          placeholder="Email"
+          placeholder="Email *"
           required
           value={formData.email}
           onChange={handleInputChange}
@@ -97,9 +134,9 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="companyName" className="form-label">
+        {/* <label htmlFor="companyName" className="form-label">
           Company Name
-        </label>
+        </label> */}
         <input
           type="text"
           className="form-control"
@@ -111,9 +148,9 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="phone" className="form-label">
+        {/* <label htmlFor="phone" className="form-label">
           Phone <span className="text-danger">*</span>
-        </label>
+        </label> */}
         <PhoneInput
           international
           placeholder="Enter phone number"
@@ -126,9 +163,9 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="websiteLink" className="form-label">
+        {/* <label htmlFor="websiteLink" className="form-label">
           Website Link
-        </label>
+        </label> */}
         <input
           type="url"
           className="form-control"
@@ -140,9 +177,9 @@ function LandingForm() {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="message" className="form-label">
+        {/* <label htmlFor="message" className="form-label">
           Message
-        </label>
+        </label> */}
         <textarea
           className="form-control"
           id="message"

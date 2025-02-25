@@ -38,7 +38,7 @@ const requestCallback = async (req, res) => {
         const existingCallback = await RequestCallback.findOne({ email });
 
         if (existingCallback) {
-            return res.status(200).json({
+            return res.status(500).json({
                 message: "A callback request has already been made with this email.",
                 data: existingCallback,
             });
@@ -51,7 +51,7 @@ const requestCallback = async (req, res) => {
         const savedCallback = await saveCallbackAndSendEmail(callbackData);
 
         // Respond with success message
-        res.status(201).json({
+        res.status(200).json({
             message: "Callback request saved and email sent successfully!",
             data: savedCallback,
         });
