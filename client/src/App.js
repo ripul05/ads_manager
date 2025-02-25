@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <NavBar />
-
+      
       <div id='HomeSection' className="position-relative" style={{ height: '120%' }}>
         <div className="row align-items-center position-absolute top-0 start-0 w-100" style={{ zIndex: 2 }}>
           <div className="col-md-8 d-flex justify-content-start align-items-center vh-100 ms-4 p-0">
@@ -38,29 +38,17 @@ function App() {
               </div>
 
             </div>
-            <div>
-              <img style={imageStyle} src="https://digitaldynamollc.com/wp-content/uploads/2023/10/google-ads-management.png" alt="Image 2" />
+            
+            <div className='bg-light p-5 width80 form-section col-md-4' id='rightInside' style={imageStyle}>
+                <LandingForm />
             </div>
+            
           </div>
         </div>
 
         <CarouselBackground />
       </div>
 
-      <SecondPage />
-      {/* <div id="ContactSection" style={{ height: '100vh', paddingTop: '8%' }}>
-        <h3 style={{ textAlign: 'center', fontWeight: 'bold' }}>Request a FREE 30 Min Account Review Call</h3>
-        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: '8%' }}>
-
-            <h1 style={{ textAlign: 'left', fontWeight: 'bold' }}>Google Maps</h1>
-          </div>
-          <div className='bg-light p-5 width80 form-section col-md-4' id='rightInside' style={{ marginLeft: 'auto' }}>
-            <LandingForm />
-          </div>
-        </div>
-      </div> */}
 
     </>
   );
@@ -81,14 +69,13 @@ const EmailBtn = styled.a`
 const imageStyle = {
   position: 'absolute',
   top: '50%',
-  right: '0.5%',
+  right: '7%',
   transform: 'translateY(-50%)',
-  width: '43%',
+  width: '26%',
   height: '57%',
   zIndex: '4',
   opacity: '0.9',
 };
-
 const ContactBtn = styled.a`
   color: white;
   text-decoration: none;
