@@ -102,98 +102,71 @@ function LandingForm() {
   };
 
   return (
-    <form  onSubmit={handleSubmit}>
-      <div className="mb-3">
-        {/* <label htmlFor="fullName" className="form-label">
-          Full Name <span className="text-danger">*</span>
-        </label> */}
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
-          className="form-control"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           id="fullName"
           placeholder="Full Name *"
           required
           value={formData.fullName}
           onChange={handleInputChange}
         />
-      </div>
 
-      <div className="mb-3">
-        {/* <label htmlFor="email" className="form-label">
-          Email <span className="text-danger">*</span>
-        </label> */}
         <input
           type="email"
-          className="form-control"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           id="email"
           placeholder="Email *"
           required
           value={formData.email}
           onChange={handleInputChange}
         />
-      </div>
 
-      <div className="mb-3">
-        {/* <label htmlFor="companyName" className="form-label">
-          Company Name
-        </label> */}
         <input
           type="text"
-          className="form-control"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           id="companyName"
           placeholder="Company Name"
           value={formData.companyName}
           onChange={handleInputChange}
         />
-      </div>
 
-      <div className="mb-3">
-        {/* <label htmlFor="phone" className="form-label">
-          Phone <span className="text-danger">*</span>
-        </label> */}
         <PhoneInput
           international
           placeholder="Enter phone number"
           value={formData.phone}
           onChange={handlePhoneChange}
           defaultCountry="IN"
-          className="form-control"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-      </div>
 
-      <div className="mb-3">
-        {/* <label htmlFor="websiteLink" className="form-label">
-          Website Link
-        </label> */}
         <input
           type="url"
-          className="form-control"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           id="websiteLink"
           placeholder="Your Website Link"
           value={formData.websiteLink}
           onChange={handleInputChange}
         />
-      </div>
 
-      <div className="mb-3">
-        {/* <label htmlFor="message" className="form-label">
-          Message
-        </label> */}
         <textarea
-          className="form-control"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           id="message"
           rows="4"
           placeholder="Message"
           value={formData.message}
           onChange={handleInputChange}
         ></textarea>
-      </div>
 
-      <button type="submit" className="btn btn-warning w-100">
-        Request Callback
-      </button>
-    </form>
+        <button 
+          type="submit" 
+          className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+        >
+          Request Callback
+        </button>
+      </form>
   );
 }
 
