@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeColors = ['red', 'green', 'blue', 'orange', 'rebeccapurple'];
+  const activeColors = ['red', 'green', 'blue'];
   
   const navItems = [
     { label: 'Home', href: '#HomeSection' },
