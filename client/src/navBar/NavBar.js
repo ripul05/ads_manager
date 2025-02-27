@@ -101,7 +101,7 @@ const NavContainer = styled(motion.nav)`
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 1.5rem 5%;
+  padding: 5px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -142,6 +142,7 @@ const NavItems = styled.div`
   display: flex;
   gap: 2rem;
   align-items: center;
+  padding: 0;
 
   @media (max-width: 768px) {
     display: none;
