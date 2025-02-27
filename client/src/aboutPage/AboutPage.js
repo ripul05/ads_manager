@@ -45,7 +45,7 @@ const AboutUs = () => {
   }, [controls, inView]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div id="AboutSection" className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-20 text-center">
         <motion.div

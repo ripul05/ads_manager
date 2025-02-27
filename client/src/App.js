@@ -1,21 +1,18 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import Navigation from './navBar/Navigation';
 import HomePage from './homePage/homePage';
 import AboutUs from './aboutPage/AboutPage';
-import Testimonial from './testimonyPage/Testimony';
-import { Routes, Route } from 'react-router-dom';
+import TestimonialPage from './testimonyPage/Testimony';
 
 function App() {
   return (
     <div className="app-container"> 
-      <Navigation />
+      <HomePage/>
       <AboutUs/>
-      <Testimonial/>
+      <TestimonialPage/>
     </div>
   );
 }
 
 export default App;
-

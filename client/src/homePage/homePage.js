@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../index.css';
 import LandingForm from './LandingForm';
 import CarouselBackground from './Carousel';
+import Navbar from './Navbar';
 import styled from "styled-components";
 function HomePage(){
     return(
@@ -11,7 +12,7 @@ function HomePage(){
     <div className="absolute inset-0 -z-10 w-full h-full">
         <CarouselBackground />
     </div>
-
+    <Navbar/>
     {/* Main Content */}
     <div className="container relative z-10 mx-auto px-4 h-full mt-[10.5em]">
         <div className="flex flex-col lg:flex-row items-center justify-between h-full pt-20 lg:pt-0">

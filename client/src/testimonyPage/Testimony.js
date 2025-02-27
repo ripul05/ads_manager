@@ -604,7 +604,7 @@ const TestimonialPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 relative overflow-hidden">
+    <div id='TestimonySection' className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 relative overflow-hidden">
       <motion.div 
         className="absolute top-20 left-0 w-24 h-24 bg-red-500 rounded-full blur-xl opacity-10"
         animate={{ y: [0, 40, 0] }}
