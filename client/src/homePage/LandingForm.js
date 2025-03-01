@@ -171,39 +171,3 @@ function LandingForm() {
 }
 
 export default LandingForm;
-
-
-// export default LandingForm;
-
-
-
-// const LandingForm = () => {
-//   const [value, setValue] = useState(''); // Initialize with empty string
-//   const [phoneNumber, setPhoneNumber] = useState('');
-
-//   const handleSubmit = (event) => {
-//     event.preventDefault();
-//     if (value) { // Check if a value is entered
-//         setPhoneNumber(value);
-//         alert(`Phone Number: ${value}`);
-//         // Here you can send the value to your backend or handle it as needed
-//     } else {
-//         alert("Please enter a phone number.")
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}> {/* Wrap in a form */}
-//       <PhoneInput
-//         placeholder="Enter phone number"
-//         value={value}
-//         onChange={setValue}
-//         defaultCountry="IN" // Set default country
-//       />
-//       <button type="submit">Submit</button> {/* Add a submit button */}
-//       {phoneNumber && <p>Phone Number State: {phoneNumber}</p>}
-//     </form>
-//   );
-// };
-
-// export default LandingForm;

@@ -33,6 +33,16 @@ module.exports = {
           preserve3d: {
             preserve: 'preserve-3d',
           },
+          colors: {
+            'blue-50': '#eff6ff',
+            'blue-100': '#dbeafe',
+            'blue-500': '#3b82f6',
+            'blue-600': '#2563eb',
+            'gray-50': '#f8fafc',
+            'gray-100': '#f1f5f9',
+            'gray-500': '#64748b',
+            'gray-700': '#334155',
+          }
       },
   },
   plugins: [],
