@@ -72,7 +72,7 @@ const CloseButton = styled.button`
     color: #666;
 
     &:hover {
-        color: #A31D1D;
+        color: rgba(10, 91, 191, 1);;
     }
 `;
 
@@ -147,10 +147,10 @@ function HomePage() {
         };
 
         emailjs.send(
-            'default_service',  
-            'template_rkyudzs', 
+            'default_service',  //service id
+            'template_sjqh0pr',   //template id
             templateParams,
-            '4DFcmHNC_yAE52JpN'      
+            '4DFcmHNC_yAE52JpN'    //user id
         )
         .then((result) => {
             alert('Message sent successfully!');
