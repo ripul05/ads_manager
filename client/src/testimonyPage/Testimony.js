@@ -131,6 +131,19 @@ const TestimonialPage = () => {
   const [filter, setFilter] = useState('all');
   const [isHovered, setIsHovered] = useState(false);
   const [showScheduling, setShowScheduling] = useState(false);
+  const [occupiedSlots, setOccupiedSlots] = useState([]);
+
+  const handleOpenScheduling = async () => {
+    try {
+      const response = await fetch('/auditScheduling/occupiedTimeslots');
+      const data = await response.json();
+      setOccupiedSlots(data.occupiedSlots);
+      setShowScheduling(true);
+    } catch (error) {
+      console.error('Failed to fetch occupied slots:', error);
+    }
+  };
+
 
   const filteredTestimonials = testimonials.filter(t => 
     filter === 'all' ? true : t.serviceType === filter
@@ -330,14 +343,20 @@ const TestimonialPage = () => {
             Ready to Transform Your Google Ads Performance?
           </h3>
           <button 
-            onClick={() => setShowScheduling(true)}
+            onClick={handleOpenScheduling}  // Updated here to call handleOpenScheduling
             className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors"
           >
             Schedule Free Audit
           </button>
         </motion.div>
       </div>
-        {showScheduling && <AuditScheduling onClose={() => setShowScheduling(false)} />}
+      {showScheduling && (
+        <AuditScheduling 
+          occupiedSlots={occupiedSlots}   // Pass the fetched slots
+          onClose={() => setShowScheduling(false)} 
+        />
+      )}
+
     </div>
   );
 };
