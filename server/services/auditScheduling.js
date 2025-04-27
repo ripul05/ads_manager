@@ -1,6 +1,6 @@
 // controllers/auditController.js
 const AuditSchedule = require('../models/auditScheduling');
-
+const { sendEmail, generateGoogleMeetLink } = require("../services/emailService"); 
 
 const auditScheduling = async (req, res) => {
   try {
@@ -50,7 +50,6 @@ const auditScheduling = async (req, res) => {
     });
 
     const savedAudit = await newAudit.save();
-
     res.status(201).json({
       success: true,
       message: 'Audit scheduled successfully',
@@ -60,6 +59,7 @@ const auditScheduling = async (req, res) => {
         timeZone: savedAudit.timeZone
       }
     });
+    await sendAuditEmails({ name, email, company, auditDateTime, timeZone });
 
   } catch (error) {
     console.error('Error scheduling audit:', error);
@@ -95,6 +95,74 @@ const getOccupiedTimeSlots = async (req, res) => {
         res.status(500).json({ message: "Failed to fetch occupied time slots" });
     }
 };
+
+// Modify the sendAuditEmails function to include the Google Meet link
+const sendAuditEmails = async ({ name, email, company, auditDateTime, timeZone }) => {
+  try {
+    // Generate Google Meet Link
+    let meetLink 
+    // meetLink= await generateGoogleMeetLink(auditDateTime, name);
+
+    const formattedDate = new Date(auditDateTime).toLocaleDateString('en-US', {
+      timeZone,
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const formattedTime = new Date(auditDateTime).toLocaleTimeString('en-US', {
+      timeZone,
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    // Email to Internal Team
+    const teamSubject = "🛠 New Google Ads Audit Scheduled";
+    const teamBody = `
+New Audit Booking Details:
+
+- Name: ${name}
+- Email: ${email}
+- Company: ${company}
+- Scheduled Date: ${formattedDate}
+- Scheduled Time: ${formattedTime}
+- Timezone: ${timeZone}
+
+Google Meet Link: ${meetLink}
+    `;
+
+    // Email to User
+    const userSubject = "✅ Your Google Ads Audit is Scheduled!";
+    const userBody = `
+Hi ${name},
+
+Thank you for scheduling your Google Ads Audit with us!
+
+Here are your meeting details:
+
+- Date: ${formattedDate}
+- Time: ${formattedTime} (${timeZone})
+- Duration: 30 minutes
+- Meeting Type: Online
+- Google Meet Link: ${meetLink}
+
+We look forward to connecting with you!
+
+Best regards,  
+The Audit Team
+    `;
+
+    // Send emails
+    await sendEmail(teamSubject, teamBody);        // send to internal team
+    await sendEmail(userSubject, userBody, email); // send to user
+
+  } catch (error) {
+    console.error('Error sending emails:', error);
+  }
+};
+
+
 
 
 module.exports = { auditScheduling, getOccupiedTimeSlots };

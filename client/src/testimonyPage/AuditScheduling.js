@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment-timezone'; 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -20,6 +21,7 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [localOccupiedSlots, setLocalOccupiedSlots] = useState([]);
+  const closeButtonRef = useRef(null);
   useEffect(() => {
     const convertedSlots = occupiedSlots.map(slot => {
       // Create moment object in UTC
@@ -41,27 +43,18 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
   // Generate time slots
   const generateTimeSlots = () => {
     const slots = [];
-    const start = moment().set({ hour: 9, minute: 0 });
-    const end = moment().set({ hour: 17, minute: 0 });
-
+    const today = moment().startOf('day'); // reset time to 00:00
+  
+    const start = today.clone().set({ hour: 9, minute: 0 });  // Start from 9 AM
+    const end = today.clone().set({ hour: 17, minute: 0 });   // End at 5 PM
+  
     while (start.isBefore(end)) {
       const slotTime = start.format('h:mm A');
-      const slotDate = start.toDate();
-      
-      // Check if slot is occupied
-      const isOccupied = localOccupiedSlots.some(occupied => 
-        moment(slotDate).isBetween(
-          moment(occupied.start).subtract(1, 'minute'),
-          moment(occupied.end).add(1, 'minute')
-        )
-      );
-
-      if (!isOccupied) {
-        slots.push(slotTime);
-      }
-
+      slots.push(slotTime);
+  
       start.add(30, 'minutes');
     }
+  
     return slots;
   };
 
@@ -175,6 +168,7 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
       setStep(1);
       setSelectedDate(null);
       setSelectedTime('');
+      closeButtonRef.current?.click();
   
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -196,7 +190,7 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
   const calendarEvents = localOccupiedSlots.map(slot => ({
     start: slot.start,
     end: slot.end,
-    title: 'Booked',
+    title: ' ',
     allDay: false,
     resource: null,
     tooltip: 'This slot is already booked',
@@ -217,6 +211,7 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-3xl p-8 max-w-3xl w-full shadow-2xl transform transition-all duration-300 ease-out scale-95 animate-fade-in">
         <button
+          ref={closeButtonRef}
           onClick={onClose}
           className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 transition-colors"
         >
@@ -290,52 +285,13 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
                     },
                   })}
                   components={{
-                    // event: ({ event }) => (
-                    //   <div className="h-full w-full flex items-center justify-center hover:scale-105 transform transition-all duration-300 ease-in-out">
-                    //     <div className="whitespace-normal break-words text-center w-full">
-                    //       {event.className?.includes("bg-red-100") ? (
-                    //         <div className="flex flex-col items-center">
-                    //           <svg
-                    //             className="w-6 h-6 text-red-500 animate-bounce"
-                    //             fill="none"
-                    //             stroke="currentColor"
-                    //             viewBox="0 0 24 24"
-                    //           >
-                    //             <path
-                    //               strokeLinecap="round"
-                    //               strokeLinejoin="round"
-                    //               strokeWidth={2}
-                    //               d="M6 18L18 6M6 6l12 12"
-                    //             />
-                    //           </svg>
-                    //           <span className="text-xs mt-1 animate-pulse text-red-600">
-                    //             Booked
-                    //           </span>
-                    //         </div>
-                    //       ) : (
-                    //         <span className="font-semibold text-blue-700">
-                    //           {event.title}
-                    //         </span>
-                    //       )}
-                    //     </div>
-                    //   </div>
-                    // ),
-                    // event: ({ event }) => {
-                    //   const isBooked = event.className?.includes("bg-red-100");
-                    //   return (
-                    //     <div className="h-full w-full flex items-center justify-center px-1">
-                    //       {isBooked ? (
-                    //         // just show a centered X icon
-                    //         <XMarkIcon className="w-5 h-5 text-red-500" />
-                    //       ) : (
-                    //         // clamp the title to two lines
-                    //         <span className="line-clamp-2 text-sm font-medium text-blue-800 text-center w-full">
-                    //           {event.title}
-                    //         </span>
-                    //       )}
-                    //     </div>
-                    //   );
-                    // },
+                    event: () => (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="flex flex-col items-center">
+                          <span className="text-xs text-red-600 mt-1">Booked</span>
+                        </div>
+                      </div>
+                    ),
 
                     dateCellWrapper: ({ value, children }) => (
                       <div
@@ -359,9 +315,12 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
                     ),
 
                     eventWrapper: ({ children }) => {
-                      console.log("Children", children);
+                      // console.log("Children", children);
                       return <div className="m-0">{children}</div>;
                     },
+                  }}
+                  formats={{
+                    eventTimeRangeFormat: () => null,
                   }}
                   slotPropGetter={() => ({
                     style: {
