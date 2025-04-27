@@ -23,16 +23,15 @@ const auditScheduling = async (req, res) => {
 
     // Check for overlapping bookings
     const existingBooking = await AuditSchedule.findOne({
-      auditDateTime: {
-        $lt: meetingEnd  // Existing meeting starts before new meeting ends
-      },
+      auditDateTime: { $lt: meetingEnd },
       $expr: {
         $gt: [
-          { $add: ["$auditDateTime", 30 * 60000] }, // Existing meeting ends
-          utcDate // After new meeting starts
+          { $add: ["$auditDateTime", 30 * 60000] },
+          utcDate
         ]
       }
     });
+    
 
     if (existingBooking) {
       return res.status(409).json({

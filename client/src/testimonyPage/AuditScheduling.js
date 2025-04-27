@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Swal from "sweetalert2";
+import { format } from 'date-fns';
 
 moment.locale('en');
 const localizer = momentLocalizer(moment);
@@ -202,115 +203,151 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
     className: "bg-red-100 border-l-4 border-red-500 text-red-700 flex items-center justify-center cursor-not-allowed h-full m-0"
   }));
   
+  const WORK_START = 9, WORK_END = 17;
+  let filteredEvents = calendarEvents.filter(evt => {
+    const h1 = evt.start.getHours(), h2 = evt.end.getHours();
+    return h1 >= WORK_START && h2 <= WORK_END;
+  });
+
+  // 2) then only keep those whose start is in the future:
+  const now = new Date();
+  filteredEvents = filteredEvents.filter((evt) => evt.start > now);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl p-8 max-w-2xl w-full relative shadow-xl">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-3xl p-8 max-w-3xl w-full shadow-2xl transform transition-all duration-300 ease-out scale-95 animate-fade-in">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 transition-colors"
         >
           <XMarkIcon className="h-6 w-6" />
         </button>
 
-        {!submitted ? (
+        {
+         (
           <>
             <h2 className="text-3xl font-bold text-gray-800 mb-6">
               Schedule Free Google Ads Audit
             </h2>
 
             {step === 1 && (
-              <div className="h-[500px]">
+              <div className="h-[500px] animate-fade-in">
                 <Calendar
                   localizer={localizer}
-                  events={calendarEvents}
+                  events={filteredEvents}
                   startAccessor="start"
                   endAccessor="end"
                   selectable
                   onSelectSlot={handleSelectSlot}
-                  min={new Date()}
+                  // min={new Date()}
+                  min={new Date(selectedDate).setHours(WORK_START,0,0)}
+                  max={new Date(selectedDate).setHours(WORK_END,0,0)}
                   defaultView="week"
                   views={["week", "day"]}
                   step={30}
                   timeslots={2}
                   dayLayoutAlgorithm="no-overlap"
-                  className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 h-full"
+                  className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 h-full transition-all duration-500 ease-in-out hover:shadow-3xl hover:border-blue-100 [&_.rbc-day-slot_.rbc-events-container]:mr-0"
                   eventPropGetter={(event) => ({
                     style: {
-                      backgroundColor:
-                        event.className ===
-                        "bg-red-100 border-l-4 border-red-500 text-red-700 flex items-center justify-center cursor-not-allowed h-full m-0"
-                          ? "#fee2e2"
-                          : "#dbeafe",
+                      backgroundColor: event.className?.includes("bg-red-100")
+                        ? "#fee2e2"
+                        : "#dbeafe",
                       borderLeft: `4px solid ${
-                        event.className ===
-                        "bg-red-100 border-l-4 border-red-500 text-red-700 flex items-center justify-center cursor-not-allowed h-full m-0"
+                        event.className?.includes("bg-red-100")
                           ? "#ef4444"
                           : "#3b82f6"
                       }`,
-                      color:
-                        event.className ===
-                        "bg-red-100 border-l-4 border-red-500 text-red-700 flex items-center justify-center cursor-not-allowed h-full m-0"
-                          ? "#b91c1c"
-                          : "#1e40af",
-                      borderRadius: "0.375rem",
-                      padding: "0.25rem",
-                      fontSize: "0.875rem",
+                      color: event.className?.includes("bg-red-100")
+                        ? "#b91c1c"
+                        : "#1e40af",
+                      borderRadius: "0.75rem",
+                      padding: "0.75rem",
+                      fontSize: "0.9rem",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      cursor:
-                        event.className ===
-                        "bg-red-100 border-l-4 border-red-500 text-red-700 flex items-center justify-center cursor-not-allowed h-full m-0"
-                          ? "not-allowed"
-                          : "pointer",
+                      cursor: event.className?.includes("bg-red-100")
+                        ? "not-allowed"
+                        : "pointer",
                       height: "100%",
                       margin: "0",
                       overflow: "hidden",
+                      transition: "all 0.3s ease",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+
+                      // <— allow text to wrap
+                      whiteSpace: "normal",
+                      overflowWrap: "break-word",
+                      wordBreak: "break-word",
                     },
                   })}
                   dayPropGetter={(date) => ({
                     style: {
-                      backgroundColor: date < new Date() ? "#f3f4f6" : "white",
+                      backgroundColor:
+                        date < new Date() ? "#f3f4f6" : "#ffffff",
+                      transition: "background-color 0.3s ease",
                     },
                   })}
                   components={{
-                    event: ({ event }) => (
-                      <div className="h-full w-full flex items-center justify-center">
-                        {event.className ===
-                        "bg-red-100 border-l-4 border-red-500 text-red-700 flex items-center justify-center cursor-not-allowed h-full m-0" ? (
-                          <div className="flex flex-col items-center">
-                            <svg
-                              className="w-5 h-5 text-red-500"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                            <span className="text-xs mt-1">Booked</span>
-                          </div>
-                        ) : (
-                          <span>{event.title}</span>
-                        )}
-                      </div>
-                    ),
+                    // event: ({ event }) => (
+                    //   <div className="h-full w-full flex items-center justify-center hover:scale-105 transform transition-all duration-300 ease-in-out">
+                    //     <div className="whitespace-normal break-words text-center w-full">
+                    //       {event.className?.includes("bg-red-100") ? (
+                    //         <div className="flex flex-col items-center">
+                    //           <svg
+                    //             className="w-6 h-6 text-red-500 animate-bounce"
+                    //             fill="none"
+                    //             stroke="currentColor"
+                    //             viewBox="0 0 24 24"
+                    //           >
+                    //             <path
+                    //               strokeLinecap="round"
+                    //               strokeLinejoin="round"
+                    //               strokeWidth={2}
+                    //               d="M6 18L18 6M6 6l12 12"
+                    //             />
+                    //           </svg>
+                    //           <span className="text-xs mt-1 animate-pulse text-red-600">
+                    //             Booked
+                    //           </span>
+                    //         </div>
+                    //       ) : (
+                    //         <span className="font-semibold text-blue-700">
+                    //           {event.title}
+                    //         </span>
+                    //       )}
+                    //     </div>
+                    //   </div>
+                    // ),
+                    // event: ({ event }) => {
+                    //   const isBooked = event.className?.includes("bg-red-100");
+                    //   return (
+                    //     <div className="h-full w-full flex items-center justify-center px-1">
+                    //       {isBooked ? (
+                    //         // just show a centered X icon
+                    //         <XMarkIcon className="w-5 h-5 text-red-500" />
+                    //       ) : (
+                    //         // clamp the title to two lines
+                    //         <span className="line-clamp-2 text-sm font-medium text-blue-800 text-center w-full">
+                    //           {event.title}
+                    //         </span>
+                    //       )}
+                    //     </div>
+                    //   );
+                    // },
+
                     dateCellWrapper: ({ value, children }) => (
                       <div
-                        className={`relative h-full ${
-                          value < new Date() ? "opacity-50" : ""
-                        }`}
+                        className={`relative h-full rounded-md overflow-hidden ${
+                          value < new Date() ? "opacity-30" : "hover:bg-blue-50"
+                        } transition-all duration-300 ease-in-out`}
                       >
                         {children}
                         {value < new Date() && (
                           <div className="absolute inset-0 pointer-events-none">
                             <div
-                              className="w-full h-full bg-gradient-to-br from-transparent via-gray-300 to-transparent opacity-50"
+                              className="w-full h-full bg-gradient-to-br from-transparent via-gray-400 to-transparent opacity-40"
                               style={{
                                 clipPath:
                                   "polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 85%, 15% 100%, 0 85%)",
@@ -320,36 +357,52 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
                         )}
                       </div>
                     ),
+
+                    eventWrapper: ({ children }) => {
+                      console.log("Children", children);
+                      return <div className="m-0">{children}</div>;
+                    },
                   }}
-                  slotPropGetter={(date) => ({
+                  slotPropGetter={() => ({
                     style: {
-                      minHeight: "40px",
+                      minHeight: "50px",
+                      transition: "all 0.3s ease",
                     },
                   })}
                   headerStyle={{
-                    backgroundColor: "#f8fafc",
-                    borderBottom: "1px solid #e2e8f0",
+                    backgroundColor: "#ffffff",
+                    borderBottom: "2px solid #e2e8f0",
                     borderRadius: "0.75rem 0.75rem 0 0",
-                    padding: "1rem",
+                    padding: "1.25rem",
+                    fontWeight: "600",
+                    fontSize: "1.125rem",
+                    color: "#0c4a6e",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
                   }}
                   timeslotsWrapperStyle={{
                     borderRight: "1px solid #e2e8f0",
                     background: "#f8fafc",
+                    boxShadow: "inset 0 1px 2px rgba(0,0,0,0.03)",
                   }}
                   timeGutterStyle={{
                     background: "#f8fafc",
                     borderRight: "1px solid #e2e8f0",
                     color: "#64748b",
-                    fontWeight: "500",
+                    fontWeight: "600",
+                    fontSize: "0.875rem",
+                    padding: "0 1rem",
                   }}
                   todayStyle={{
-                    backgroundColor: "#eff6ff",
-                    color: "#1d4ed8",
-                    fontWeight: "600",
+                    background:
+                      "linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%)",
+                    color: "#0c4a6e",
+                    fontWeight: "bold",
+                    border: "2px solid #7dd3fc",
                   }}
                 />
               </div>
             )}
+
             {step === 2 && (
               <div className="space-y-6">
                 <h3 className="text-xl font-semibold">
@@ -433,15 +486,21 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
                               millisecond: 0,
                             });
 
-                          const isBooked = localOccupiedSlots.some((occupied) => {
-                            const occupiedStart = moment(occupied.start).seconds(0).milliseconds(0); // snap to 00 sec
-                            const occupiedEnd = moment(occupied.end).seconds(0).milliseconds(0); // snap to 00 sec
-                            
-                            return (
-                              slotStart.isSameOrAfter(occupiedStart) && slotStart.isBefore(occupiedEnd)
-                            );
-                          });
-                          
+                          const isBooked = localOccupiedSlots.some(
+                            (occupied) => {
+                              const occupiedStart = moment(occupied.start)
+                                .seconds(0)
+                                .milliseconds(0); // snap to 00 sec
+                              const occupiedEnd = moment(occupied.end)
+                                .seconds(0)
+                                .milliseconds(0); // snap to 00 sec
+
+                              return (
+                                slotStart.isSameOrAfter(occupiedStart) &&
+                                slotStart.isBefore(occupiedEnd)
+                              );
+                            }
+                          );
 
                           return (
                             <button
@@ -590,24 +649,26 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
               </form>
             )}
           </>
-        ) : (
-          <div className="text-center space-y-6">
-            <div className="text-green-500 text-6xl">✓</div>
-            <h3 className="text-2xl font-bold text-gray-800">
-              Audit Scheduled Successfully!
-            </h3>
-            <p className="text-gray-600">
-              We've sent a confirmation email to {userDetails.email}.<br />
-              Our Google Ads specialist will contact you at the scheduled time.
-            </p>
-            <button
-              onClick={onClose}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        )}
+        )
+        //  : (
+        //   <div className="text-center space-y-6">
+        //     <div className="text-green-500 text-6xl">✓</div>
+        //     <h3 className="text-2xl font-bold text-gray-800">
+        //       Audit Scheduled Successfully!
+        //     </h3>
+        //     <p className="text-gray-600">
+        //       We've sent a confirmation email to {userDetails.email}.<br />
+        //       Our Google Ads specialist will contact you at the scheduled time.
+        //     </p>
+        //     <button
+        //       onClick={onClose}
+        //       className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        //     >
+        //       Close
+        //     </button>
+        //   </div>
+        // )
+        }
       </div>
     </div>
   );
