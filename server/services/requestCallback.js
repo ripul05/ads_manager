@@ -10,13 +10,22 @@ const saveCallbackAndSendEmail = async (callbackData) => {
         // Prepare email details
         const { fullName, email, phone } = callbackData;
         const emailSubject = "New Callback Request Received";
-        const emailBody = `A new callback request has been made by:
-
-        Full Name: ${fullName}
-        Email: ${email}
-        Phone: ${phone}
-
-        The request has been saved successfully in the database.`;
+        const emailBody = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; background-color: #f9f9f9;">
+          <h2 style="color: #333; text-align: center;">📞 New Callback Request Received</h2>
+          <p style="font-size: 16px; color: #555;">A new callback request has been made with the following details:</p>
+        
+          <ul style="list-style: none; padding: 0; font-size: 16px; color: #444;">
+            <li><strong>Full Name:</strong> ${fullName}</li>
+            <li><strong>Email:</strong> ${email}</li>
+            <li><strong>Phone:</strong> ${phone}</li>
+          </ul>
+        
+          <p style="margin-top: 20px; font-size: 16px; color: #333;">
+            ✅ The request has been <strong>saved successfully</strong> in the database.
+          </p>
+        </div>
+        `;
 
         // Send the confirmation email
         await sendEmail(emailSubject, emailBody);

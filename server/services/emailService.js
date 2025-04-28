@@ -26,7 +26,7 @@ const sendEmail = async (subject, body, receiverEmail = null) => {
         from: process.env.EMAIL_USER,
         to: finalReceiver,
         subject: subject,
-        text: body,
+        html: body,
       };
   
       const info = await transporter.sendMail(mailOptions);
@@ -39,15 +39,16 @@ const sendEmail = async (subject, body, receiverEmail = null) => {
   };
 
 const generateGoogleMeetLink = async (auditDateTime, name) => {
-const oauth2Client = new google.auth.OAuth2(
-    process.env.EMAIL_USER,
-    process.env.EMAIL_PASS,
-    process.env.GOOGLE_REDIRECT_URI
-);
-
-oauth2Client.setCredentials({
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-});
+    const oauth2Client = new google.auth.OAuth2(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+        process.env.GOOGLE_REDIRECT_URI
+      );
+      
+      oauth2Client.setCredentials({
+        refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+      });
+      
 
 const event = {
     summary: `Google Ads Audit with ${name}`,

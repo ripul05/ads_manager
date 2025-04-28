@@ -190,13 +190,10 @@ const TestimonialPage = () => {
   }
 
   return (
-    <div id='TestimonySection' className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 relative overflow-hidden">
-      {/* <motion.div 
-        className="absolute top-20 left-0 w-24 h-24 bg-red-500 rounded-full blur-xl opacity-10"
-        animate={{ y: [0, 40, 0] }}
-        transition={{ duration: 8, repeat: Infinity }}
-      /> */}
-      
+    <div
+      id="TestimonySection"
+      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 relative overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto py-16 px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -210,34 +207,37 @@ const TestimonialPage = () => {
             </h2>
           </div>
           <p className="text-gray-600 text-lg">
-            Hear from businesses who've accelerated growth through our expert PPC management
+            Hear from businesses who've accelerated growth through our expert
+            PPC management
           </p>
-          
+
           <div className="flex justify-center gap-2 mt-8">
-            {['all', 'Search Ads', 'Display Ads', 'Shopping Ads'].map((type) => (
-              <button
-                key={type}
-                onClick={() => setFilter(type)}
-                className={`px-4 py-2 rounded-full transition-colors ${
-                  filter === type 
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
-                }`}
-              >
-                {type.replace('all', 'All Campaigns')}
-              </button>
-            ))}
+            {["all", "Search Ads", "Display Ads", "Shopping Ads"].map(
+              (type) => (
+                <button
+                  key={type}
+                  onClick={() => setFilter(type)}
+                  className={`px-4 py-2 rounded-full transition-all ${
+                    filter === type
+                      ? "bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white shadow-lg"
+                      : "bg-white text-gray-600 hover:bg-gray-50 shadow-md"
+                  }`}
+                >
+                  {type.replace("all", "All Campaigns")}
+                </button>
+              )
+            )}
           </div>
         </motion.div>
 
-        <div 
+        <div
           className="relative group"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="flex justify-center gap-8 relative overflow-hidden">
             {visibleTestimonials.map((testimonial) => (
-              <motion.div 
+              <motion.div
                 key={testimonial.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -245,14 +245,19 @@ const TestimonialPage = () => {
                 transition={{ duration: 0.5 }}
                 className="w-full max-w-[400px] flex-shrink-0"
               >
-                <div className="bg-white rounded-2xl shadow-xl p-6 h-full transition-all duration-300 hover:shadow-2xl">
+                <div className="bg-white rounded-2xl shadow-xl p-6 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
                   <div className="flex items-start gap-4 mb-4">
-                    <motion.img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full border-4 border-blue-100"
+                    <motion.div
+                      className="relative w-16 h-16 rounded-full overflow-hidden"
                       whileHover={{ scale: 1.1 }}
-                    />
+                    >
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/20 to-[#34A853]/20" />
+                    </motion.div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start">
                         <div>
@@ -263,7 +268,7 @@ const TestimonialPage = () => {
                             {testimonial.role} at {testimonial.company}
                           </p>
                         </div>
-                        <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                        <span className="px-3 py-1 bg-gradient-to-r from-[#4285F4]/10 to-[#34A853]/10 text-[#34A853] rounded-full text-sm">
                           {testimonial.industry}
                         </span>
                       </div>
@@ -273,45 +278,47 @@ const TestimonialPage = () => {
                     </div>
                   </div>
 
-                  <motion.div 
-                    className="relative overflow-hidden rounded-xl bg-blue-50 p-4 mb-4"
+                  <motion.div
+                    className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#4285F4]/5 to-[#34A853]/5 p-4 mb-4"
                     whileHover={{ y: -5 }}
                   >
                     <p className="text-gray-700 text-base leading-relaxed italic relative z-10">
                       "{testimonial.text}"
                     </p>
-                    <FaQuoteRight className="absolute bottom-2 right-2 text-4xl text-blue-200 opacity-50" />
+                    <FaQuoteRight className="absolute bottom-2 right-2 text-4xl text-[#4285F4]/20" />
                   </motion.div>
 
                   <div className="grid grid-cols-3 gap-2 text-center mb-4">
-                    <div className="bg-green-100 p-3 rounded-lg">
-                      <p className="text-xl font-bold text-green-800">
+                    <div className="bg-gradient-to-br from-[#34A853]/10 to-[#34A853]/20 p-3 rounded-lg">
+                      <p className="text-xl font-bold text-[#34A853]">
                         +{testimonial.stats.roas}%
                       </p>
-                      <p className="text-xs text-green-600">ROAS</p>
+                      <p className="text-xs text-[#34A853]">ROAS</p>
                     </div>
-                    <div className="bg-purple-100 p-3 rounded-lg">
-                      <p className="text-xl font-bold text-purple-800">
+                    <div className="bg-gradient-to-br from-[#4285F4]/10 to-[#4285F4]/20 p-3 rounded-lg">
+                      <p className="text-xl font-bold text-[#4285F4]">
                         -{testimonial.stats.costReduction}%
                       </p>
-                      <p className="text-xs text-purple-600">Costs</p>
+                      <p className="text-xs text-[#4285F4]">Costs</p>
                     </div>
-                    <div className="bg-orange-100 p-3 rounded-lg">
-                      <p className="text-xl font-bold text-orange-800">
+                    <div className="bg-gradient-to-br from-[#4285F4]/10 to-[#34A853]/20 p-3 rounded-lg">
+                      <p className="text-xl font-bold text-[#34A853]">
                         +{testimonial.stats.clicks}%
                       </p>
-                      <p className="text-xs text-orange-600">Clicks</p>
+                      <p className="text-xs text-[#34A853]">Clicks</p>
                     </div>
                   </div>
 
                   <div className="mt-4 flex items-center justify-between">
-                    <span className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm flex items-center gap-2">
+                    <span className="px-4 py-2 bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white rounded-full text-sm flex items-center gap-2">
                       <FaRegChartBar className="text-lg" />
                       {testimonial.serviceType}
                     </span>
                     <div className="flex items-center gap-2">
                       <FaGoogle className="text-2xl text-[#4285F4]" />
-                      <span className="text-sm text-gray-500">Google Premier Partner</span>
+                      <span className="text-sm text-[#4285F4]">
+                        Google Premier Partner
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -327,14 +334,14 @@ const TestimonialPage = () => {
               onClick={() => setActiveIndex(i * 3)}
               className={`h-2 rounded-full transition-all duration-300 ${
                 Math.floor(activeIndex / 3) === i
-                  ? 'bg-blue-600 w-8'
-                  : 'bg-blue-200 w-3'
+                  ? "bg-gradient-to-r from-[#4285F4] to-[#34A853] w-8"
+                  : "bg-gray-200 w-3"
               }`}
             />
           ))}
         </div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center mt-16"
@@ -342,21 +349,22 @@ const TestimonialPage = () => {
           <h3 className="text-2xl font-bold text-gray-800 mb-4">
             Ready to Transform Your Google Ads Performance?
           </h3>
-          <button 
-            onClick={handleOpenScheduling}  // Updated here to call handleOpenScheduling
-            className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors"
+          <motion.button
+            onClick={handleOpenScheduling}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white px-8 py-3 rounded-full hover:shadow-xl transition-all"
           >
             Schedule Free Audit
-          </button>
+          </motion.button>
         </motion.div>
       </div>
       {showScheduling && (
-        <AuditScheduling 
-          occupiedSlots={occupiedSlots}   // Pass the fetched slots
-          onClose={() => setShowScheduling(false)} 
+        <AuditScheduling
+          occupiedSlots={occupiedSlots}
+          onClose={() => setShowScheduling(false)}
         />
       )}
-
     </div>
   );
 };

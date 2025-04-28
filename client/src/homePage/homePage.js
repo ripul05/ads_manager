@@ -1,41 +1,47 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import '../index.css';
 import LandingForm from './LandingForm';
 import CarouselBackground from './Carousel';
 import Navbar from './Navbar';
 import styled from "styled-components";
 import emailjs from 'emailjs-com';
+import { FaGoogle } from 'react-icons/fa';
 
 const EmailBtn = styled.button`
     color: white;
-    background-color: rgba(10, 91, 191, 0.8);
+    background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
     padding: 12px 24px;
     border-radius: 30px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     text-align: center;
     font-size: 1rem;
     border: none;
     cursor: pointer;
     font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     &:hover {
-        background-color: rgba(10, 91, 191, 1);
+        background: linear-gradient(135deg, #3b78db 0%, #2d9746 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
     }
 `;
 
 const ContactBtn = styled.a`
     color: white;
-    background-color: rgba(17, 139, 80, 0.8);
+    background: linear-gradient(135deg, #34A853 0%, #4285F4 100%);
     padding: 12px 24px;
     border-radius: 30px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     text-align: center;
     font-size: 1rem;
     text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     &:hover {
-        background-color: rgb(17, 139, 80);
+        background: linear-gradient(135deg, #2d9746 0%, #3b78db 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
     }
 `;
 
@@ -72,7 +78,7 @@ const CloseButton = styled.button`
     color: #666;
 
     &:hover {
-        color: rgba(10, 91, 191, 1);;
+        color: #4285F4;
     }
 `;
 
@@ -86,7 +92,9 @@ const FormTitle = styled.h2`
     text-align: center;
     font-weight: bold;
     font-size: 30px;
-    color: rgb(61, 61, 61);
+    background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 `;
 
 const FormGroup = styled.div`
@@ -101,8 +109,12 @@ const Input = styled.input`
     border-radius: 5px;
     font-size: 16px;
     width: 100%;
+    transition: all 0.3s ease;
+
     &:focus {
-        border-color: #A31D1D;
+        border-color: #34A853;
+        box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        outline: none;
     }
 `;
 
@@ -113,20 +125,29 @@ const TextArea = styled.textarea`
     font-size: 16px;
     width: 100%;
     resize: vertical;
+    transition: all 0.3s ease;
+
     &:focus {
-        border-color: #A31D1D;
+        border-color: #34A853;
+        box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        outline: none;
     }
 `;
 
 const SubmitButton = styled.button`
-    background-color: rgba(10, 91, 191, 1);
+    background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
     color: white;
     padding: 12px 20px;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: linear-gradient(135deg, #3b78db 0%, #2d9746 100%);
+        transform: translateY(-2px);
+    }
 `;
 
 function HomePage() {
@@ -136,31 +157,32 @@ function HomePage() {
         email: "",
         message: ""
     });
+    const [showThankYouModal, setShowThankYouModal] = useState(false);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         const templateParams = {
             from_name: formData.name,
             from_email: formData.email,
             message: formData.message 
         };
-
+    
         emailjs.send(
-            'default_service',  //service id
-            'template_sjqh0pr',   //template id
+            'default_service',
+            'template_sjqh0pr',
             templateParams,
-            '4DFcmHNC_yAE52JpN'    //user id
+            '4DFcmHNC_yAE52JpN'
         )
         .then((result) => {
-            alert('Message sent successfully!');
             setFormData({ name: "", email: "", message: "" });
-            setShowModal(false);
+            setShowThankYouModal(true);  // 👈 Show thank you modal
+            setShowModal(false);         // 👈 Hide the form modal if you had one
         }, (error) => {
             alert('Failed to send message. Please try again.');
         });
     };
-
+    
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -169,89 +191,112 @@ function HomePage() {
     };
 
     return (
-        <div id='HomeSection' className="relative min-h-screen overflow-hidden">
-            <div className="absolute inset-0 -z-10 w-full h-full">
-                <CarouselBackground />
-            </div>
-            <Navbar />
-            <div className="container relative z-10 mx-auto px-4 h-full mt-[10.5em]">
-                <div className="flex flex-col lg:flex-row items-center justify-between h-full pt-20 lg:pt-0">
-                    <div className="w-full lg:w-1/2 xl:w-2/5 text-black mb-12 lg:mb-0 lg:pr-8">
-                        <div className="max-w-lg">
-                            <img
-                                src="https://help.iubenda.com/wp-content/uploads/2020/06/google-ads.png"
-                                alt="Logo"
-                                className="mb-6 w-32 md:w-40 lg:w-48"
-                            />
-                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                                Extreme Specialists in Google Ads
-                            </h1>
-                            <h2 className="text-xl md:text-2xl lg:text-3xl mb-4">
-                                We see what others can’t
-                            </h2>
-                            <p className="text-base md:text-lg mb-6 text-justify">
-                                Our entire business primarily specialises in Google Ads and Google Analytics 4.
-                                Google Ads is complex, mysterious even, but in the right capable hands...
-                            </p>
-
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <EmailBtn onClick={() => setShowModal(true)}>
-                                    Email us
-                                </EmailBtn>
-                                <ContactBtn href="tel:+918076016758">
-                                    Call us now
-                                </ContactBtn>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="w-full lg:w-1/2 xl:w-2/5 bg-white p-6 rounded-lg shadow-lg">
-                        <LandingForm />
-                    </div>
-                </div>
-            </div>
-
-            {showModal && (
-                <ModalOverlay onClick={() => setShowModal(false)}>
-                    <ModalContent onClick={(e) => e.stopPropagation()}>
-                        <CloseButton onClick={() => setShowModal(false)}>&times;</CloseButton>
-                        <Form onSubmit={handleSubmit}>
-                            <FormTitle>Get in touch</FormTitle>
-                            <FormGroup>
-                                <Input 
-                                    type="text" 
-                                    name="name" 
-                                    required 
-                                    placeholder="Full Name *"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Input 
-                                    type="email" 
-                                    name="email" 
-                                    required 
-                                    placeholder="Email *"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <TextArea 
-                                    name="message" 
-                                    placeholder="Your message "
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    rows="4"
-                                />
-                            </FormGroup>
-                            <SubmitButton type="submit">Send Message</SubmitButton>
-                        </Form>
-                    </ModalContent>
-                </ModalOverlay>
-            )}
+      <div id="HomeSection" className="relative min-h-screen overflow-hidden">
+        <div className="absolute inset-0 -z-10 w-full h-full">
+          <CarouselBackground />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/20 to-[#34A853]/20" />
         </div>
+        <Navbar />
+        <div className="container relative z-10 mx-auto px-4 h-full mt-[10.5em]">
+          <div className="flex flex-col lg:flex-row items-center justify-between h-full pt-20 lg:pt-0">
+            <div className="w-full lg:w-1/2 xl:w-2/5 text-black mb-12 lg:mb-0 lg:pr-8">
+              <div className="max-w-lg">
+                <div className="mb-6 flex items-center gap-4">
+                  <FaGoogle className="text-4xl text-[#4285F4]" />
+                  <span className="text-2xl font-bold bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
+                    Premier Partner
+                  </span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
+                  Google Ads Excellence
+                </h1>
+                <h2 className="text-xl md:text-2xl mb-4 text-gray-700">
+                  Precision Campaigns for Maximum Conversions
+                </h2>
+                <p className="text-base md:text-lg mb-6 text-gray-600">
+                  As certified Google Premier Partners, we architect data-driven
+                  advertising solutions that convert browsers into buyers.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <EmailBtn onClick={() => setShowModal(true)}>
+                    Get Expert Consultation
+                  </EmailBtn>
+                  <ContactBtn href="tel:+918076016758">
+                    Instant Connect
+                  </ContactBtn>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full lg:w-1/2 xl:w-2/5 bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl">
+              <LandingForm />
+            </div>
+          </div>
+        </div>
+
+        {showModal && (
+          <ModalOverlay onClick={() => setShowModal(false)}>
+            <ModalContent onClick={(e) => e.stopPropagation()}>
+              <CloseButton onClick={() => setShowModal(false)}>
+                &times;
+              </CloseButton>
+              <Form onSubmit={handleSubmit}>
+                <FormTitle>Get in touch</FormTitle>
+                <FormGroup>
+                  <Input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="Full Name *"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="Email *"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <TextArea
+                    name="message"
+                    placeholder="Your message "
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows="4"
+                  />
+                </FormGroup>
+                <SubmitButton type="submit">Send Message</SubmitButton>
+              </Form>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+        {showThankYouModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm">
+              <h2 className="text-2xl font-bold text-green-600 mb-4">
+                Thank You!
+              </h2>
+              <p className="text-gray-700 mb-6">
+                Your message has been sent successfully. <br />
+                Our experts will reach out to you soon!
+              </p>
+              <button
+                onClick={() => setShowThankYouModal(false)}
+                className="mt-4 px-6 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     );
 }
 

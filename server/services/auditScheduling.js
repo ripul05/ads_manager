@@ -100,7 +100,7 @@ const getOccupiedTimeSlots = async (req, res) => {
 const sendAuditEmails = async ({ name, email, company, auditDateTime, timeZone }) => {
   try {
     // Generate Google Meet Link
-    let meetLink 
+    // let meetLink 
     // meetLink= await generateGoogleMeetLink(auditDateTime, name);
 
     const formattedDate = new Date(auditDateTime).toLocaleDateString('en-US', {
@@ -120,38 +120,57 @@ const sendAuditEmails = async ({ name, email, company, auditDateTime, timeZone }
     // Email to Internal Team
     const teamSubject = "🛠 New Google Ads Audit Scheduled";
     const teamBody = `
-New Audit Booking Details:
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
+  <h2 style="color: #333; text-align: center; font-size: 24px;">🛠 New Audit Booking Details</h2>
 
-- Name: ${name}
-- Email: ${email}
-- Company: ${company}
-- Scheduled Date: ${formattedDate}
-- Scheduled Time: ${formattedTime}
-- Timezone: ${timeZone}
+  <p style="font-size: 16px; color: #444;">
+    <strong>Name:</strong> ${name}<br>
+    <strong>Email:</strong> ${email}<br>
+    <strong>Company:</strong> ${company}<br>
+    <strong>Scheduled Date:</strong> ${formattedDate}<br>
+    <strong>Scheduled Time:</strong> ${formattedTime}<br>
+    <strong>Timezone:</strong> ${timeZone}<br><br>
+  </p>
 
-Google Meet Link: ${meetLink}
+  <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; color: #856404; font-size: 16px; font-weight: bold; text-align: center;">
+    <span style="color: red;">⚠️ Action Required:</span><br>
+    Please create a <strong>calendar invite</strong> and send it to the client at the email address mentioned above.
+  </div>
+
+  <p style="font-size: 14px; color: #888; text-align: center; margin-top: 20px;">
+    Please take action as soon as possible to ensure a smooth scheduling process. Thank you!
+  </p>
+</div>
+
     `;
 
     // Email to User
     const userSubject = "✅ Your Google Ads Audit is Scheduled!";
     const userBody = `
-Hi ${name},
+  <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <h2 style="color: #4CAF50;">Hi ${name},</h2>
 
-Thank you for scheduling your Google Ads Audit with us!
+    <p>Thank you for scheduling your <strong>Google Ads Audit</strong> with us!</p>
 
-Here are your meeting details:
+    <h3 style="color: #4CAF50;">Here are your meeting details:</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li><strong>📅 Date:</strong> ${formattedDate}</li>
+      <li><strong>⏰ Time:</strong> ${formattedTime} (${timeZone})</li>
+      <li><strong>🕒 Duration:</strong> 30 minutes</li>
+      <li><strong>📍 Meeting Type:</strong> Online (Google Meet)</li>
+    </ul>
 
-- Date: ${formattedDate}
-- Time: ${formattedTime} (${timeZone})
-- Duration: 30 minutes
-- Meeting Type: Online
-- Google Meet Link: ${meetLink}
+    <p style="background-color: #f0f8ff; padding: 10px; border-radius: 8px; color: #1a73e8;">
+      🚀 <strong>A meeting invite will be shared with you shortly.</strong><br>
+      Please join the Google Meet link at the scheduled time.
+    </p>
 
-We look forward to connecting with you!
+    <p>We look forward to connecting with you!</p>
 
-Best regards,  
-The Audit Team
-    `;
+    <p style="margin-top: 30px;">Best regards,<br><strong>The Audit Team</strong></p>
+  </div>
+`;
+
 
     // Send emails
     await sendEmail(teamSubject, teamBody);        // send to internal team

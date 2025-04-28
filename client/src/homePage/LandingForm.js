@@ -25,24 +25,21 @@ function LandingForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Validate form
- // Extract country and validate phone number from form.phone
- const phoneNumber = parsePhoneNumberFromString(formData.phone);
+    const phoneNumber = parsePhoneNumberFromString(formData.phone);
 
- if (!phoneNumber || !phoneNumber.isValid()) {
-   Swal.fire({
-     icon: "warning",
-     title: "Validation Error",
-     text: "Please enter a valid phone number.",
-     toast: true,
-     position: "bottom-end",
-     timer: 5000,
-     timerProgressBar: true,
-     showConfirmButton: false,
-   });
-   return;
- }
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Validation Error",
+        text: "Please enter a valid phone number.",
+        toast: true,
+        position: "bottom-end",
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+      return;
+    }
   
     try {
       const response = await fetch("/requestCallback", {
@@ -52,28 +49,20 @@ function LandingForm() {
         },
         body: JSON.stringify(formData),
       });
-  
-      if (!response.ok) {
-        const errorData = await response.json(); // Read response body as text
-        throw new Error(errorData.message || "Something went wrong");
-      }
-  
-      const result = await response.json();
-      console.log("Server response:", result);
-  
-      // Show success alert
+
+      if (!response.ok) throw new Error("Something went wrong");
+      
       Swal.fire({
         icon: "success",
         title: "Success!",
         text: "We'll get back to you soon",
         toast: true,
-        position: "bottom-end",      // Bottom-right corner
-        timer: 5000,                 // Display duration (5 seconds)
-        timerProgressBar: true, 
+        position: "bottom-end",
+        timer: 5000,
+        timerProgressBar: true,
         showConfirmButton: false,
       });
-  
-      // Reset the form
+
       setFormData({
         fullName: "",
         email: "",
@@ -83,21 +72,16 @@ function LandingForm() {
         message: "",
       });
     } catch (error) {
-      console.error("Error submitting form:", error);
-  
-      // Show error alert
       Swal.fire({
         icon: "error",
         title: "Error!",
         text: error.message || "An error occurred. Please try again.",
-        toast: true,                 // Enables toast-style notification
-        position: "bottom-end",      // Bottom-right corner
-        timer: 5000,                 // Display duration (5 seconds)
-        timerProgressBar: true,      // ✅ Shows progress bar
+        toast: true,
+        position: "bottom-end",
+        timer: 5000,
+        timerProgressBar: true,
         showConfirmButton: false,
       });
-      
-      
     }
   };
 
@@ -105,7 +89,7 @@ function LandingForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#34A853] focus:border-[#34A853]"
           id="fullName"
           placeholder="Full Name *"
           required
@@ -115,7 +99,7 @@ function LandingForm() {
 
         <input
           type="email"
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#34A853] focus:border-[#34A853]"
           id="email"
           placeholder="Email *"
           required
@@ -125,7 +109,7 @@ function LandingForm() {
 
         <input
           type="text"
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#34A853] focus:border-[#34A853]"
           id="companyName"
           placeholder="Company Name"
           value={formData.companyName}
@@ -138,13 +122,13 @@ function LandingForm() {
           value={formData.phone}
           onChange={handlePhoneChange}
           defaultCountry="IN"
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#34A853] focus:border-[#34A853]"
           required
         />
 
         <input
           type="url"
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#34A853] focus:border-[#34A853]"
           id="websiteLink"
           placeholder="Your Website Link"
           value={formData.websiteLink}
@@ -152,7 +136,7 @@ function LandingForm() {
         />
 
         <textarea
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#34A853] focus:border-[#34A853]"
           id="message"
           rows="4"
           placeholder="Message"
@@ -162,9 +146,9 @@ function LandingForm() {
 
         <button 
           type="submit" 
-          className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+          className="w-full bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white font-bold py-3 px-6 rounded-lg transition-all hover:from-[#3b78db] hover:to-[#2d9746] hover:shadow-lg"
         >
-          Request Callback
+          Request Strategy Session
         </button>
       </form>
   );
