@@ -6,13 +6,13 @@ import { FaGoogle, FaChartLine, FaDollarSign, FaBullseye } from 'react-icons/fa'
 
 const AboutUs = () => {
   const controls = useAnimation();
-  const [ref, inView] = useInView();
+  const [, inView] = useInView();
 
   const stats = [
     { number: 150, label: 'Campaigns Launched', suffix: '+' },
     { number: 95, label: 'Client ROI Improved', suffix: '%' },
     { number: 300, label: 'Ad Groups Managed', suffix: '+' },
-    { number: 10, label: 'Years Experience', suffix: '+' },
+    { number: 3, label: 'Years Experience', suffix: '+' },
   ];
 
   const services = [
@@ -65,9 +65,10 @@ const AboutUs = () => {
             <FaGoogle className="text-6xl text-white p-3 bg-gray-800 rounded-full" />
           </motion.div>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-[#4285F4] to-[#34A853]">
+          <h1 className="text-5xl md:text-7xl md:leading-[1.3] font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-[#4285F4] to-[#34A853]">
             Google Ads Excellence
           </h1>
+
 
           <motion.p
             className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
@@ -124,7 +125,7 @@ const AboutUs = () => {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              Leverage 10+ years of specialized experience in Google Ads
+              Leverage years of specialized experience in Google Ads
               management
             </motion.p>
           </div>

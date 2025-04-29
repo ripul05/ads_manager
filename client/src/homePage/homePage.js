@@ -207,7 +207,7 @@ function HomePage() {
                     Premier Partner
                   </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
+                <h1 className="text-4xl md:text-5xl md:leading-[1.3] font-bold mb-4 bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
                   Google Ads Excellence
                 </h1>
                 <h2 className="text-xl md:text-2xl mb-4 text-gray-700">
