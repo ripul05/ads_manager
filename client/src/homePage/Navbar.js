@@ -15,7 +15,6 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    // Check URL hash first, then localStorage
     const hash = window.location.hash;
     const storedIndex = localStorage.getItem('activeIndex');
     const initialIndex = hash 
@@ -25,20 +24,26 @@ const Navbar = () => {
     setActiveIndex(initialIndex >= 0 ? initialIndex : 0);
 
     const handleScroll = () => {
-      const sections = navItems.map(item => document.querySelector(item.href));
-      sections.forEach((section, index) => {
+      let closestIndex = 0;
+      let minDistance = Infinity;
+
+      navItems.forEach((item, index) => {
+        const section = document.querySelector(item.href);
         if (section) {
           const rect = section.getBoundingClientRect();
-          if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-            setActiveIndex(index);
-            localStorage.setItem('activeIndex', index);
-            window.history.replaceState(null, '', navItems[index].href);
+          const distance = Math.abs(rect.top);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = index;
           }
         }
       });
+
+      setActiveIndex(closestIndex);
+      localStorage.setItem('activeIndex', closestIndex);
+      window.history.replaceState(null, '', navItems[closestIndex].href);
     };
 
-    // Scroll to saved position on initial load
     if (hash) {
       const targetSection = document.querySelector(hash);
       if (targetSection) {
@@ -53,7 +58,6 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Update indicator position when activeIndex changes
     const indicator = document.querySelector('.nav-indicator');
     const items = document.querySelectorAll('.nav-item');
     const activeItem = items[activeIndex];

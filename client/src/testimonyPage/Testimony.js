@@ -3,6 +3,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { FaGoogle, FaStar, FaQuoteRight, FaRegChartBar } from 'react-icons/fa';
+import img1 from '../images/img1.jpeg';
+import img2 from '../images/img2.jpeg';
+import img3 from '../images/img3.jpeg';
+import img4 from '../images/img4.jpeg';
+import img5 from '../images/img5.jpeg';
+import img6 from '../images/img6.jpeg';
+import img7 from '../images/img7.jpeg';
+import img8 from '../images/img8.jpeg';
+import img9 from '../images/img9.jpeg';
+import img10 from '../images/img10.jpeg';
+
 const testimonials = [
   {
     id: 1,
@@ -11,7 +22,7 @@ const testimonials = [
     company: 'UrbanFashion Co.',
     text: 'Their Google Ads expertise tripled our ROAS in just 3 months. The strategic use of SKAGs and expert bid management transformed our account structure completely.',
     rating: 5,
-    image: 'avatar1.jpg',
+    image: img1,
     stats: { roas: 300, costReduction: 40, clicks: 120 },
     industry: 'Fashion',
     serviceType: 'Search Ads'
@@ -23,7 +34,7 @@ const testimonials = [
     company: 'TechSolutions Ltd',
     text: 'The granular campaign structuring and smart audience targeting resulted in a 40% cost reduction while maintaining conversion volume. True Google Ads specialists!',
     rating: 5,
-    image: 'avatar2.jpg',
+    image: img2,
     stats: { roas: 220, costReduction: 40, clicks: 200 },
     industry: 'Technology',
     serviceType: 'Display Ads'
@@ -35,7 +46,7 @@ const testimonials = [
     company: 'Carter Digital Marketing',
     text: 'They helped us scale our ad spend efficiently while doubling our lead generation. The level of detail and analysis they provide is unmatched.',
     rating: 5,
-    image: 'avatar3.jpg',
+    image: img3,
     stats: { roas: 180, costReduction: 35, clicks: 95 },
     industry: 'Marketing',
     serviceType: 'Search Ads'
@@ -47,7 +58,7 @@ const testimonials = [
     company: 'FinTech Pros',
     text: 'Before working with them, our campaigns were all over the place. Now, our cost per acquisition has dropped by 35%, and we’re seeing record-high engagement.',
     rating: 5,
-    image: 'avatar4.jpg',
+    image: img4,
     stats: { roas: 260, costReduction: 35, clicks: 175 },
     industry: 'Finance',
     serviceType: 'Search Ads'
@@ -59,7 +70,7 @@ const testimonials = [
     company: 'Wellness & Co.',
     text: 'We struggled with low-quality leads until their team stepped in. With their refined targeting and A/B testing, our conversion rates increased by 50%.',
     rating: 5,
-    image: 'avatar5.jpg',
+    image: img5,
     stats: { roas: 210, costReduction: 25, clicks: 130 },
     industry: 'Health & Wellness',
     serviceType: 'Shopping Ads'
@@ -71,7 +82,7 @@ const testimonials = [
     company: 'Gadget Store Online',
     text: 'Their advanced remarketing strategies brought back lost customers and boosted our revenue by 60%. Highly recommend for any serious business.',
     rating: 5,
-    image: 'avatar6.jpg',
+    image: img6,
     stats: { roas: 280, costReduction: 30, clicks: 220 },
     industry: 'E-commerce',
     serviceType: 'Display Ads'
@@ -83,7 +94,7 @@ const testimonials = [
     company: 'EduTech Hub',
     text: 'Thanks to their data-driven approach, our student enrollments skyrocketed while keeping acquisition costs under control. Brilliant team to work with!',
     rating: 5,
-    image: 'avatar7.jpg',
+    image: img7,
     stats: { roas: 230, costReduction: 20, clicks: 140 },
     industry: 'Education',
     serviceType: 'Search Ads'
@@ -95,7 +106,7 @@ const testimonials = [
     company: 'AutoParts Direct',
     text: 'The difference in our ad performance before and after working with them is night and day. ROAS is up by 80%, and our ad spend is now optimized perfectly.',
     rating: 5,
-    image: 'avatar8.jpg',
+    image: img8,
     stats: { roas: 280, costReduction: 38, clicks: 210 },
     industry: 'Automotive',
     serviceType: 'Shopping Ads'
@@ -107,7 +118,7 @@ const testimonials = [
     company: 'Luxury Home Decor',
     text: 'Their insights on ad creatives and landing page optimization helped us reduce bounce rates and increase conversions. Amazing experience!',
     rating: 5,
-    image: 'avatar9.jpg',
+    image: img9,
     stats: { roas: 250, costReduction: 30, clicks: 160 },
     industry: 'Home Decor',
     serviceType: 'Display Ads'
@@ -119,7 +130,7 @@ const testimonials = [
     company: 'B2B SaaS Solutions',
     text: 'We were struggling with stagnant growth, but they turned things around. Our lead quality improved significantly, and our pipeline is stronger than ever.',
     rating: 5,
-    image: 'avatar10.jpg',
+    image: img10,
     stats: { roas: 190, costReduction: 22, clicks: 110 },
     industry: 'SaaS',
     serviceType: 'Search Ads'

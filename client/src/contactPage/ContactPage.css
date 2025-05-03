@@ -1,0 +1,164 @@
+
+.subscribe-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    padding-top: 50px;
+    font-family: Arial, sans-serif;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Added shadow */
+  }
+  
+  
+  .subscribe-heading {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 650;
+  }
+  
+  .subscribe-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .subscribe-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .input-button-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    margin-bottom: 16px;
+  }
+  
+  .input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  
+  .input-icon {
+    margin-right: 8px;
+  }
+  
+  .subscribe-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 16px;
+  }
+  
+  .subscribe-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #3277ff, #34a853);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+  }
+  
+  .subscribe-button:hover {
+    opacity: 0.9;
+  }
+  
+  .consent-text {
+    font-size: 14px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    margin-top: 15px;
+  }
+  
+  .checkbox {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .step-text {
+    font-size: 12px;
+    text-align: right;
+    color: #666;
+  }
+  .thank-you-message {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .checkmark {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: green;
+    border-radius: 50%;
+    position: relative;
+  }
+  
+  .checkmark::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 18px;
+    border: solid white;
+    border-width: 0 4px 4px 0;
+    transform: rotate(45deg);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Space between icons */
+    margin-top: 10px;
+  }
+  
+  .social-icon {
+    font-size: 30px; /* Icon size */
+    transition: color 0.3s;
+  }
+  
+  /* Specific colors for each social media */
+  .social-icon .fa-linkedin {
+    color: #0077b5; /* LinkedIn Blue */
+  }
+  
+  .social-icon .fa-google {
+    color: #000; /* Gmail Black */
+  }
+  
+  .social-icon .fa-instagram {
+    color: #9b1d20; /* Instagram Maroon */
+  }
+  
+  /* Hover effect */
+  .social-icon:hover .fa-linkedin {
+    color: #005682; /* Darker LinkedIn blue on hover */
+  }
+  
+  .social-icon:hover .fa-google {
+    color: #333; /* Darker black for Gmail on hover */
+  }
+  
+  .social-icon:hover .fa-instagram {
+    color: #b92b27; /* Darker Instagram maroon on hover */
+  }
+  
+  
