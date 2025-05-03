@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
+<<<<<<< Updated upstream
 import LandingForm from './LandingForm';
 import NavBar from './NavBar';
 import Vcards from './BuildUpInfo';
@@ -63,6 +64,21 @@ function App() {
       </div> */}
 
     </>
+=======
+import HomePage from './homePage/homePage';
+import AboutUs from './aboutPage/AboutPage';
+import TestimonialPage from './testimonyPage/Testimony';
+import ContactPage from './contactPage/ContactPage';
+
+function App() {
+  return (
+    <div className="app-container"> 
+      <HomePage/>
+      <AboutUs/>
+      <TestimonialPage/>
+      <ContactPage/>
+    </div>
+>>>>>>> Stashed changes
   );
 }
 const EmailBtn = styled.a`

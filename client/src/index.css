@@ -61,6 +61,29 @@ button {
   left: 110px;
 }
 
+<<<<<<< Updated upstream
+=======
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures full height */
+  background-color: #EDF3FF;
+}
+
+.content {
+  flex: 1; /* Allows content to expand */
+  overflow-y: auto; /* Enables scrolling */
+  /* padding: 20px; */
+}
+
+>>>>>>> Stashed changes
 
 
 /* Media Queries for Responsive Design */
