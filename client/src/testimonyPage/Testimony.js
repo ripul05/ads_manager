@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { FaGoogle, FaStar, FaQuoteRight, FaRegChartBar } from 'react-icons/fa';
-import AuditScheduling from './AuditScheduling';
 const testimonials = [
   {
     id: 1,
@@ -130,20 +129,6 @@ const TestimonialPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [filter, setFilter] = useState('all');
   const [isHovered, setIsHovered] = useState(false);
-  const [showScheduling, setShowScheduling] = useState(false);
-  const [occupiedSlots, setOccupiedSlots] = useState([]);
-
-  const handleOpenScheduling = async () => {
-    try {
-      const response = await fetch('/auditScheduling/occupiedTimeslots');
-      const data = await response.json();
-      setOccupiedSlots(data.occupiedSlots);
-      setShowScheduling(true);
-    } catch (error) {
-      console.error('Failed to fetch occupied slots:', error);
-    }
-  };
-
 
   const filteredTestimonials = testimonials.filter(t => 
     filter === 'all' ? true : t.serviceType === filter
@@ -341,30 +326,7 @@ const TestimonialPage = () => {
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center mt-16"
-        >
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            Ready to Transform Your Google Ads Performance?
-          </h3>
-          <motion.button
-            onClick={handleOpenScheduling}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white px-8 py-3 rounded-full hover:shadow-xl transition-all"
-          >
-            Schedule Free Audit
-          </motion.button>
-        </motion.div>
       </div>
-      {showScheduling && (
-        <AuditScheduling
-          occupiedSlots={occupiedSlots}
-          onClose={() => setShowScheduling(false)}
-        />
-      )}
     </div>
   );
 };

@@ -6,6 +6,8 @@ import Navbar from './Navbar';
 import styled from "styled-components";
 import emailjs from 'emailjs-com';
 import { FaGoogle } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import AuditScheduling from '../testimonyPage/AuditScheduling';
 
 const EmailBtn = styled.button`
     color: white;
@@ -159,6 +161,21 @@ function HomePage() {
     });
     const [showThankYouModal, setShowThankYouModal] = useState(false);
 
+    const [showScheduling, setShowScheduling] = useState(false);
+  const [occupiedSlots, setOccupiedSlots] = useState([]);
+
+  const handleOpenScheduling = async () => {
+    try {
+      const response = await fetch('/auditScheduling/occupiedTimeslots');
+      const data = await response.json();
+      setOccupiedSlots(data.occupiedSlots);
+      setShowScheduling(true);
+    } catch (error) {
+      console.error('Failed to fetch occupied slots:', error);
+    }
+  };
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -222,9 +239,14 @@ function HomePage() {
                   <EmailBtn onClick={() => setShowModal(true)}>
                     Get Expert Consultation
                   </EmailBtn>
-                  <ContactBtn href="tel:+918076016758">
-                    Instant Connect
-                  </ContactBtn>
+                  <motion.button
+                    onClick={handleOpenScheduling}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white px-8 py-3 rounded-full hover:shadow-xl transition-all"
+                  >
+                    Schedule Free Audit
+                  </motion.button>
                 </div>
               </div>
             </div>
@@ -234,7 +256,12 @@ function HomePage() {
             </div>
           </div>
         </div>
-
+          {showScheduling && (
+          <AuditScheduling
+            occupiedSlots={occupiedSlots}
+            onClose={() => setShowScheduling(false)}
+          />
+        )}
         {showModal && (
           <ModalOverlay onClick={() => setShowModal(false)}>
             <ModalContent onClick={(e) => e.stopPropagation()}>

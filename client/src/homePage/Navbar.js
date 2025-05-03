@@ -9,7 +9,7 @@ const Navbar = () => {
   const activeColors = ['red', 'green', 'blue'];
   
   const navItems = [
-    { label: 'Home', href: '#HomeSection' },
+    { label: `Let's Connect`, href: '#HomeSection' },
     { label: 'About', href: '#AboutSection' },
     { label: 'Testimonials', href: '#TestimonySection' },
   ];
