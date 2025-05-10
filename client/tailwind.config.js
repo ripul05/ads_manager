@@ -1,14 +1,24 @@
-// /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: [
-//     "./index.html",
-//     "./src/**/*.{js,ts,jsx,tsx}",
-//   ],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// };
+const plugin = require('tailwindcss/plugin');
+
+module.exports = {
+  // other Tailwind config options...
+  plugins: [
+    require('@tailwindcss/forms'),
+    plugin(function ({ addComponents }) {
+      addComponents({
+        '.touch-pan-y': {
+          'touch-action': 'pan-y',
+        },
+        '.rbc-time-slot': {
+          'min-height': '60px',
+          '@screen md': {
+            'min-height': '70px',
+          },
+        },
+      });
+    }),
+  ],
+};
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -49,7 +59,29 @@ module.exports = {
         "gray-500": "#64748b",
         "gray-700": "#334155",
       },
+      touchAction: {
+        'pan-y': 'pan-y',
+      },
+      screens: {
+        'xs': '480px',
+      },
     },
   },
-  plugins: [],
+plugins: [
+  require('@tailwindcss/forms'),
+  plugin(function({ addComponents }) {
+    addComponents({
+      '.touch-pan-y': {
+        'touch-action': 'pan-y',
+      },
+      '.rbc-time-slot': {
+        'min-height': '60px',
+        '@screen md': {
+          'min-height': '70px',
+        },
+      },
+    });
+  }),
+],
+
 };

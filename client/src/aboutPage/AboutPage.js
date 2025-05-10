@@ -268,109 +268,107 @@ const AboutUs = () => {
         </div>
 
         {/* Main Content Container */}
+<motion.div 
+  className="relative bg-white/90 backdrop-blur-xl rounded-3xl md:rounded-[48px] p-6 md:p-16 shadow-xl md:shadow-2xl overflow-hidden mx-4 md:mx-0"
+  initial={{ opacity: 0, scale: 0.9 }}
+  whileInView={{ opacity: 1, scale: 1 }}
+  transition={{ type: "spring", stiffness: 50 }}
+>
+  {/* Gradient Accent Elements - Adjusted for Mobile */}
+  <div className="absolute -top-20 -right-20 w-40 h-40 md:-top-32 md:-right-32 md:w-64 md:h-64 bg-gradient-to-r from-[#4285F4]/20 to-[#34A853]/20 rounded-full blur-xl md:blur-3xl" />
+  <div className="absolute -bottom-20 -left-20 w-40 h-40 md:-bottom-32 md:-left-32 md:w-64 md:h-64 bg-gradient-to-r from-[#4285F4]/20 to-[#34A853]/20 rounded-full blur-xl md:blur-3xl" />
+
+  {/* Core Content */}
+  <div className="relative z-10 space-y-8 md:space-y-16 text-center">
+    {/* Headline Section */}
+    <div className="space-y-4 md:space-y-8 px-2">
+      <motion.h2
+        className="text-3xl md:text-5xl font-bold text-gray-800 leading-tight"
+        initial={{ y: 20 }}
+        whileInView={{ y: 0 }}
+      >
+        <span className="bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent block">
+          Precision Engineered
+        </span>
+        <span className="block mt-2 md:mt-0">Google Ads Solutions</span>
+      </motion.h2>
+
+      <motion.p
+        className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed px-2"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+      >
+        Harness our Premier Partner expertise to transform clicks into customers through data-driven campaign optimization.
+      </motion.p>
+    </div>
+
+    {/* Animated Metrics Grid */}
+    <motion.div
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8"
+      initial="hidden"
+      whileInView="visible"
+      variants={{
+        visible: { transition: { staggerChildren: 0.1 } },
+      }}
+    >
+      {stats.map((stat, i) => (
         <motion.div
-          className="relative bg-white/90 backdrop-blur-xl rounded-[48px] p-16 shadow-2xl overflow-hidden"
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", stiffness: 50 }}
+          key={i}
+          className="p-4 md:p-6 bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-gray-100"
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0 },
+          }}
+          whileHover={{
+            y: window.innerWidth >= 768 ? -10 : 0,
+            transition: { type: "spring", stiffness: 300 },
+          }}
         >
-          {/* Gradient Accent Elements */}
-          <div className="absolute -top-32 -right-32 w-64 h-64 bg-gradient-to-r from-[#4285F4]/20 to-[#34A853]/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-gradient-to-r from-[#4285F4]/20 to-[#34A853]/20 rounded-full blur-3xl" />
-
-          {/* Core Content */}
-          <div className="relative z-10 space-y-16 text-center">
-            {/* Headline Section */}
-            <div className="space-y-8">
-              <motion.h2
-                className="text-5xl font-bold text-gray-800"
-                initial={{ y: 20 }}
-                whileInView={{ y: 0 }}
-              >
-                <span className="bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
-                  Precision Engineered
-                </span>
-                <br />
-                Google Ads Solutions
-              </motion.h2>
-
-              <motion.p
-                className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-              >
-                Harness our Premier Partner expertise to transform clicks into
-                customers through data-driven campaign optimization.
-              </motion.p>
-            </div>
-
-            {/* Animated Metrics Grid */}
-            <motion.div
-              className="grid grid-cols-2 md:grid-cols-4 gap-8"
-              initial="hidden"
-              whileInView="visible"
-              variants={{
-                visible: { transition: { staggerChildren: 0.1 } },
-              }}
-            >
-              {stats.map((stat, i) => (
-                <motion.div
-                  key={i}
-                  className="p-6 bg-white rounded-xl shadow-lg border border-gray-100"
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0 },
-                  }}
-                  whileHover={{
-                    y: -10,
-                    transition: { type: "spring", stiffness: 300 },
-                  }}
-                >
-                  <div className="text-4xl font-bold bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
-                    {stat.number}
-                    {stat.suffix}
-                  </div>
-                  <div className="text-sm text-gray-600 mt-2">{stat.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Certification Showcase */}
-            <motion.div
-              className="flex flex-col items-center space-y-8"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-            >
-              <div className="relative w-32 h-32">
-                <motion.div
-                  className="absolute inset-0 border-8 border-[#34A853]/20 rounded-full"
-                  animate={{
-                    rotate: 360,
-                    scale: [1, 1.2, 1],
-                  }}
-                  transition={{
-                    duration: 12,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
-                <FaGoogle className="text-6xl text-[#4285F4] absolute inset-0 m-auto" />
-              </div>
-
-              <div className="text-lg font-semibold text-gray-600">
-                Premier Google Partner Certified
-              </div>
-            </motion.div>
-
-            {/* Animated Divider */}
-            <motion.div
-              className="mx-auto w-48 h-1 bg-gradient-to-r from-[#4285F4] to-[#34A853] rounded-full"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              transition={{ duration: 1 }}
-            />
+          <div className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
+            {stat.number}
+            {stat.suffix}
           </div>
+          <div className="text-xs md:text-sm text-gray-600 mt-1 md:mt-2">{stat.label}</div>
         </motion.div>
+      ))}
+    </motion.div>
+
+    {/* Certification Showcase */}
+    <motion.div
+      className="flex flex-col items-center space-y-4 md:space-y-8"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+    >
+      <div className="relative w-24 h-24 md:w-32 md:h-32">
+        <motion.div
+          className="absolute inset-0 border-4 md:border-8 border-[#34A853]/20 rounded-full"
+          animate={{
+            rotate: 360,
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+        <FaGoogle className="text-4xl md:text-6xl text-[#4285F4] absolute inset-0 m-auto" />
+      </div>
+
+      <div className="text-base md:text-lg font-semibold text-gray-600 px-4">
+        Premier Google Partner Certified
+      </div>
+    </motion.div>
+
+    {/* Animated Divider */}
+    <motion.div
+      className="mx-auto w-1/2 md:w-48 h-1 bg-gradient-to-r from-[#4285F4] to-[#34A853] rounded-full"
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      transition={{ duration: 1 }}
+    />
+  </div>
+</motion.div>
       </section>
     </div>
   );

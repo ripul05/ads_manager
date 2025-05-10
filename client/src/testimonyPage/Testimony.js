@@ -174,161 +174,158 @@ const TestimonialPage = () => {
     }
   }
 
-  return (
-    <div
-      id="TestimonySection"
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 relative overflow-hidden"
-    >
-      <div className="max-w-7xl mx-auto py-16 px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <FaGoogle className="text-4xl text-[#4285F4]" />
-            <h2 className="text-4xl font-bold text-gray-800">
-              Google Ads Success Stories
-            </h2>
-          </div>
-          <p className="text-gray-600 text-lg">
-            Hear from businesses who've accelerated growth through our expert
-            PPC management
-          </p>
+return (
+  <div
+    id="TestimonySection"
+    className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 relative overflow-hidden"
+  >
+    <div className="max-w-7xl mx-auto py-8 md:py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-8 md:mb-16"
+      >
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2 mb-4">
+          <FaGoogle className="text-3xl md:text-4xl text-[#4285F4]" />
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mt-2 md:mt-0">
+            Google Ads Success Stories
+          </h2>
+        </div>
+        <p className="text-gray-600 text-base md:text-lg px-2">
+          Hear from businesses who've accelerated growth through our expert
+          PPC management
+        </p>
 
-          <div className="flex justify-center gap-2 mt-8">
-            {["all", "Search Ads", "Display Ads", "Shopping Ads"].map(
-              (type) => (
-                <button
-                  key={type}
-                  onClick={() => setFilter(type)}
-                  className={`px-4 py-2 rounded-full transition-all ${
-                    filter === type
-                      ? "bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white shadow-lg"
-                      : "bg-white text-gray-600 hover:bg-gray-50 shadow-md"
-                  }`}
-                >
-                  {type.replace("all", "All Campaigns")}
-                </button>
-              )
-            )}
-          </div>
-        </motion.div>
+        <div className="flex flex-wrap justify-center gap-2 mt-4 md:mt-8 px-2">
+          {["all", "Search Ads", "Display Ads", "Shopping Ads"].map((type) => (
+            <button
+              key={type}
+              onClick={() => setFilter(type)}
+              className={`px-3 py-1 md:px-4 md:py-2 rounded-full text-sm md:text-base transition-all ${
+                filter === type
+                  ? "bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white shadow-lg"
+                  : "bg-white text-gray-600 hover:bg-gray-50 shadow-md"
+              }`}
+            >
+              {type.replace("all", "All Campaigns")}
+            </button>
+          ))}
+        </div>
+      </motion.div>
 
-        <div
-          className="relative group"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <div className="flex justify-center gap-8 relative overflow-hidden">
-            {visibleTestimonials.map((testimonial) => (
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-[400px] flex-shrink-0"
-              >
-                <div className="bg-white rounded-2xl shadow-xl p-6 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                  <div className="flex items-start gap-4 mb-4">
-                    <motion.div
-                      className="relative w-16 h-16 rounded-full overflow-hidden"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/20 to-[#34A853]/20" />
-                    </motion.div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-800">
-                            {testimonial.name}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                            {testimonial.role} at {testimonial.company}
-                          </p>
-                        </div>
-                        <span className="px-3 py-1 bg-gradient-to-r from-[#4285F4]/10 to-[#34A853]/10 text-[#34A853] rounded-full text-sm">
-                          {testimonial.industry}
-                        </span>
-                      </div>
-                      <div className="flex gap-1 mt-2">
-                        {renderStars(testimonial.rating)}
-                      </div>
-                    </div>
-                  </div>
-
+      <div
+        className="relative group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 relative overflow-x-auto pb-4">
+          {visibleTestimonials.map((testimonial) => (
+            <motion.div
+              key={testimonial.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="w-full max-w-full md:max-w-[400px] flex-shrink-0"
+            >
+              <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                   <motion.div
-                    className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#4285F4]/5 to-[#34A853]/5 p-4 mb-4"
-                    whileHover={{ y: -5 }}
+                    className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden"
+                    whileHover={{ scale: 1.1 }}
                   >
-                    <p className="text-gray-700 text-base leading-relaxed italic relative z-10">
-                      "{testimonial.text}"
-                    </p>
-                    <FaQuoteRight className="absolute bottom-2 right-2 text-4xl text-[#4285F4]/20" />
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/20 to-[#34A853]/20" />
                   </motion.div>
-
-                  <div className="grid grid-cols-3 gap-2 text-center mb-4">
-                    <div className="bg-gradient-to-br from-[#34A853]/10 to-[#34A853]/20 p-3 rounded-lg">
-                      <p className="text-xl font-bold text-[#34A853]">
-                        +{testimonial.stats.roas}%
-                      </p>
-                      <p className="text-xs text-[#34A853]">ROAS</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-[#4285F4]/10 to-[#4285F4]/20 p-3 rounded-lg">
-                      <p className="text-xl font-bold text-[#4285F4]">
-                        -{testimonial.stats.costReduction}%
-                      </p>
-                      <p className="text-xs text-[#4285F4]">Costs</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-[#4285F4]/10 to-[#34A853]/20 p-3 rounded-lg">
-                      <p className="text-xl font-bold text-[#34A853]">
-                        +{testimonial.stats.clicks}%
-                      </p>
-                      <p className="text-xs text-[#34A853]">Clicks</p>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="px-4 py-2 bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white rounded-full text-sm flex items-center gap-2">
-                      <FaRegChartBar className="text-lg" />
-                      {testimonial.serviceType}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <FaGoogle className="text-2xl text-[#4285F4]" />
-                      <span className="text-sm text-[#4285F4]">
-                        Google Premier Partner
+                  <div className="flex-1">
+                    <div className="flex flex-col md:flex-row justify-between items-start">
+                      <div>
+                        <h3 className="text-lg md:text-xl font-bold text-gray-800">
+                          {testimonial.name}
+                        </h3>
+                        <p className="text-xs md:text-sm text-gray-600">
+                          {testimonial.role} at {testimonial.company}
+                        </p>
+                      </div>
+                      <span className="px-2 py-1 md:px-3 md:py-1 bg-gradient-to-r from-[#4285F4]/10 to-[#34A853]/10 text-[#34A853] rounded-full text-xs md:text-sm mt-1 md:mt-0">
+                        {testimonial.industry}
                       </span>
+                    </div>
+                    <div className="flex gap-1 mt-1 md:mt-2">
+                      {renderStars(testimonial.rating)}
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
 
-        <div className="flex justify-center gap-2 mt-8">
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveIndex(i * 3)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                Math.floor(activeIndex / 3) === i
-                  ? "bg-gradient-to-r from-[#4285F4] to-[#34A853] w-8"
-                  : "bg-gray-200 w-3"
-              }`}
-            />
+                <motion.div
+                  className="relative overflow-hidden rounded-lg md:rounded-xl bg-gradient-to-br from-[#4285F4]/5 to-[#34A853]/5 p-3 md:p-4 mb-3 md:mb-4"
+                  whileHover={{ y: window.innerWidth >= 768 ? -5 : 0 }}
+                >
+                  <p className="text-gray-700 text-sm md:text-base leading-relaxed italic relative z-10 line-clamp-4">
+                    "{testimonial.text}"
+                  </p>
+                  <FaQuoteRight className="absolute bottom-1 right-1 md:bottom-2 md:right-2 text-2xl md:text-4xl text-[#4285F4]/20" />
+                </motion.div>
+
+                <div className="grid grid-cols-3 gap-1 md:gap-2 text-center mb-3 md:mb-4">
+                  {/* Stats Items */}
+                  {[
+                    { value: testimonial.stats.roas, color: "#34A853", label: "ROAS" },
+                    { value: testimonial.stats.costReduction, color: "#4285F4", label: "Costs" },
+                    { value: testimonial.stats.clicks, color: "#34A853", label: "Clicks" }
+                  ].map((stat, index) => (
+                    <div 
+                      key={index}
+                      className="bg-gradient-to-br from-${stat.color}/10 to-${stat.color}/20 p-2 md:p-3 rounded-md"
+                    >
+                      <p className="text-lg md:text-xl font-bold text-${stat.color}">
+                        {stat.value}%
+                      </p>
+                      <p className="text-[10px] md:text-xs text-${stat.color}">
+                        {stat.label}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-3 md:mt-4 flex flex-col md:flex-row items-center justify-between gap-2">
+                  <span className="px-3 py-1 md:px-4 md:py-2 bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white rounded-full text-xs md:text-sm flex items-center gap-1 md:gap-2">
+                    <FaRegChartBar className="text-sm md:text-lg" />
+                    {testimonial.serviceType}
+                  </span>
+                  <div className="flex items-center gap-1 md:gap-2">
+                    <FaGoogle className="text-xl md:text-2xl text-[#4285F4]" />
+                    <span className="text-xs md:text-sm text-[#4285F4]">
+                      Google Premier Partner
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           ))}
         </div>
+      </div>
 
+      <div className="flex justify-center gap-2 mt-6 md:mt-8">
+        {Array.from({ length: totalPages }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveIndex(i * 3)}
+            className={`h-1.5 md:h-2 rounded-full transition-all duration-300 ${
+              Math.floor(activeIndex / 3) === i
+                ? "bg-gradient-to-r from-[#4285F4] to-[#34A853] w-6 md:w-8"
+                : "bg-gray-200 w-4 md:w-3"
+            }`}
+          />
+        ))}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default TestimonialPage;
