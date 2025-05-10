@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './homePage.css';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeColors = ['red', 'green', 'blue'];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const activeColors = ['#EA4335', '#34A853', '#4285F4'];
   
   const navItems = [
     { label: `Let's Connect`, href: '#HomeSection' },
@@ -15,7 +14,6 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    // Check URL hash first, then localStorage
     const hash = window.location.hash;
     const storedIndex = localStorage.getItem('activeIndex');
     const initialIndex = hash 
@@ -38,111 +36,112 @@ const Navbar = () => {
       });
     };
 
-    // Scroll to saved position on initial load
     if (hash) {
       const targetSection = document.querySelector(hash);
-      if (targetSection) {
-        setTimeout(() => {
-          targetSection.scrollIntoView({ behavior: 'auto' });
-        }, 100);
-      }
+      targetSection?.scrollIntoView({ behavior: 'auto' });
     }
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    // Update indicator position when activeIndex changes
+  const updateIndicator = () => {
     const indicator = document.querySelector('.nav-indicator');
-    const items = document.querySelectorAll('.nav-item');
-    const activeItem = items[activeIndex];
-
+    const activeItem = document.querySelector(`.nav-item:nth-child(${activeIndex + 1})`);
+    
     if (indicator && activeItem) {
       indicator.style.width = `${activeItem.offsetWidth}px`;
       indicator.style.left = `${activeItem.offsetLeft}px`;
       indicator.style.backgroundColor = activeColors[activeIndex];
     }
-  }, [activeIndex]);
+  };
 
-  const handleClick = (index, e) => {
+  useEffect(updateIndicator, [activeIndex]);
+  useEffect(() => window.addEventListener('resize', updateIndicator), []);
+
+  const handleNavClick = (index, e) => {
     e.preventDefault();
     const targetSection = document.querySelector(navItems[index].href);
-    if (targetSection) {
-      targetSection.scrollIntoView({ behavior: 'smooth' });
-      setActiveIndex(index);
-      localStorage.setItem('activeIndex', index);
-      window.history.replaceState(null, '', navItems[index].href);
-    }
+    targetSection?.scrollIntoView({ behavior: 'smooth' });
+    setActiveIndex(index);
+    setIsMenuOpen(false);
+    localStorage.setItem('activeIndex', index);
+    window.history.replaceState(null, '', navItems[index].href);
   };
 
   return (
-    <nav className="nav">
-      <BrandLink to="/">
-        <Brand whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-          <GoogleIcon />
-          <h1>BuzzBandits</h1>
-        </Brand>
-      </BrandLink>
+    <nav className="fixed w-full top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Brand Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center space-x-2"
+            >
+              <div 
+                className="w-9 h-9 rounded-full bg-[conic-gradient(at_left_top,#EA4335_110deg,#4285F4_90deg_180deg,#34A853_180deg_270deg,#FBBC05_270deg)]"
+              />
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
+                BuzzBandits
+              </h1>
+            </motion.div>
+          </Link>
 
-      <NavItems>
-        {navItems.map((item, index) => (
-          <a
-            key={index}
-            href={item.href}
-            className={`nav-item ${activeIndex === index ? 'is-active' : ''}`}
-            style={{ color: activeIndex === index ? activeColors[index] : '#3D3D3D' }}
-            onClick={(e) => handleClick(index, e)}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center relative">
+            {navItems.map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                onClick={(e) => handleNavClick(index, e)}
+                className={`px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors nav-item ${
+                  activeIndex === index ? 'font-semibold' : ''
+                }`}
+                style={{ color: activeIndex === index ? activeColors[index] : '' }}
+              >
+                {item.label}
+              </a>
+            ))}
+            <span className="absolute bottom-0 h-1 transition-all duration-300 nav-indicator" />
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 focus:outline-none"
           >
-            {item.label}
-          </a>
-        ))}
-      </NavItems>
-      <span className="nav-indicator"></span>
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            {navItems.map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                onClick={(e) => handleNavClick(index, e)}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  activeIndex === index ? 'bg-gray-100' : 'hover:bg-gray-50'
+                }`}
+                style={{ color: activeIndex === index ? activeColors[index] : '#4B5563' }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
     </nav>
   );
 };
-
-
-const GoogleIcon = styled.div`
-  width: 35px;
-  height: 35px;
-  background: conic-gradient(
-    from -45deg,
-    #ea4335 110deg,
-    #4285f4 90deg 180deg,
-    #34a853 180deg 270deg,
-    #fbbc05 270deg
-  );
-  border-radius: 50%;
-`;
-
-const Brand = styled(motion.div)`
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  cursor: pointer;
-  padding: 7px 0;
-
-  h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    background: linear-gradient(45deg, #4285F4, #34A853);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-`;
-
-const BrandLink = styled(Link)`
-  text-decoration: none;
-  display: flex; /* Added to align it to the left */
-`;
-
-const NavItems = styled.div`
-  display: flex;
-  margin-left: auto; /* This pushes the nav items to the right */
-  gap: 20px; /* Adds some space between nav items */
-  align-items: center;
-`;
 
 export default Navbar;
