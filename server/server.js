@@ -7,8 +7,10 @@ const PORT = 3001;
 const app = express();
 
 app.use(cors({
-  origin: 'https://ads-managerfrontend.onrender.com', // or '*' for all origins
+  origin: ['http://localhost:3000','https://ads-managerfrontend.onrender.com'],
+  credentials: true,
 }));
+
 
 // Connect to MongoDB
 connectDB();
