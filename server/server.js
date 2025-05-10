@@ -1,9 +1,14 @@
 const express = require("express");
 const connectDB = require("./config/database/db");
 const routes = require("./routes/index"); // Import the index.js from routes folder
+const cors = require('cors');
 
 const PORT = 3001;
 const app = express();
+
+app.use(cors({
+  origin: 'https://ads-managerfrontend.onrender.com', // or '*' for all origins
+}));
 
 // Connect to MongoDB
 connectDB();
