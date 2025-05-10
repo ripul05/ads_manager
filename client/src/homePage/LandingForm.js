@@ -42,7 +42,7 @@ function LandingForm() {
     }
   
     try {
-      const response = await fetch("/requestCallback", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/requestCallback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

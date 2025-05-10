@@ -95,7 +95,7 @@ const AuditScheduling = ({ occupiedSlots, onClose }) => {
         meetingType: 'Google Ads Audit'
       };
   
-      const response = await fetch("/auditScheduling", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auditScheduling`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

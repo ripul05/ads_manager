@@ -29,24 +29,6 @@ const EmailBtn = styled.button`
     }
 `;
 
-const ContactBtn = styled.a`
-    color: white;
-    background: linear-gradient(135deg, #34A853 0%, #4285F4 100%);
-    padding: 12px 24px;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    text-align: center;
-    font-size: 1rem;
-    text-decoration: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    &:hover {
-        background: linear-gradient(135deg, #2d9746 0%, #3b78db 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-    }
-`;
-
 const ModalOverlay = styled.div`
     position: fixed;
     top: 0;
@@ -166,7 +148,7 @@ function HomePage() {
 
   const handleOpenScheduling = async () => {
     try {
-      const response = await fetch('/auditScheduling/occupiedTimeslots');
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}auditScheduling/occupiedTimeslots`);
       const data = await response.json();
       setOccupiedSlots(data.occupiedSlots);
       setShowScheduling(true);

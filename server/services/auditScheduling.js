@@ -59,7 +59,7 @@ const auditScheduling = async (req, res) => {
         timeZone: savedAudit.timeZone
       }
     });
-    // await sendAuditEmails({ name, email, company, auditDateTime, timeZone });
+    await sendAuditEmails({ name, email, company, auditDateTime, timeZone });
 
   } catch (error) {
     console.error('Error scheduling audit:', error);
