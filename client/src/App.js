@@ -1,18 +1,29 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import HomePage from './homePage/homePage';
+import HomePage from './Home/Home';
+import ContactPage from './ContactPage/ContactPage';
 import AboutUs from './aboutPage/AboutPage';
 import TestimonialPage from './testimonyPage/Testimony';
 
 function App() {
   return (
-    <div className="app-container"> 
-      <HomePage/>
-      <AboutUs/>
-      <TestimonialPage/>
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <div className="app-container">
+            <HomePage />
+            <AboutUs />
+            <TestimonialPage />
+          </div>
+        }
+      />
+      <Route path="/contact" element={<ContactPage />} />
+    </Routes>
   );
 }
+
 
 export default App;

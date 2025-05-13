@@ -47,7 +47,7 @@ const AboutUs = () => {
   return (
     <div
       id="AboutSection"
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50"
+      className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50"
     >
       {/* Parallax Hero Section */}
       <section className="container mx-auto px-6 py-24 text-center relative overflow-hidden">
@@ -108,7 +108,7 @@ const AboutUs = () => {
       </section>
 
       {/* Value Proposition Grid */}
-      <section className="bg-gradient-to-br from-blue-50 to-indigo-50 py-24">
+      <section className="py-24">
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="space-y-8">
             <motion.h2
@@ -201,7 +201,7 @@ const AboutUs = () => {
       </section>
 
       {/* Certification Showcase */}
-      <section className="bg-gradient-to-br from-blue-50 to-indigo-50 py-24">
+      <section className="py-24">
         <div className="container mx-auto px-6">
           <motion.div
             className="bg-white rounded-2xl shadow-lg p-12 text-center"

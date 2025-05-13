@@ -149,7 +149,7 @@ function LandingForm() {
           placeholder="Phone Number *"
           value={formData.phone}
           onChange={handlePhoneChange}
-          defaultCountry="IN"
+          defaultCountry="US"
           className="!border-none !bg-transparent"
         />
       </div>

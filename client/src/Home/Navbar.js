@@ -7,11 +7,12 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const activeColors = ['#EA4335', '#34A853', '#4285F4'];
   
-  const navItems = [
-    { label: `Let's Connect`, href: '#HomeSection' },
-    { label: 'About', href: '#AboutSection' },
-    { label: 'Testimonials', href: '#TestimonySection' },
-  ];
+const navItems = [
+  { label: 'Home', href: '#HomeSection' },
+  { label: 'About', href: '#AboutSection' },
+  { label: 'Testimonials', href: '#TestimonySection' },
+  { label: 'Contact Us', href: '/contact' }, // ← updated
+];
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -59,15 +60,22 @@ const Navbar = () => {
   useEffect(updateIndicator, [activeIndex]);
   useEffect(() => window.addEventListener('resize', updateIndicator), []);
 
-  const handleNavClick = (index, e) => {
+const handleNavClick = (index, e) => {
+  const href = navItems[index].href;
+
+  if (href.startsWith('#')) {
     e.preventDefault();
-    const targetSection = document.querySelector(navItems[index].href);
+    const targetSection = document.querySelector(href);
     targetSection?.scrollIntoView({ behavior: 'smooth' });
     setActiveIndex(index);
     setIsMenuOpen(false);
     localStorage.setItem('activeIndex', index);
-    window.history.replaceState(null, '', navItems[index].href);
-  };
+    window.history.replaceState(null, '', href);
+  } else {
+    // Let normal navigation happen (to /contact route)
+    window.location.href = href;
+  }
+};
 
   return (
     <nav className="fixed w-full top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm">
