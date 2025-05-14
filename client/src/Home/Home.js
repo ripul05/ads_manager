@@ -114,7 +114,13 @@ return (
               Start Your Journey
             </button>
             <button
-              onClick={() => navigate("/about")}
+                onClick={() => {
+                  const section = document.getElementById("AboutSection");
+                  if (section) {
+                    section.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+
               className="bg-white text-gray-600 px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all border-2 border-gray-100"
             >
               Learn More

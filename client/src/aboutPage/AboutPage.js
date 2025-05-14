@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaGoogle, FaChartLine, FaDollarSign, FaBullseye } from 'react-icons/fa';
+import { FaGoogle, FaChartLine, FaDollarSign, FaBullseye, FaChevronDown } from 'react-icons/fa';
 
 
 const AboutUs = () => {
   const controls = useAnimation();
   const [, inView] = useInView();
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
   const stats = [
     { number: 150, label: 'Campaigns Launched', suffix: '+' },
@@ -71,7 +72,7 @@ const AboutUs = () => {
 
 
           <motion.p
-            className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
@@ -108,11 +109,11 @@ const AboutUs = () => {
       </section>
 
       {/* Value Proposition Grid */}
-      <section className="py-24">
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="space-y-8">
+      <section className="py-12 md:py-24">
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
+          <div className="space-y-6">
             <motion.h2
-              className="text-4xl font-bold text-gray-800"
+              className="text-3xl md:text-4xl font-bold text-gray-800"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
             >
@@ -130,11 +131,11 @@ const AboutUs = () => {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-3 md:gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
-                className="p-6 bg-white rounded-xl shadow-lg"
+                className="p-4 md:p-6 bg-white rounded-lg shadow-md"
                 initial={{ scale: 0.9 }}
                 whileInView={{ scale: 1 }}
                 transition={{ delay: index * 0.1 }}
@@ -151,73 +152,140 @@ const AboutUs = () => {
       </section>
 
       {/* Process Visualization */}
-      <section className="container mx-auto px-6 py-24">
-        <motion.h2
-          className="text-4xl font-bold text-center mb-20 text-gray-800"
+<section className="container mx-auto px-4 md:px-6 py-8 md:py-24">
+  {/* Mobile Accordion View */}
+  <div className="md:hidden">
+    <motion.h2
+      className="text-2xl font-bold text-center mb-6 text-gray-800"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+    >
+      Our Strategic Approach
+    </motion.h2>
+
+    <div className="flex flex-col gap-3">
+      {services.map((service, index) => (
+        <motion.div
+          key={index}
+          className="bg-white rounded-xl shadow-md overflow-hidden"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
         >
-          Our Strategic Approach
-        </motion.h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {services.map((service, index) => (
+          <button
+            onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+            className="w-full p-4 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <div className="text-[#4285F4] text-3xl">
+                {service.icon}
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800">
+                {service.title}
+              </h3>
+            </div>
             <motion.div
-              key={index}
-              className="group relative h-96 bg-white rounded-2xl shadow-xl overflow-hidden"
-              whileHover={{ y: -10 }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              animate={{ rotate: expandedIndex === index ? 180 : 0 }}
+              className="text-gray-500"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/5 to-[#34A853]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <FaChevronDown />
+            </motion.div>
+          </button>
 
-              <div className="p-8 h-full flex flex-col">
-                <div className="mb-6 text-[#4285F4] text-5xl">
-                  {service.icon}
-                </div>
-
-                <h3 className="text-2xl font-semibold mb-4 text-gray-800">
-                  {service.title}
-                </h3>
-
-                <p className="text-gray-600 text-lg leading-relaxed">
+          <AnimatePresence>
+            {expandedIndex === index && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="px-4 pb-4"
+              >
+                <p className="text-gray-600 text-base mb-4">
                   {service.description}
                 </p>
-
-                <div className="mt-auto">
-                  <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-[#34A853]"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "100%" }}
-                      transition={{ duration: 1 }}
-                    />
-                  </div>
+                <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-[#34A853]"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "100%" }}
+                    transition={{ duration: 1 }}
+                  />
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      ))}
+    </div>
+  </div>
 
+  {/* Desktop Grid View */}
+  <div className="hidden md:block">
+    <motion.h2
+      className="text-4xl font-bold text-center mb-20 text-gray-800"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+    >
+      Our Strategic Approach
+    </motion.h2>
+
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      {services.map((service, index) => (
+        <motion.div
+          key={index}
+          className="group relative h-96 bg-white rounded-2xl shadow-xl overflow-hidden"
+          whileHover={{ y: -10 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/5 to-[#34A853]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+          <div className="p-8 h-full flex flex-col">
+            <div className="mb-6 text-[#4285F4] text-5xl">
+              {service.icon}
+            </div>
+
+            <h3 className="text-2xl font-semibold mb-4 text-gray-800">
+              {service.title}
+            </h3>
+
+            <p className="text-gray-600 text-lg leading-relaxed">
+              {service.description}
+            </p>
+
+            <div className="mt-auto">
+              <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-[#34A853]"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "100%" }}
+                  transition={{ duration: 1 }}
+                />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
       {/* Certification Showcase */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
+      <section className="py-12 md:py-24">
+        <div className="container mx-auto px-4">
           <motion.div
-            className="bg-white rounded-2xl shadow-lg p-12 text-center"
+            className="bg-white rounded-xl shadow-lg p-6 md:p-12 text-center"
             initial={{ scale: 0.95 }}
             whileInView={{ scale: 1 }}
           >
-            <h3 className="text-3xl font-bold mb-8 text-gray-800">
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
               <span className="text-[#34A853]">Google Certified</span>{" "}
               Excellence
             </h3>
 
-            <div className="flex flex-wrap justify-center gap-8">
+            <div className="flex flex-wrap justify-center gap-2 md:gap-8">
               {["Search", "Display", "Shopping", "Video"].map((cert, index) => (
                 <motion.div
                   key={cert}
-                  className="px-8 py-4 rounded-full bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white font-semibold"
+                  className="px-4 py-2 text-sm md:text-base md:px-8 md:py-4 rounded-full bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white font-semibold"
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   transition={{ delay: index * 0.1 }}
@@ -228,7 +296,7 @@ const AboutUs = () => {
             </div>
 
             <motion.p
-              className="mt-12 text-gray-600 text-lg max-w-2xl mx-auto"
+              className="mt-8 text-gray-600 text-base md:text-lg max-w-2xl mx-auto"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
             >
@@ -240,7 +308,7 @@ const AboutUs = () => {
       </section>
 
       {/* Closing CTA */}
-      <section className="container mx-auto px-6 py-24 relative">
+      <section className="container mx-auto px-4 py-12 md:py-24 relative">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 pointer-events-none">
           {[...Array(12)].map((_, i) => (
@@ -269,7 +337,7 @@ const AboutUs = () => {
 
         {/* Main Content Container */}
 <motion.div 
-  className="relative bg-white/90 backdrop-blur-xl rounded-3xl md:rounded-[48px] p-6 md:p-16 shadow-xl md:shadow-2xl overflow-hidden mx-4 md:mx-0"
+  className="relative bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-[48px] p-4 md:p-16 shadow-lg md:shadow-2xl overflow-hidden mx-2 md:mx-0"
   initial={{ opacity: 0, scale: 0.9 }}
   whileInView={{ opacity: 1, scale: 1 }}
   transition={{ type: "spring", stiffness: 50 }}
@@ -279,9 +347,9 @@ const AboutUs = () => {
   <div className="absolute -bottom-20 -left-20 w-40 h-40 md:-bottom-32 md:-left-32 md:w-64 md:h-64 bg-gradient-to-r from-[#4285F4]/20 to-[#34A853]/20 rounded-full blur-xl md:blur-3xl" />
 
   {/* Core Content */}
-  <div className="relative z-10 space-y-8 md:space-y-16 text-center">
+  <div className="relative z-10 space-y-6 md:space-y-16 text-center">
     {/* Headline Section */}
-    <div className="space-y-4 md:space-y-8 px-2">
+    <div className="space-y-4 px-2">
       <motion.h2
         className="text-3xl md:text-5xl font-bold text-gray-800 leading-tight"
         initial={{ y: 20 }}

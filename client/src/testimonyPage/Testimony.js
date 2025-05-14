@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { FaGoogle, FaStar, FaQuoteRight, FaRegChartBar } from "react-icons/fa";
+import { FaGoogle, FaStar, FaQuoteRight, FaRegChartBar , FaChevronLeft, FaChevronRight} from "react-icons/fa";
 const testimonials = [
   {
     id: 1,
@@ -123,34 +123,55 @@ const testimonials = [
     serviceType: "Search Ads",
   },
 ];
+
 const TestimonialPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [filter, setFilter] = useState("all");
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Reset activeIndex whenever filter changes
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [filter]);
 
   const filteredTestimonials = testimonials.filter((t) =>
     filter === "all" ? true : t.serviceType === filter
   );
 
-  const totalPages = Math.ceil(filteredTestimonials.length / 3);
+  const cardsToShow = isMobile ? 1 : 3;
+  const totalPages = Math.ceil(filteredTestimonials.length / cardsToShow);
 
   const handleNext = useCallback(() => {
-    setActiveIndex((prev) => {
-      const nextIndex = prev + 3;
-      return nextIndex >= filteredTestimonials.length ? prev : nextIndex;
-    });
-  }, [filteredTestimonials.length]);
+    setActiveIndex((prev) =>
+      prev + cardsToShow >= filteredTestimonials.length ? 0 : prev + cardsToShow
+    );
+  }, [filteredTestimonials.length, cardsToShow]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isHovered) handleNext();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isHovered, handleNext]);
+  const handlePrev = useCallback(() => {
+    setActiveIndex((prev) =>
+      prev - cardsToShow < 0
+        ? Math.max(0, filteredTestimonials.length - cardsToShow)
+        : prev - cardsToShow
+    );
+  }, [filteredTestimonials.length, cardsToShow]);
 
-  useEffect(() => {
-    setActiveIndex(0);
-  }, [filter]);
+  const handleDragEnd = (_, info) => {
+    if (Math.abs(info.velocity.x) > 500) {
+      if (info.velocity.x > 0) {
+        handlePrev();
+      } else {
+        handleNext();
+      }
+    }
+  };
 
   const renderStars = (rating) => {
     return [...Array(rating)].map((_, i) => (
@@ -164,13 +185,18 @@ const TestimonialPage = () => {
     ));
   };
 
-  const visibleTestimonials = [];
-  for (let i = 0; i < 3; i++) {
-    const index = activeIndex + i;
-    if (index < filteredTestimonials.length) {
-      visibleTestimonials.push(filteredTestimonials[index]);
+  // Make sure we don't try to show testimonials that don't exist
+  const visibleTestimonials = filteredTestimonials.slice(
+    activeIndex,
+    activeIndex + cardsToShow
+  );
+
+  // If no testimonials are visible after filtering, reset to the first one
+  useEffect(() => {
+    if (visibleTestimonials.length === 0 && filteredTestimonials.length > 0) {
+      setActiveIndex(0);
     }
-  }
+  }, [visibleTestimonials.length, filteredTestimonials.length]);
 
   return (
     <div
@@ -218,130 +244,164 @@ const TestimonialPage = () => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-<motion.div
-  className={`flex md:grid ${
-    visibleTestimonials.length === 1
-      ? "justify-center"
-      : "md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8"
-  } relative pb-4 md:overflow-visible overflow-x-scroll no-scrollbar`}
-  drag="x"
-  dragConstraints={{ left: -500, right: 0 }}
-  whileTap={{ cursor: "grabbing" }}
->
-  {visibleTestimonials.map((testimonial) => (
-    <motion.div
-      key={testimonial.id}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="w-[85vw] sm:w-[70vw] md:w-full max-w-full md:max-w-[400px] flex-shrink-0"
-    >
-      <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-        <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
           <motion.div
-            className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden"
-            whileHover={{ scale: 1.1 }}
+            className={`flex ${
+              isMobile 
+                ? 'w-full overflow-hidden' 
+                : filteredTestimonials.length < 3 
+                  ? 'md:flex md:justify-center md:gap-8' 
+                  : 'md:grid md:grid-cols-3 gap-8'
+            }`}
+            drag={isMobile ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            onDragEnd={handleDragEnd}
+            whileTap={{ cursor: isMobile ? "grabbing" : "auto" }}
           >
-            <img
-              src={testimonial.image}
-              alt={testimonial.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/20 to-[#34A853]/20" />
-          </motion.div>
-          <div className="flex-1">
-            <div className="flex flex-col md:flex-row justify-between items-start">
-              <div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-800">
-                  {testimonial.name}
-                </h3>
-                <p className="text-xs md:text-sm text-gray-600">
-                  {testimonial.role} at {testimonial.company}
-                </p>
+            {visibleTestimonials.length > 0 ? (
+              visibleTestimonials.map((testimonial) => (
+                <motion.div
+                  key={testimonial.id}
+                  className={`${
+                    isMobile 
+                      ? 'w-[85vw] min-w-[85vw] mx-2' 
+                      : filteredTestimonials.length < 3 
+                        ? 'w-full max-w-md mx-4' 
+                        : 'w-full'
+                  } flex-shrink-0`}
+                >
+                  <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                    <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
+                      <motion.div
+                        className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden"
+                        whileHover={{ scale: 1.1 }}
+                      >
+                        <img
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/20 to-[#34A853]/20" />
+                      </motion.div>
+                      <div className="flex-1">
+                        <div className="flex flex-col md:flex-row justify-between items-start">
+                          <div>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-800">
+                              {testimonial.name}
+                            </h3>
+                            <p className="text-xs md:text-sm text-gray-600">
+                              {testimonial.role} at {testimonial.company}
+                            </p>
+                          </div>
+                          <span className="px-2 py-1 md:px-3 md:py-1 bg-gradient-to-r from-[#4285F4]/10 to-[#34A853]/10 text-[#34A853] rounded-full text-xs md:text-sm mt-1 md:mt-0">
+                            {testimonial.industry}
+                          </span>
+                        </div>
+                        <div className="flex gap-1 mt-1 md:mt-2">
+                          {renderStars(testimonial.rating)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <motion.div
+                      className="relative overflow-hidden rounded-lg md:rounded-xl bg-gradient-to-br from-[#4285F4]/5 to-[#34A853]/5 p-3 md:p-4 mb-3 md:mb-4"
+                      whileHover={{ y: window.innerWidth >= 768 ? -5 : 0 }}
+                    >
+                      <p className="text-gray-700 text-sm md:text-base leading-relaxed italic relative z-10 line-clamp-4">
+                        "{testimonial.text}"
+                      </p>
+                      <FaQuoteRight className="absolute bottom-1 right-1 md:bottom-2 md:right-2 text-2xl md:text-4xl text-[#4285F4]/20" />
+                    </motion.div>
+
+                    <div className="grid grid-cols-3 gap-1 md:gap-2 text-center mb-3 md:mb-4">
+                      {[
+                        {
+                          value: testimonial.stats.roas,
+                          color: "#34A853",
+                          label: "ROAS",
+                        },
+                        {
+                          value: testimonial.stats.costReduction,
+                          color: "#4285F4",
+                          label: "Costs",
+                        },
+                        {
+                          value: testimonial.stats.clicks,
+                          color: "#34A853",
+                          label: "Clicks",
+                        },
+                      ].map((stat, index) => (
+                        <div
+                          key={index}
+                          className="p-2 md:p-3 rounded-md"
+                          style={{
+                            background: `linear-gradient(to bottom right, ${stat.color}1A, ${stat.color}33)`,
+                          }}
+                        >
+                          <p
+                            className="text-lg md:text-xl font-bold"
+                            style={{ color: stat.color }}
+                          >
+                            {stat.value}%
+                          </p>
+                          <p
+                            className="text-[10px] md:text-xs"
+                            style={{ color: stat.color }}
+                          >
+                            {stat.label}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-3 md:mt-4 flex flex-col md:flex-row items-center justify-between gap-2">
+                      <span className="px-3 py-1 md:px-4 md:py-2 bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white rounded-full text-xs md:text-sm flex items-center gap-1 md:gap-2">
+                        <FaRegChartBar className="text-sm md:text-lg" />
+                        {testimonial.serviceType}
+                      </span>
+                      <div className="flex items-center gap-1 md:gap-2">
+                        <FaGoogle className="text-xl md:text-2xl text-[#4285F4]" />
+                        <span className="text-xs md:text-sm text-[#4285F4]">
+                          Google Premier Partner
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="w-full text-center py-12">
+                <p className="text-gray-600">No testimonials found for this category.</p>
               </div>
-              <span className="px-2 py-1 md:px-3 md:py-1 bg-gradient-to-r from-[#4285F4]/10 to-[#34A853]/10 text-[#34A853] rounded-full text-xs md:text-sm mt-1 md:mt-0">
-                {testimonial.industry}
-              </span>
+            )}
+          </motion.div>
+
+          {isMobile && filteredTestimonials.length > 1 && (
+            <div className="flex justify-between absolute top-1/2 w-full px-4 -translate-y-1/2">
+              <button onClick={handlePrev} className="p-2 bg-white rounded-full shadow-lg">
+                <FaChevronLeft className="text-blue-600" />
+              </button>
+              <button onClick={handleNext} className="p-2 bg-white rounded-full shadow-lg">
+                <FaChevronRight className="text-blue-600" />
+              </button>
             </div>
-            <div className="flex gap-1 mt-1 md:mt-2">
-              {renderStars(testimonial.rating)}
-            </div>
+          )}
+        </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center gap-2 mt-6">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i * cardsToShow)}
+                className={`h-2 w-8 rounded-full transition-all ${
+                  activeIndex === i * cardsToShow ? 'bg-gradient-to-r from-[#4285F4] to-[#34A853]' : 'bg-gray-300'
+                }`}
+              />
+            ))}
           </div>
-        </div>
-
-        <motion.div
-          className="relative overflow-hidden rounded-lg md:rounded-xl bg-gradient-to-br from-[#4285F4]/5 to-[#34A853]/5 p-3 md:p-4 mb-3 md:mb-4"
-          whileHover={{ y: window.innerWidth >= 768 ? -5 : 0 }}
-        >
-          <p className="text-gray-700 text-sm md:text-base leading-relaxed italic relative z-10 line-clamp-4">
-            "{testimonial.text}"
-          </p>
-          <FaQuoteRight className="absolute bottom-1 right-1 md:bottom-2 md:right-2 text-2xl md:text-4xl text-[#4285F4]/20" />
-        </motion.div>
-
-        <div className="grid grid-cols-3 gap-1 md:gap-2 text-center mb-3 md:mb-4">
-          {[
-            { value: testimonial.stats.roas, color: "#34A853", label: "ROAS" },
-            {
-              value: testimonial.stats.costReduction,
-              color: "#4285F4",
-              label: "Costs",
-            },
-            { value: testimonial.stats.clicks, color: "#34A853", label: "Clicks" },
-          ].map((stat, index) => (
-            <div
-              key={index}
-              className="p-2 md:p-3 rounded-md"
-              style={{
-                background: `linear-gradient(to bottom right, ${stat.color}1A, ${stat.color}33)`,
-              }}
-            >
-              <p className="text-lg md:text-xl font-bold" style={{ color: stat.color }}>
-                {stat.value}%
-              </p>
-              <p className="text-[10px] md:text-xs" style={{ color: stat.color }}>
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-3 md:mt-4 flex flex-col md:flex-row items-center justify-between gap-2">
-          <span className="px-3 py-1 md:px-4 md:py-2 bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white rounded-full text-xs md:text-sm flex items-center gap-1 md:gap-2">
-            <FaRegChartBar className="text-sm md:text-lg" />
-            {testimonial.serviceType}
-          </span>
-          <div className="flex items-center gap-1 md:gap-2">
-            <FaGoogle className="text-xl md:text-2xl text-[#4285F4]" />
-            <span className="text-xs md:text-sm text-[#4285F4]">
-              Google Premier Partner
-            </span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  ))}
-</motion.div>
-
-        </div>
-
-        <div className="flex justify-center gap-2 mt-6 md:mt-8">
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveIndex(i * 3)}
-              className={`h-1.5 md:h-2 rounded-full transition-all duration-300 ${
-                Math.floor(activeIndex / 3) === i
-                  ? "bg-gradient-to-r from-[#4285F4] to-[#34A853] w-6 md:w-8"
-                  : "bg-gray-200 w-4 md:w-3"
-              }`}
-            />
-          ))}
-        </div>
+        )}
       </div>
     </div>
   );
 };
-
 export default TestimonialPage;
