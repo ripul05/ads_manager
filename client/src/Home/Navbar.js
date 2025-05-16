@@ -1,37 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const activeColors = ['#EA4335', '#34A853', '#4285F4'];
-  
-const navItems = [
-  { label: 'Home', href: '#HomeSection' },
-  { label: 'About', href: '#AboutSection' },
-  { label: 'Testimonials', href: '#TestimonySection' },
-  { label: 'Contact Us', href: '/contact' }, // ← updated
-];
+  const activeColors = ["#EA4335", "#34A853", "#4285F4"];
+
+  const navItems = [
+    { label: "Home", href: "#HomeSection" },
+    { label: "About", href: "#AboutSection" },
+    { label: "Testimonials", href: "#TestimonySection" },
+    { label: "Contact Us", href: "/contact" }, // ← updated
+  ];
 
   useEffect(() => {
     const hash = window.location.hash;
-    const storedIndex = localStorage.getItem('activeIndex');
-    const initialIndex = hash 
-      ? navItems.findIndex(item => item.href === hash)
+    const storedIndex = localStorage.getItem("activeIndex");
+    const initialIndex = hash
+      ? navItems.findIndex((item) => item.href === hash)
       : parseInt(storedIndex, 10) || 0;
 
     setActiveIndex(initialIndex >= 0 ? initialIndex : 0);
 
     const handleScroll = () => {
-      const sections = navItems.map(item => document.querySelector(item.href));
+      const sections = navItems.map((item) =>
+        document.querySelector(item.href)
+      );
       sections.forEach((section, index) => {
         if (section) {
           const rect = section.getBoundingClientRect();
-          if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+          if (
+            rect.top <= window.innerHeight / 2 &&
+            rect.bottom >= window.innerHeight / 2
+          ) {
             setActiveIndex(index);
-            localStorage.setItem('activeIndex', index);
-            window.history.replaceState(null, '', navItems[index].href);
+            localStorage.setItem("activeIndex", index);
+            window.history.replaceState(null, "", navItems[index].href);
           }
         }
       });
@@ -39,17 +44,19 @@ const navItems = [
 
     if (hash) {
       const targetSection = document.querySelector(hash);
-      targetSection?.scrollIntoView({ behavior: 'auto' });
+      targetSection?.scrollIntoView({ behavior: "auto" });
     }
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const updateIndicator = () => {
-    const indicator = document.querySelector('.nav-indicator');
-    const activeItem = document.querySelector(`.nav-item:nth-child(${activeIndex + 1})`);
-    
+    const indicator = document.querySelector(".nav-indicator");
+    const activeItem = document.querySelector(
+      `.nav-item:nth-child(${activeIndex + 1})`
+    );
+
     if (indicator && activeItem) {
       indicator.style.width = `${activeItem.offsetWidth}px`;
       indicator.style.left = `${activeItem.offsetLeft}px`;
@@ -58,24 +65,24 @@ const navItems = [
   };
 
   useEffect(updateIndicator, [activeIndex]);
-  useEffect(() => window.addEventListener('resize', updateIndicator), []);
+  useEffect(() => window.addEventListener("resize", updateIndicator), []);
 
-const handleNavClick = (index, e) => {
-  const href = navItems[index].href;
+  const handleNavClick = (index, e) => {
+    const href = navItems[index].href;
 
-  if (href.startsWith('#')) {
-    e.preventDefault();
-    const targetSection = document.querySelector(href);
-    targetSection?.scrollIntoView({ behavior: 'smooth' });
-    setActiveIndex(index);
-    setIsMenuOpen(false);
-    localStorage.setItem('activeIndex', index);
-    window.history.replaceState(null, '', href);
-  } else {
-    // Let normal navigation happen (to /contact route)
-    window.location.href = href;
-  }
-};
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetSection = document.querySelector(href);
+      targetSection?.scrollIntoView({ behavior: "smooth" });
+      setActiveIndex(index);
+      setIsMenuOpen(false);
+      localStorage.setItem("activeIndex", index);
+      window.history.replaceState(null, "", href);
+    } else {
+      // Let normal navigation happen (to /contact route)
+      window.location.href = href;
+    }
+  };
 
   return (
     <nav className="fixed w-full top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm">
@@ -83,13 +90,11 @@ const handleNavClick = (index, e) => {
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2"
             >
-              <div 
-                className="w-9 h-9 rounded-full bg-[conic-gradient(at_left_top,#EA4335_110deg,#4285F4_90deg_180deg,#34A853_180deg_270deg,#FBBC05_270deg)]"
-              />
+              <div className="w-9 h-9 rounded-full bg-[conic-gradient(at_left_top,#EA4335_110deg,#4285F4_90deg_180deg,#34A853_180deg_270deg,#FBBC05_270deg)]" />
               <h1 className="text-2xl font-bold bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
                 BuzzBandits
               </h1>
@@ -104,9 +109,11 @@ const handleNavClick = (index, e) => {
                 href={item.href}
                 onClick={(e) => handleNavClick(index, e)}
                 className={`px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors nav-item ${
-                  activeIndex === index ? 'font-semibold' : ''
+                  activeIndex === index ? "font-semibold" : ""
                 }`}
-                style={{ color: activeIndex === index ? activeColors[index] : '' }}
+                style={{
+                  color: activeIndex === index ? activeColors[index] : "",
+                }}
               >
                 {item.label}
               </a>
@@ -119,18 +126,33 @@ const handleNavClick = (index, e) => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 focus:outline-none"
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
         </div>
 
         {/* Mobile Menu */}
-        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
+        <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"}`}>
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navItems.map((item, index) => (
               <a
@@ -138,9 +160,12 @@ const handleNavClick = (index, e) => {
                 href={item.href}
                 onClick={(e) => handleNavClick(index, e)}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  activeIndex === index ? 'bg-gray-100' : 'hover:bg-gray-50'
+                  activeIndex === index ? "bg-gray-100" : "hover:bg-gray-50"
                 }`}
-                style={{ color: activeIndex === index ? activeColors[index] : '#4B5563' }}
+                style={{
+                  color:
+                    activeIndex === index ? activeColors[index] : "#4B5563",
+                }}
               >
                 {item.label}
               </a>

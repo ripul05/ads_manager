@@ -1,6 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { FaGoogle, FaStar, FaQuoteRight, FaRegChartBar , FaChevronLeft, FaChevronRight} from "react-icons/fa";
+import {
+  FaGoogle,
+  FaStar,
+  FaQuoteRight,
+  FaRegChartBar,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 const testimonials = [
   {
     id: 1,
@@ -246,11 +253,11 @@ const TestimonialPage = () => {
         >
           <motion.div
             className={`flex ${
-              isMobile 
-                ? 'w-full overflow-hidden' 
-                : filteredTestimonials.length < 3 
-                  ? 'md:flex md:justify-center md:gap-8' 
-                  : 'md:grid md:grid-cols-3 gap-8'
+              isMobile
+                ? "w-full overflow-hidden"
+                : filteredTestimonials.length < 3
+                ? "md:flex md:justify-center md:gap-8"
+                : "md:grid md:grid-cols-3 gap-8"
             }`}
             drag={isMobile ? "x" : false}
             dragConstraints={{ left: 0, right: 0 }}
@@ -262,11 +269,11 @@ const TestimonialPage = () => {
                 <motion.div
                   key={testimonial.id}
                   className={`${
-                    isMobile 
-                      ? 'w-[85vw] min-w-[85vw] mx-2' 
-                      : filteredTestimonials.length < 3 
-                        ? 'w-full max-w-md mx-4' 
-                        : 'w-full'
+                    isMobile
+                      ? "w-[85vw] min-w-[85vw] mx-2"
+                      : filteredTestimonials.length < 3
+                      ? "w-full max-w-md mx-4"
+                      : "w-full"
                   } flex-shrink-0`}
                 >
                   <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
@@ -370,17 +377,25 @@ const TestimonialPage = () => {
               ))
             ) : (
               <div className="w-full text-center py-12">
-                <p className="text-gray-600">No testimonials found for this category.</p>
+                <p className="text-gray-600">
+                  No testimonials found for this category.
+                </p>
               </div>
             )}
           </motion.div>
 
           {isMobile && filteredTestimonials.length > 1 && (
             <div className="flex justify-between absolute top-1/2 w-full px-4 -translate-y-1/2">
-              <button onClick={handlePrev} className="p-2 bg-white rounded-full shadow-lg">
+              <button
+                onClick={handlePrev}
+                className="p-2 bg-white rounded-full shadow-lg"
+              >
                 <FaChevronLeft className="text-blue-600" />
               </button>
-              <button onClick={handleNext} className="p-2 bg-white rounded-full shadow-lg">
+              <button
+                onClick={handleNext}
+                className="p-2 bg-white rounded-full shadow-lg"
+              >
                 <FaChevronRight className="text-blue-600" />
               </button>
             </div>
@@ -394,7 +409,9 @@ const TestimonialPage = () => {
                 key={i}
                 onClick={() => setActiveIndex(i * cardsToShow)}
                 className={`h-2 w-8 rounded-full transition-all ${
-                  activeIndex === i * cardsToShow ? 'bg-gradient-to-r from-[#4285F4] to-[#34A853]' : 'bg-gray-300'
+                  activeIndex === i * cardsToShow
+                    ? "bg-gradient-to-r from-[#4285F4] to-[#34A853]"
+                    : "bg-gray-300"
                 }`}
               />
             ))}
