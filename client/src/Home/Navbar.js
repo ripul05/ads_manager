@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const activeColors = ["#EA4335", "#34A853", "#4285F4"];
@@ -80,7 +82,7 @@ const Navbar = () => {
       window.history.replaceState(null, "", href);
     } else {
       // Let normal navigation happen (to /contact route)
-      window.location.href = href;
+      navigate(href);
     }
   };
 
