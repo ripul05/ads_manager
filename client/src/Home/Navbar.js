@@ -79,10 +79,15 @@ const Navbar = () => {
       setActiveIndex(index);
       setIsMenuOpen(false);
       localStorage.setItem("activeIndex", index);
-      window.history.replaceState(null, "", href);
+      // Optional: Update URL without causing a reload
+      window.history.replaceState(null, "", window.location.pathname + href);
     } else {
-      // Let normal navigation happen (to /contact route)
-      navigate(href);
+      // Let React Router handle navigation (e.g., /contact)
+      e.preventDefault(); // Prevent full page reload
+      navigate(href); // Programmatic navigation
+      setActiveIndex(index);
+      setIsMenuOpen(false);
+      localStorage.setItem("activeIndex", index);
     }
   };
 
@@ -160,7 +165,15 @@ const Navbar = () => {
               <a
                 key={index}
                 href={item.href}
-                onClick={(e) => handleNavClick(index, e)}
+                onClick={(e) => {
+                  if (!item.href.startsWith("#")) {
+                    e.preventDefault(); // Prevent full page reload for routes
+                    navigate(item.href); // Use React Router's navigation
+                  }
+                  setActiveIndex(index);
+                  setIsMenuOpen(false);
+                  localStorage.setItem("activeIndex", index);
+                }}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   activeIndex === index ? "bg-gray-100" : "hover:bg-gray-50"
                 }`}
