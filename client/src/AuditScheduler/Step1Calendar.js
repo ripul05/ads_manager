@@ -218,7 +218,7 @@ const Step1Calendar = ({
         onNavigate={handleNavigate}
         date={selectedDate || new Date()}
         dayLayoutAlgorithm={isMobile ? "no-overlap" : "fixed"}
-        longPressThreshold={10} // Set to a very low value to effectively disable long press
+        longPressThreshold={100} // Set to a very low value to effectively disable long press
       />
     </div>
   );
