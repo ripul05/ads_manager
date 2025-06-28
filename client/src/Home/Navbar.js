@@ -91,12 +91,22 @@ const Navbar = () => {
     }
   };
 
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    // Same behavior as Home button (index 0)
+    const targetSection = document.querySelector("#HomeSection");
+    targetSection?.scrollIntoView({ behavior: "smooth" });
+    setActiveIndex(0);
+    localStorage.setItem("activeIndex", "0");
+    window.history.replaceState(null, "", window.location.pathname + "#HomeSection");
+  };
+
   return (
     <nav className="fixed w-full top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <a href="#HomeSection" onClick={handleLogoClick} className="flex items-center space-x-2">
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2"
@@ -106,7 +116,7 @@ const Navbar = () => {
                 BuzzBandits
               </h1>
             </motion.div>
-          </Link>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center relative">
