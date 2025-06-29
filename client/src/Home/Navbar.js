@@ -120,7 +120,13 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2"
             >
-              <div className="w-9 h-9 rounded-full bg-[conic-gradient(at_left_top,#EA4335_110deg,#4285F4_90deg_180deg,#34A853_180deg_270deg,#FBBC05_270deg)]" />
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-50 to-green-50 p-1 shadow-lg ring-2 ring-white/20">
+                <img 
+                  src="/BuzzBandits.png" 
+                  alt="BuzzBandits Logo" 
+                  className="w-full h-full object-contain rounded-full"
+                />
+              </div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
                 BuzzBandits
               </h1>
