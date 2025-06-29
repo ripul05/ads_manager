@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
@@ -7,14 +7,29 @@ const Navbar = () => {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const activeColors = ["#EA4335", "#34A853", "#4285F4"];
-
-  const navItems = [
+  
+  // Wrap arrays in useMemo to prevent recreation on every render
+  const activeColors = useMemo(() => ["#EA4335", "#34A853", "#4285F4"], []);
+  const navItems = useMemo(() => [
     { label: "Home", href: "#HomeSection" },
     { label: "About", href: "#AboutSection" },
     { label: "Testimonials", href: "#TestimonySection" },
-    { label: "Contact Us", href: "/contact" }, // ← updated
-  ];
+    { label: "Contact Us", href: "/contact" },
+  ], []);
+
+  // Memoize updateIndicator to avoid recreating on every render
+  const updateIndicator = useCallback(() => {
+    const indicator = document.querySelector(".nav-indicator");
+    const activeItem = document.querySelector(
+      `.nav-item:nth-child(${activeIndex + 1})`
+    );
+
+    if (indicator && activeItem) {
+      indicator.style.width = `${activeItem.offsetWidth}px`;
+      indicator.style.left = `${activeItem.offsetLeft}px`;
+      indicator.style.backgroundColor = activeColors[activeIndex];
+    }
+  }, [activeIndex, activeColors]);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -51,23 +66,17 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [navItems]);
 
-  const updateIndicator = () => {
-    const indicator = document.querySelector(".nav-indicator");
-    const activeItem = document.querySelector(
-      `.nav-item:nth-child(${activeIndex + 1})`
-    );
+  useEffect(() => {
+    updateIndicator();
+  }, [updateIndicator]);
 
-    if (indicator && activeItem) {
-      indicator.style.width = `${activeItem.offsetWidth}px`;
-      indicator.style.left = `${activeItem.offsetLeft}px`;
-      indicator.style.backgroundColor = activeColors[activeIndex];
-    }
-  };
-
-  useEffect(updateIndicator, [activeIndex]);
-  useEffect(() => window.addEventListener("resize", updateIndicator), []);
+  useEffect(() => {
+    const handleResize = () => updateIndicator();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [updateIndicator]);
 
   const handleNavClick = (index, e) => {
     const href = navItems[index].href;
