@@ -7,7 +7,7 @@ const PORT = 3001;
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:3000','https://ads-managerfrontend.onrender.com'],
+  origin: ['http://localhost:3000','https://ads-managerfrontend.onrender.com', 'https://buzzbandits.net'],
   credentials: true,
 }));
 
