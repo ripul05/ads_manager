@@ -34,10 +34,15 @@ const requestCallbackSchema = Joi.object({
         "string.empty": "Message cannot be empty.",
     }),
 });
+const getInTouchSchema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    message: Joi.string().required(),
+  });
 
 const validatePhoneNumber = (phoneNumber) => {
     const phone = parsePhoneNumberFromString(phoneNumber); // Automatically infers the country
     return phone ? phone.isValid() : false; // Checks if the parsed phone number is valid
 };
 
-module.exports = { requestCallbackSchema, validatePhoneNumber };
+module.exports = { requestCallbackSchema, validatePhoneNumber, getInTouchSchema };

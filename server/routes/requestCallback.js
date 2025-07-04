@@ -1,6 +1,7 @@
 const express = require("express");
-const { requestCallback } = require("../services/requestCallback");
-const { requestCallbackSchema } = require("../config/validations/requestCallbackValidations");
+const { requestCallback,getInTouch  } = require("../services/requestCallback");
+const { requestCallbackSchema, getInTouchSchema } = require("../config/validations/requestCallbackValidations");
+
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ const validateRequest = (schema) => (req, res, next) => {
 
 // Define the callback POST route with validation middleware
 router.post("/", validateRequest(requestCallbackSchema), requestCallback);
+router.post("/getInTouch", validateRequest(getInTouchSchema), getInTouch )
 
 module.exports = router;

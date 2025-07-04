@@ -7,37 +7,59 @@ const calendar = google.calendar('v3');
 // Load environment variables
 dotenv.config();
 
-// Create reusable transporter object using Gmail as the email service
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL_USER,  // Use environment variables for better security
-        pass: process.env.EMAIL_PASS,  // Use environment variables for better security
-    },
-});
+const oAuth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
 
+// Function to send email
 const sendEmail = async (subject, body, receiverEmail = null) => {
-    try {
-      const finalReceiver = receiverEmail || process.env.EMAIL_TO;  // fallback to default if null
-  
-      console.log(`Sending email to: ${finalReceiver}`);
-  
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: finalReceiver,
-        subject: subject,
-        html: body,
-      };
-  
-      const info = await transporter.sendMail(mailOptions);
-      console.log("Email sent successfully:", info);
-      return info;
-    } catch (err) {
-      console.error("Error sending email:", err);
-      throw new Error("Error sending email");
-    }
-  };
+  try {
+    // Set credentials and get access token
+    oAuth2Client.setCredentials({
+      refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+    });
 
+    const accessTokenResponse = await oAuth2Client.getAccessToken();
+    const accessToken = accessTokenResponse?.token;
+
+    if (!accessToken) {
+      throw new Error("Failed to retrieve access token.");
+    }
+
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: process.env.EMAIL_USER,
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+        accessToken: accessToken,
+      },
+    });
+
+    const finalReceiver = receiverEmail || process.env.EMAIL_TO;
+
+    console.log(`Sending email to: ${finalReceiver}`);
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: finalReceiver,
+      subject: subject,
+      html: body,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully:", info);
+    return info;
+  } catch (err) {
+    console.error("Error sending email:", err);
+    throw new Error("Error sending email");
+  }
+};
 const generateGoogleMeetLink = async (auditDateTime, name) => {
     const oauth2Client = new google.auth.OAuth2(
         process.env.GOOGLE_CLIENT_ID,

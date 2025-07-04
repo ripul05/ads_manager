@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const requestCallbackSchema = new mongoose.Schema(
     {
         fullName: { type: String, required: true },
-        email: { type: String, required: true, unique: true },  // Ensures unique emails
+        email: { type: String, required: true},  // Ensures unique emails
         phone: { type: String, required: true },  // Phone can have duplicates
-        companyName: { type: String },
-        websiteLink: { type: String },
-        message: { type: String },
+        companyName: { type: String, required: true },
+        websiteLink: { type: String, required: true },
+        message: { type: String, required: true },
     },
     { timestamps: true }
 );
