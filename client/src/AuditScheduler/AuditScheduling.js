@@ -192,7 +192,7 @@ const handleSubmit = async () => {
       meetingType: "Google Ads Audit",
     };
 
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auditScheduling`, {
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}auditScheduling`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

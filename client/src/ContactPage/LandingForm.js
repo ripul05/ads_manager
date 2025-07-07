@@ -305,7 +305,7 @@ const LandingForm = ({ onSubmitSuccess }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/requestCallback`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}requestCallback`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

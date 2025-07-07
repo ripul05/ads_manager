@@ -170,7 +170,7 @@ function ContactPage({ setActiveIndex }) {
   const handleOpenScheduling = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/auditScheduling/occupiedTimeslots`
+        `${process.env.REACT_APP_API_BASE_URL}auditScheduling/occupiedTimeslots`
       );
       const data = await response.json();
       setOccupiedSlots(data.occupiedSlots);
@@ -196,7 +196,7 @@ function ContactPage({ setActiveIndex }) {
     };
   
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/requestCallback/getInTouch`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}requestCallback/getInTouch`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
