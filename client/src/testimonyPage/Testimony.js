@@ -1,424 +1,638 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useNavigate } from 'react-router-dom';
 import {
   FaGoogle,
   FaStar,
   FaQuoteRight,
-  FaRegChartBar,
   FaChevronLeft,
   FaChevronRight,
+  FaAtom,
+  FaNetworkWired,
+  FaBrain,
+  FaRocket,
+  FaEye,
+  FaChartLine,
+  FaSearch,
+  FaCrosshairs,
+  FaDatabase,
+  FaLayerGroup,
+  FaChartBar,
+  FaBolt,
+  FaCube,
 } from "react-icons/fa";
+
+// Futuristic background with moving lines and nodes (matching home page)
+const FuturisticBackground = () => {
+  const [nodes, setNodes] = useState([]);
+
+  useEffect(() => {
+    const generateNodes = () => {
+      const newNodes = [];
+      for (let i = 0; i < 20; i++) {
+        newNodes.push({
+          id: i,
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          size: Math.random() * 4 + 2,
+          duration: Math.random() * 20 + 15,
+          delay: Math.random() * 5,
+        });
+      }
+      setNodes(newNodes);
+    };
+
+    generateNodes();
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Animated grid lines */}
+      <div className="absolute inset-0">
+        <motion.div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '100px 100px'
+          }}
+          animate={{
+            backgroundPosition: ['0px 0px', '100px 100px'],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </div>
+
+      {/* Floating nodes with connections */}
+      <svg className="absolute inset-0 w-full h-full">
+        {nodes.map((node, i) => (
+          <g key={node.id}>
+            {/* Connection lines */}
+            {nodes.slice(i + 1).map((otherNode, j) => {
+              const distance = Math.sqrt(
+                Math.pow(node.x - otherNode.x, 2) + Math.pow(node.y - otherNode.y, 2)
+              );
+              return distance < 25 ? (
+                <motion.line
+                  key={j}
+                  x1={`${node.x}%`}
+                  y1={`${node.y}%`}
+                  x2={`${otherNode.x}%`}
+                  y2={`${otherNode.y}%`}
+                  stroke="rgba(0, 255, 255, 0.2)"
+                  strokeWidth="1"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 0.6, 0] }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                  }}
+                />
+              ) : null;
+            })}
+            
+            {/* Nodes */}
+            <motion.circle
+              cx={`${node.x}%`}
+              cy={`${node.y}%`}
+              r={node.size}
+              fill="rgba(0, 255, 255, 0.6)"
+              animate={{
+                r: [node.size, node.size * 1.5, node.size],
+                opacity: [0.3, 0.8, 0.3],
+              }}
+              transition={{
+                duration: node.duration,
+                repeat: Infinity,
+                delay: node.delay,
+              }}
+            />
+          </g>
+        ))}
+      </svg>
+
+      {/* Scanning lines */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"
+        style={{ width: '2px' }}
+        animate={{
+          x: ['-100vw', '100vw'],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+      
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent"
+        style={{ height: '2px' }}
+        animate={{
+          y: ['-100vh', '100vh'],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+    </div>
+  );
+};
+
+// Real-time metrics dashboard with mobile responsiveness
+const LiveMetrics = () => {
+  const [metrics, setMetrics] = useState({
+    activeClients: 0,
+    totalROAS: 0,
+    campaignsLive: 0,
+    monthlySpend: 0
+  });
+
+  useEffect(() => {
+    const updateMetrics = () => {
+      setMetrics({
+        activeClients: Math.floor(Math.random() * 50 + 150),
+        totalROAS: (Math.random() * 5 + 4).toFixed(1),
+        campaignsLive: Math.floor(Math.random() * 20 + 80),
+        monthlySpend: Math.floor(Math.random() * 500 + 2500)
+      });
+    };
+
+    updateMetrics();
+    const interval = setInterval(updateMetrics, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      {[
+        { value: metrics.activeClients, label: "Active Clients", icon: <FaNetworkWired />, color: "cyan" },
+        { value: `${metrics.totalROAS}x`, label: "Avg ROAS", icon: <FaChartLine />, color: "blue" },
+        { value: metrics.campaignsLive, label: "Live Campaigns", icon: <FaRocket />, color: "purple" },
+        { value: `$${metrics.monthlySpend}K`, label: "Monthly Spend", icon: <FaDatabase />, color: "pink" }
+      ].map((metric, i) => (
+        <motion.div
+          key={i}
+          className="bg-black/40 backdrop-blur-sm border border-cyan-400/30 rounded-xl p-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.1 }}
+        >
+          <div className={`text-${metric.color}-400 text-2xl mb-2`}>
+            {metric.icon}
+          </div>
+          <div className={`text-${metric.color}-400 text-xl font-bold`}>
+            {metric.value}
+          </div>
+          <div className="text-gray-400 text-sm">
+            {metric.label}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 const testimonials = [
   {
     id: 1,
     name: "Sarah Johnson",
-    role: "E-commerce Manager",
-    company: "UrbanFashion Co.",
-    text: "Their Google Ads expertise tripled our ROAS in just 3 months. The strategic use of SKAGs and expert bid management transformed our account structure completely.",
+    role: "E-commerce Director",
+    company: "TechFashion Co.",
+    text: "BuzzBandits transformed our Google Ads performance completely. Their AI-powered bid strategies and advanced audience targeting increased our ROAS by 340% in just 3 months.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 300, costReduction: 40, clicks: 120 },
-    industry: "Fashion",
-    serviceType: "Search Ads",
+    stats: { roas: 340, costReduction: 45, conversions: 180 },
+    industry: "E-commerce",
+    serviceType: "Google Ads",
+    adSpend: "$85K/month"
   },
   {
     id: 2,
     name: "Mike Roberts",
     role: "Marketing Director",
-    company: "TechSolutions Ltd",
-    text: "The granular campaign structuring and smart audience targeting resulted in a 40% cost reduction while maintaining conversion volume. True Google Ads specialists!",
+    company: "SaaS Solutions Inc.",
+    text: "The granular campaign optimization and real-time bid management resulted in a 42% cost reduction while doubling our lead generation. True Google Ads specialists!",
     rating: 5,
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 220, costReduction: 40, clicks: 200 },
-    industry: "Technology",
-    serviceType: "Display Ads",
+    stats: { roas: 280, costReduction: 42, conversions: 220 },
+    industry: "SaaS",
+    serviceType: "PPC Management",
+    adSpend: "$125K/month"
   },
   {
     id: 3,
     name: "Emily Carter",
-    role: "Founder & CEO",
-    company: "Carter Digital Marketing",
-    text: "They helped us scale our ad spend efficiently while doubling our lead generation. The level of detail and analysis they provide is unmatched.",
+    role: "Founder",
+    company: "Carter Digital Agency",
+    text: "They helped us scale our client ad spend efficiently while maintaining high-quality leads. The level of analysis and optimization they provide is unmatched in the industry.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 180, costReduction: 35, clicks: 95 },
-    industry: "Marketing",
-    serviceType: "Search Ads",
+    stats: { roas: 195, costReduction: 38, conversions: 150 },
+    industry: "Agency",
+    serviceType: "Campaign Management",
+    adSpend: "$60K/month"
   },
   {
     id: 4,
     name: "David Mitchell",
-    role: "Head of Growth",
+    role: "Growth Manager",
     company: "FinTech Pros",
-    text: "Before working with them, our campaigns were all over the place. Now, our cost per acquisition has dropped by 35%, and we're seeing record-high engagement.",
+    text: "Before working with BuzzBandits, our campaigns were underperforming. Now, our cost per acquisition has dropped by 35%, and we're seeing record-high conversion rates.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 260, costReduction: 35, clicks: 175 },
-    industry: "Finance",
-    serviceType: "Search Ads",
+    stats: { roas: 260, costReduction: 35, conversions: 175 },
+    industry: "FinTech",
+    serviceType: "Google Ads",
+    adSpend: "$95K/month"
   },
   {
     id: 5,
     name: "Jessica Lee",
     role: "Marketing Manager",
-    company: "Wellness & Co.",
-    text: "We struggled with low-quality leads until their team stepped in. With their refined targeting and A/B testing, our conversion rates increased by 50%.",
+    company: "Wellness Direct",
+    text: "We struggled with low-quality leads until BuzzBandits stepped in. With their refined targeting and A/B testing, our conversion rates increased by 55% while reducing costs.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 210, costReduction: 25, clicks: 130 },
-    industry: "Health & Wellness",
+    stats: { roas: 225, costReduction: 28, conversions: 135 },
+    industry: "Healthcare",
     serviceType: "Shopping Ads",
+    adSpend: "$45K/month"
   },
   {
     id: 6,
     name: "Tom Anderson",
     role: "E-commerce Director",
-    company: "Gadget Store Online",
-    text: "Their advanced remarketing strategies brought back lost customers and boosted our revenue by 60%. Highly recommend for any serious business.",
+    company: "Tech Gadget Store",
+    text: "Their advanced remarketing strategies and shopping campaign optimization boosted our revenue by 67%. Highly recommend for any e-commerce business looking to scale.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 280, costReduction: 30, clicks: 220 },
+    stats: { roas: 310, costReduction: 32, conversions: 240 },
     industry: "E-commerce",
-    serviceType: "Display Ads",
+    serviceType: "Shopping Ads",
+    adSpend: "$110K/month"
   },
   {
     id: 7,
     name: "Sophia Martinez",
     role: "CMO",
     company: "EduTech Hub",
-    text: "Thanks to their data-driven approach, our student enrollments skyrocketed while keeping acquisition costs under control. Brilliant team to work with!",
+    text: "Thanks to their data-driven approach, our student enrollments skyrocketed while keeping acquisition costs under control. The ROI improvement has been phenomenal.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 230, costReduction: 20, clicks: 140 },
+    stats: { roas: 245, costReduction: 25, conversions: 160 },
     industry: "Education",
     serviceType: "Search Ads",
+    adSpend: "$70K/month"
   },
   {
     id: 8,
     name: "James Wilson",
     role: "Performance Marketing Head",
     company: "AutoParts Direct",
-    text: "The difference in our ad performance before and after working with them is night and day. ROAS is up by 80%, and our ad spend is now optimized perfectly.",
+    text: "The difference in our ad performance before and after BuzzBandits is night and day. ROAS is up by 85%, and our ad spend is now optimized across all channels.",
     rating: 5,
     image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 280, costReduction: 38, clicks: 210 },
+    stats: { roas: 285, costReduction: 40, conversions: 210 },
     industry: "Automotive",
-    serviceType: "Shopping Ads",
-  },
-  {
-    id: 9,
-    name: "Olivia Brown",
-    role: "Brand Manager",
-    company: "Luxury Home Decor",
-    text: "Their insights on ad creatives and landing page optimization helped us reduce bounce rates and increase conversions. Amazing experience!",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 250, costReduction: 30, clicks: 160 },
-    industry: "Home Decor",
-    serviceType: "Display Ads",
-  },
-  {
-    id: 10,
-    name: "Daniel Evans",
-    role: "Digital Marketing Lead",
-    company: "B2B SaaS Solutions",
-    text: "We were struggling with stagnant growth, but they turned things around. Our lead quality improved significantly, and our pipeline is stronger than ever.",
-    rating: 5,
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
-    stats: { roas: 190, costReduction: 22, clicks: 110 },
-    industry: "SaaS",
-    serviceType: "Search Ads",
+    serviceType: "Multi-Channel",
+    adSpend: "$150K/month"
   },
 ];
 
 const TestimonialPage = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [filter, setFilter] = useState("all");
-  const [, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [isPaused, setIsPaused] = useState(false);
+  const controls = useAnimation();
+  const carouselRef = useRef(null);
+  const [currentPosition, setCurrentPosition] = useState(0);
+  const animationRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // Reset activeIndex whenever filter changes
-  useEffect(() => {
-    setActiveIndex(0);
-  }, [filter]);
-
-  const filteredTestimonials = testimonials.filter((t) =>
-    filter === "all" ? true : t.serviceType === filter
-  );
-
-  const cardsToShow = isMobile ? 1 : 3;
-  const totalPages = Math.ceil(filteredTestimonials.length / cardsToShow);
-
-  const handleNext = useCallback(() => {
-    setActiveIndex((prev) =>
-      prev + cardsToShow >= filteredTestimonials.length ? 0 : prev + cardsToShow
-    );
-  }, [filteredTestimonials.length, cardsToShow]);
-
-  const handlePrev = useCallback(() => {
-    setActiveIndex((prev) =>
-      prev - cardsToShow < 0
-        ? Math.max(0, filteredTestimonials.length - cardsToShow)
-        : prev - cardsToShow
-    );
-  }, [filteredTestimonials.length, cardsToShow]);
-
-  const handleDragEnd = (_, info) => {
-    if (Math.abs(info.velocity.x) > 500) {
-      if (info.velocity.x > 0) {
-        handlePrev();
-      } else {
-        handleNext();
-      }
+  // Start the animation
+useEffect(() => {
+    if (!isPaused) {
+      controls.start({
+        x: [currentPosition, -1920],
+        transition: {
+          duration: (60 * (1920 + currentPosition)) / 1920,
+          ease: "linear",
+          repeat: Infinity,
+          repeatType: "loop"
+        }
+      });
+    } else {
+      controls.stop();
     }
+  }, [isPaused, controls, currentPosition]);
+
+  // Handle hover events
+  const handleHoverStart = () => {
+    if (carouselRef.current) {
+      const transform = window.getComputedStyle(carouselRef.current).transform;
+      const matrix = new DOMMatrix(transform);
+      setCurrentPosition(matrix.m41);
+    }
+    setIsPaused(true);
+  };
+
+  const handleHoverEnd = () => {
+    setIsPaused(false);
   };
 
   const renderStars = (rating) => {
     return [...Array(rating)].map((_, i) => (
-      <motion.span
+      <motion.div
         key={i}
-        whileHover={{ scale: 1.2 }}
-        className="text-yellow-400 text-xl"
+        className="text-cyan-400 text-lg"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: i * 0.1 }}
       >
         <FaStar />
-      </motion.span>
+      </motion.div>
     ));
   };
 
-  // Make sure we don't try to show testimonials that don't exist
-  const visibleTestimonials = filteredTestimonials.slice(
-    activeIndex,
-    activeIndex + cardsToShow
-  );
-
-  // If no testimonials are visible after filtering, reset to the first one
-  useEffect(() => {
-    if (visibleTestimonials.length === 0 && filteredTestimonials.length > 0) {
-      setActiveIndex(0);
+  const getServiceIcon = (serviceType) => {
+    switch (serviceType) {
+      case "Google Ads":
+        return <FaGoogle />;
+      case "PPC Management":
+        return <FaCrosshairs />;
+      case "Campaign Management":
+        return <FaLayerGroup />;
+      case "Shopping Ads":
+        return <FaCube />;
+      case "Search Ads":
+        return <FaSearch />;
+      case "Multi-Channel":
+        return <FaNetworkWired />;
+      default:
+        return <FaChartLine />;
     }
-  }, [visibleTestimonials.length, filteredTestimonials.length]);
+  };
+
+  const getServiceColor = (serviceType) => {
+    switch (serviceType) {
+      case "Google Ads":
+        return "from-cyan-400 to-blue-400";
+      case "PPC Management":
+        return "from-blue-400 to-purple-400";
+      case "Campaign Management":
+        return "from-purple-400 to-pink-400";
+      case "Shopping Ads":
+        return "from-pink-400 to-red-400";
+      case "Search Ads":
+        return "from-green-400 to-cyan-400";
+      case "Multi-Channel":
+        return "from-orange-400 to-yellow-400";
+      default:
+        return "from-cyan-400 to-blue-400";
+    }
+  };
+
+  // Duplicate testimonials for infinite scroll
+  const duplicatedTestimonials = [...testimonials, ...testimonials];
 
   return (
-    <div
-      id="TestimonySection"
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 relative overflow-hidden"
-    >
-      <div className="max-w-7xl mx-auto py-8 md:py-16 px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8 md:mb-16"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-center gap-2 mb-4">
-            <FaGoogle className="text-3xl md:text-4xl text-[#4285F4]" />
-            <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mt-2 md:mt-0">
-              Google Ads Success Stories
-            </h2>
-          </div>
-          <p className="text-gray-600 text-base md:text-lg px-2">
-            Hear from businesses who've accelerated growth through our expert
-            PPC management
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-2 mt-4 md:mt-8 px-2">
-            {["all", "Search Ads", "Display Ads", "Shopping Ads"].map(
-              (type) => (
-                <button
-                  key={type}
-                  onClick={() => setFilter(type)}
-                  className={`px-3 py-1 md:px-4 md:py-2 rounded-full text-sm md:text-base transition-all ${
-                    filter === type
-                      ? "bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white shadow-lg"
-                      : "bg-white text-gray-600 hover:bg-gray-50 shadow-md"
-                  }`}
-                >
-                  {type.replace("all", "All Campaigns")}
-                </button>
-              )
-            )}
-          </div>
-        </motion.div>
-
-        <div
-          className="relative group"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+    <div id="TestimonySection" className="min-h-screen bg-black relative overflow-hidden">
+      {/* Futuristic Background */}
+      <FuturisticBackground />
+      
+      {/* Main Content */}
+      <div className="relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Header Section */}
           <motion.div
-            className={`flex ${
-              isMobile
-                ? "w-full overflow-hidden"
-                : filteredTestimonials.length < 3
-                ? "md:flex md:justify-center md:gap-8"
-                : "md:grid md:grid-cols-3 gap-8"
-            }`}
-            drag={isMobile ? "x" : false}
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={handleDragEnd}
-            whileTap={{ cursor: isMobile ? "grabbing" : "auto" }}
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            {visibleTestimonials.length > 0 ? (
-              visibleTestimonials.map((testimonial) => (
-                <motion.div
-                  key={testimonial.id}
-                  className={`${
-                    isMobile
-                      ? "w-[85vw] min-w-[85vw] mx-2"
-                      : filteredTestimonials.length < 3
-                      ? "w-full max-w-md mx-4"
-                      : "w-full"
-                  } flex-shrink-0`}
-                >
-                  <div className="bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-4 md:p-6 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                    <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
-                      <motion.div
-                        className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden"
-                        whileHover={{ scale: 1.1 }}
-                      >
-                        <img
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#4285F4]/20 to-[#34A853]/20" />
-                      </motion.div>
-                      <div className="flex-1">
-                        <div className="flex flex-col md:flex-row justify-between items-start">
-                          <div>
-                            <h3 className="text-lg md:text-xl font-bold text-gray-800">
-                              {testimonial.name}
-                            </h3>
-                            <p className="text-xs md:text-sm text-gray-600">
-                              {testimonial.role} at {testimonial.company}
-                            </p>
-                          </div>
-                          <span className="px-2 py-1 md:px-3 md:py-1 bg-gradient-to-r from-[#4285F4]/10 to-[#34A853]/10 text-[#34A853] rounded-full text-xs md:text-sm mt-1 md:mt-0">
-                            {testimonial.industry}
-                          </span>
-                        </div>
-                        <div className="flex gap-1 mt-1 md:mt-2">
-                          {renderStars(testimonial.rating)}
-                        </div>
-                      </div>
-                    </div>
+            {/* System Status */}
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+              <span className="text-cyan-400 font-mono text-sm">
+                CLIENT SUCCESS MATRIX - {currentTime.toLocaleTimeString()}
+              </span>
+            </div>
 
-                    <motion.div
-                      className="relative overflow-hidden rounded-lg md:rounded-xl bg-gradient-to-br from-[#4285F4]/5 to-[#34A853]/5 p-3 md:p-4 mb-3 md:mb-4"
-                      whileHover={{ y: window.innerWidth >= 768 ? -5 : 0 }}
-                    >
-                      <p className="text-gray-700 text-sm md:text-base leading-relaxed italic relative z-10 line-clamp-4">
-                        "{testimonial.text}"
-                      </p>
-                      <FaQuoteRight className="absolute bottom-1 right-1 md:bottom-2 md:right-2 text-2xl md:text-4xl text-[#4285F4]/20" />
-                    </motion.div>
+            {/* Brand Icon */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <motion.div
+                className="relative"
+                animate={{
+                  rotate: [0, 360],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              >
+                <div className="w-16 h-16 border-2 border-cyan-400 rounded-full flex items-center justify-center">
+                  <FaAtom className="text-cyan-400 text-2xl" />
+                </div>
+              </motion.div>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                CLIENT SUCCESS
+              </h1>
+            </div>
 
-                    <div className="grid grid-cols-3 gap-1 md:gap-2 text-center mb-3 md:mb-4">
-                      {[
-                        {
-                          value: testimonial.stats.roas,
-                          color: "#34A853",
-                          label: "ROAS",
-                        },
-                        {
-                          value: testimonial.stats.costReduction,
-                          color: "#4285F4",
-                          label: "Costs",
-                        },
-                        {
-                          value: testimonial.stats.clicks,
-                          color: "#34A853",
-                          label: "Clicks",
-                        },
-                      ].map((stat, index) => (
-                        <div
-                          key={index}
-                          className="p-2 md:p-3 rounded-md"
-                          style={{
-                            background: `linear-gradient(to bottom right, ${stat.color}1A, ${stat.color}33)`,
-                          }}
-                        >
-                          <p
-                            className="text-lg md:text-xl font-bold"
-                            style={{ color: stat.color }}
-                          >
-                            {stat.value}%
-                          </p>
-                          <p
-                            className="text-[10px] md:text-xs"
-                            style={{ color: stat.color }}
-                          >
-                            {stat.label}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
+            {/* Main Heading */}
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              PROVEN
+              <br />
+              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                RESULTS
+              </span>
+            </h2>
 
-                    <div className="mt-3 md:mt-4 flex flex-col md:flex-row items-center justify-between gap-2">
-                      <span className="px-3 py-1 md:px-4 md:py-2 bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white rounded-full text-xs md:text-sm flex items-center gap-1 md:gap-2">
-                        <FaRegChartBar className="text-sm md:text-lg" />
-                        {testimonial.serviceType}
-                      </span>
-                      <div className="flex items-center gap-1 md:gap-2">
-                        <FaGoogle className="text-xl md:text-2xl text-[#4285F4]" />
-                        <span className="text-xs md:text-sm text-[#4285F4]">
-                          Google Premier Partner
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <div className="w-full text-center py-12">
-                <p className="text-gray-600">
-                  No testimonials found for this category.
-                </p>
-              </div>
-            )}
+            {/* Description */}
+            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+              Real testimonials from businesses that achieved exponential growth through our 
+              <span className="text-cyan-400 font-semibold"> AI-powered digital marketing strategies</span>
+            </p>
+
+            {/* Live Metrics */}
+            <LiveMetrics />
           </motion.div>
 
-          {isMobile && filteredTestimonials.length > 1 && (
-            <div className="flex justify-between absolute top-1/2 w-full px-4 -translate-y-1/2">
-              <button
-                onClick={handlePrev}
-                className="p-2 bg-white rounded-full shadow-lg"
+          {/* Continuous Scrolling Testimonials */}
+          <div className="relative">
+        <div className="overflow-hidden">
+          <motion.div
+            ref={carouselRef}
+            className="flex gap-6"
+            animate={controls}
+            initial={{ x: 0 }}
+          >
+            {duplicatedTestimonials.map((testimonial, index) => (
+              <motion.div
+                key={`${testimonial.id}-${index}`}
+                className="w-96 flex-shrink-0"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                onHoverStart={handleHoverStart}
+                onHoverEnd={handleHoverEnd}
               >
-                <FaChevronLeft className="text-blue-600" />
-              </button>
-              <button
-                onClick={handleNext}
-                className="p-2 bg-white rounded-full shadow-lg"
-              >
-                <FaChevronRight className="text-blue-600" />
-              </button>
-            </div>
-          )}
-        </div>
+                    <div className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm rounded-xl border border-cyan-400/30 p-6 h-full hover:border-cyan-400/50 transition-all duration-300 group">
+                      {/* Header */}
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-cyan-400/30">
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-blue-400/20" />
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-white mb-1">
+                            {testimonial.name}
+                          </h3>
+                          <p className="text-sm text-gray-400 mb-1">
+                            {testimonial.role}
+                          </p>
+                          <p className="text-sm text-cyan-400 font-semibold mb-2">
+                            {testimonial.company}
+                          </p>
+                          <div className="flex gap-1">
+                            {renderStars(testimonial.rating)}
+                          </div>
+                        </div>
+                      </div>
 
-        {totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-6">
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveIndex(i * cardsToShow)}
-                className={`h-2 w-8 rounded-full transition-all ${
-                  activeIndex === i * cardsToShow
-                    ? "bg-gradient-to-r from-[#4285F4] to-[#34A853]"
-                    : "bg-gray-300"
-                }`}
-              />
-            ))}
+                      {/* Quote */}
+                      <div className="relative bg-gradient-to-br from-gray-800/30 to-gray-900/30 p-4 rounded-lg mb-4 border border-cyan-400/10">
+                        <p className="text-gray-300 text-sm italic leading-relaxed">
+                          "{testimonial.text}"
+                        </p>
+                        <FaQuoteRight className="absolute bottom-2 right-2 text-2xl text-cyan-400/20" />
+                      </div>
+
+                      {/* Stats */}
+                      <div className="grid grid-cols-3 gap-3 mb-4">
+                        <div className="text-center p-3 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg border border-cyan-400/20">
+                          <div className="text-cyan-400 text-lg font-bold">
+                            {testimonial.stats.roas}%
+                          </div>
+                          <div className="text-cyan-400 text-xs">ROAS</div>
+                        </div>
+                        <div className="text-center p-3 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg border border-blue-400/20">
+                          <div className="text-blue-400 text-lg font-bold">
+                            {testimonial.stats.costReduction}%
+                          </div>
+                          <div className="text-blue-400 text-xs">Cost ↓</div>
+                        </div>
+                        <div className="text-center p-3 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-400/20">
+                          <div className="text-purple-400 text-lg font-bold">
+                            {testimonial.stats.conversions}%
+                          </div>
+                          <div className="text-purple-400 text-xs">Conv ↑</div>
+                        </div>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between">
+                        <div className={`flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r ${getServiceColor(testimonial.serviceType)} bg-opacity-20 border border-cyan-400/30`}>
+                          <div className="text-cyan-400">
+                            {getServiceIcon(testimonial.serviceType)}
+                          </div>
+                          <span className="text-cyan-400 text-sm font-semibold">
+                            {testimonial.serviceType}
+                          </span>
+                        </div>
+                        
+                        <div className="text-right">
+                          <div className="text-gray-400 text-xs">Ad Spend</div>
+                          <div className="text-cyan-400 font-bold text-sm">
+                            {testimonial.adSpend}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Pause indicator */}
+            {isPaused && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute top-4 right-4 bg-black/80 backdrop-blur-sm border border-cyan-400/30 rounded-lg px-4 py-2"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                  <span className="text-cyan-400 text-sm font-mono">PAUSED</span>
+                </div>
+              </motion.div>
+            )}
           </div>
-        )}
+
+          {/* Manual Control Button (for testing) */}
+
+          {/* CTA Section */}
+          <motion.div
+            className="text-center mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <div className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm rounded-xl border border-cyan-400/30 p-8 max-w-2xl mx-auto">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Ready to Join Our Success Stories?
+              </h3>
+              <p className="text-gray-300 mb-6">
+                Scale your business with AI-powered digital marketing strategies that deliver results.
+              </p>
+              <motion.button
+                onClick={() => navigate('/contact')}
+                className="relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold overflow-hidden group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  <FaRocket />
+                  START YOUR SUCCESS STORY
+                </span>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                  animate={{
+                    x: ["-100%", "100%"],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                  }}
+                />
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
 };
+
 export default TestimonialPage;

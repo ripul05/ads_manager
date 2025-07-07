@@ -1,6 +1,8 @@
+// export default HomePage;
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import React from "react";
+import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import Navbar from "./Navbar";
 import {
   FaGoogle,
   FaChartLine,
@@ -12,24 +14,288 @@ import {
   FaChess,
   FaRocket,
   FaChartBar,
+  FaBolt,
+  FaAtom,
+  FaNetworkWired,
+  FaCube,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 
-import Navbar from "./Navbar";
 
-const HomePage = () => {
+// Mobile-optimized Futuristic Background
+const FuturisticBackground = () => {
+  const [nodes, setNodes] = useState([]);
+
+  useEffect(() => {
+    const generateNodes = () => {
+      const newNodes = [];
+      // Reduced nodes for mobile performance
+      const nodeCount = window.innerWidth < 768 ? 8 : 15;
+      for (let i = 0; i < nodeCount; i++) {
+        newNodes.push({
+          id: i,
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          size: Math.random() * 3 + 1.5,
+          duration: Math.random() * 20 + 15,
+          delay: Math.random() * 5,
+        });
+      }
+      setNodes(newNodes);
+    };
+
+    generateNodes();
+    window.addEventListener('resize', generateNodes);
+    return () => window.removeEventListener('resize', generateNodes);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Simplified grid for mobile */}
+      <div className="absolute inset-0">
+        <motion.div
+          className="absolute inset-0 opacity-10 md:opacity-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: window.innerWidth < 768 ? '50px 50px' : '100px 100px'
+          }}
+          animate={{
+            backgroundPosition: ['0px 0px', '50px 50px'],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </div>
+
+      {/* Optimized nodes */}
+      <svg className="absolute inset-0 w-full h-full">
+        {nodes.map((node, i) => (
+          <g key={node.id}>
+            {/* Reduced connection lines for mobile */}
+            {window.innerWidth >= 768 && nodes.slice(i + 1).map((otherNode, j) => {
+              const distance = Math.sqrt(
+                Math.pow(node.x - otherNode.x, 2) + Math.pow(node.y - otherNode.y, 2)
+              );
+              return distance < 30 ? (
+                <motion.line
+                  key={j}
+                  x1={`${node.x}%`}
+                  y1={`${node.y}%`}
+                  x2={`${otherNode.x}%`}
+                  y2={`${otherNode.y}%`}
+                  stroke="rgba(0, 255, 255, 0.2)"
+                  strokeWidth="1"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 0.6, 0] }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                  }}
+                />
+              ) : null;
+            })}
+            
+            <motion.circle
+              cx={`${node.x}%`}
+              cy={`${node.y}%`}
+              r={node.size}
+              fill="rgba(0, 255, 255, 0.6)"
+              animate={{
+                r: [node.size, node.size * 1.5, node.size],
+                opacity: [0.3, 0.8, 0.3],
+              }}
+              transition={{
+                duration: node.duration,
+                repeat: Infinity,
+                delay: node.delay,
+              }}
+            />
+          </g>
+        ))}
+      </svg>
+
+      {/* Scanning lines - hidden on mobile for performance */}
+      <div className="hidden md:block">
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"
+          style={{ width: '2px' }}
+          animate={{
+            x: ['-100vw', '100vw'],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+// Mobile-optimized Marketing Dashboard
+const MarketingDashboard = () => {
+  const [channels, setChannels] = useState([]);
+  const [metrics, setMetrics] = useState({
+    engagement: 0,
+    roi: 0,
+    reach: 0,
+    leads: 0
+  });
+
+  useEffect(() => {
+    const generateData = () => {
+      const channelData = [
+        { platform: "Google", progress: Math.random() * 100, color: "#4285F4", icon: <FaGoogle /> },
+        { platform: "Meta", progress: Math.random() * 100, color: "#1877F2", icon: <FaChartLine /> },
+        { platform: "SEO", progress: Math.random() * 100, color: "#0F9D58", icon: <FaSearch /> },
+        { platform: "Email", progress: Math.random() * 100, color: "#EA4335", icon: <FaDatabase /> }
+      ];
+      
+      setChannels(channelData);
+      
+      setMetrics({
+        engagement: (Math.random() * 15 + 5).toFixed(1),
+        roi: (Math.random() * 8 + 3).toFixed(1),
+        reach: Math.floor(Math.random() * 5000000 + 1000000),
+        leads: Math.floor(Math.random() * 5000 + 1000)
+      });
+    };
+
+    generateData();
+    const interval = setInterval(generateData, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative w-full h-56 sm:h-64 md:h-72 bg-black/40 backdrop-blur-sm border border-cyan-400/30 rounded-xl p-3 sm:p-4 overflow-hidden">
+      {/* Header */}
+      <div className="absolute top-2 sm:top-3 left-3 sm:left-4 text-cyan-400 text-xs sm:text-sm font-mono flex items-center">
+        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full mr-2 animate-pulse"></div>
+        <span className="hidden sm:inline">MARKETING ANALYTICS v4.2</span>
+        <span className="sm:hidden">ANALYTICS</span>
+      </div>
+      
+      {/* Main content */}
+      <div className="mt-8 sm:mt-10 h-full flex flex-col">
+        {/* Metrics */}
+        <div className="grid grid-cols-4 gap-1 sm:gap-2 mb-4 sm:mb-6 px-1">
+          <div className="text-center">
+            <div className="text-cyan-400 text-sm sm:text-lg font-bold">{metrics.engagement}%</div>
+            <div className="text-gray-400 text-xs mt-1">ENGAGE</div>
+          </div>
+          <div className="text-center">
+            <div className="text-purple-400 text-sm sm:text-lg font-bold">{metrics.roi}x</div>
+            <div className="text-gray-400 text-xs mt-1">ROI</div>
+          </div>
+          <div className="text-center">
+            <div className="text-blue-400 text-sm sm:text-lg font-bold">{(metrics.reach / 1000000).toFixed(1)}M</div>
+            <div className="text-gray-400 text-xs mt-1">REACH</div>
+          </div>
+          <div className="text-center">
+            <div className="text-green-400 text-sm sm:text-lg font-bold">{(metrics.leads / 1000).toFixed(1)}K</div>
+            <div className="text-gray-400 text-xs mt-1">LEADS</div>
+          </div>
+        </div>
+        
+        {/* Channel bars */}
+        <div className="flex-1 grid grid-cols-4 gap-2 sm:gap-3 px-1">
+          {channels.map((channel, i) => (
+            <motion.div 
+              key={i}
+              className="flex flex-col items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="text-gray-300 mb-2 text-sm sm:text-lg">{channel.icon}</div>
+              <div className="w-full h-12 sm:h-16 md:h-20 relative flex flex-col justify-end">
+                <div 
+                  className="text-xs font-mono mb-1 text-center"
+                  style={{ color: channel.color }}
+                >
+                  {channel.progress.toFixed(0)}%
+                </div>
+                
+                <div className="relative w-full h-1 sm:h-2 flex items-center">
+                  <div className="absolute w-full bg-gray-800 rounded-full h-0.5 sm:h-1"></div>
+                  <motion.div
+                    className="absolute rounded-full h-0.5 sm:h-1"
+                    style={{ 
+                      backgroundColor: channel.color,
+                      width: `${channel.progress}%`
+                    }}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${channel.progress}%` }}
+                    transition={{ duration: 1.5, delay: i * 0.1 }}
+                  />
+                  <motion.div
+                    className="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
+                    style={{ 
+                      backgroundColor: channel.color,
+                      left: `${channel.progress}%`
+                    }}
+                    animate={{ 
+                      scale: [1, 1.3, 1],
+                      opacity: [0.8, 1, 0.8],
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: Infinity,
+                      delay: i * 0.3
+                    }}
+                  />
+                </div>
+                <div className="text-gray-400 text-xs mt-1 sm:mt-1.5 text-center truncate w-full">
+                  {channel.platform}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        
+        {/* Scanning line */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
+          initial={{ x: '-100%' }}
+          animate={{ x: '100%' }}
+          transition={{ 
+            duration: 3, 
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const HomePage = ({ activeIndex, setActiveIndex }) => {
+  const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.3 },
+      transition: { staggerChildren: 0.1 },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
+    hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
@@ -37,239 +303,209 @@ const HomePage = () => {
     },
   };
 
+  const handleContactClick = () => {
+    setActiveIndex(3); // index of Contact
+    navigate("/contact");
+  };
+
+  const handleAboutClick = () => {
+    const targetSection = document.querySelector("#AboutSection");
+    if (targetSection) {
+      setActiveIndex(1); // index of About
+      targetSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div
-      id="HomeSection"
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 relative overflow-hidden"
-    >
-      <Navbar />
+    <div id="HomeSection" className="min-h-screen bg-black relative overflow-hidden">
+      {/* Futuristic Background */}
+      <Navbar activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+      <FuturisticBackground />
+      
+      {/* Main Content - Added proper spacing for navbar */}
+      <div className="relative z-10 min-h-screen flex items-center pt-20 md:pt-24 lg:pt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center"
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+          >
+            {/* Left Column - Main Content */}
+            <div className="lg:col-span-7 text-center lg:text-left">
+              <motion.div variants={itemVariants}>
+                {/* Header with time */}
+                <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-4 mb-4 sm:mb-6">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                  <span className="text-cyan-400 font-mono text-xs sm:text-sm">
+                    <span className="hidden sm:inline">SYSTEM ONLINE - </span>
+                    {currentTime.toLocaleTimeString()}
+                  </span>
+                </div>
+                
+                {/* Brand */}
+                <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-4 mb-6 sm:mb-8">
+  <motion.div
+    className="relative"
+    animate={{ rotate: [0, 360] }}
+    transition={{
+      duration: 20,
+      repeat: Infinity,
+      ease: "linear",
+    }}
+  >
+    <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center overflow-hidden">
+      <img
+        src="/BuzzBandits.png"
+        alt="BuzzBandits Logo"
+        className="w-full h-full object-contain"
+      />
+    </div>
+  </motion.div>
 
-      {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 md:py-28 relative z-10">
+  <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+    BUZZBANDITS
+  </h1>
+</div>
+
+
+                {/* Main heading */}
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+                  NEXT-GEN
+                  <br />
+                  <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    DIGITAL
+                  </span>
+                  <br />
+                  DOMINANCE
+                </h2>
+
+                {/* Description */}
+                <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0">
+                  AI-powered marketing automation that maximizes ROI through intelligent targeting, 
+                  real-time optimization, and predictive audience behavior analysis.
+                </p>
+
+                {/* Stats - Added proper spacing */}
+                <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 lg:mb-16 max-w-md mx-auto lg:max-w-2xl lg:mx-0">
+                  {[
+                    { value: "847%", label: "Average ROAS" },
+                    { value: "24/7", label: "Campaign Monitoring" },
+                    { value: "45M+", label: "Monthly Reach" },
+                  ].map((stat, i) => (
+                    <motion.div
+                      key={i}
+                      className="text-center"
+                      variants={itemVariants}
+                    >
+                      <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-cyan-400">{stat.value}</div>
+                      <div className="text-xs sm:text-sm text-gray-400">{stat.label}</div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* CTA Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center lg:items-start">
+      <motion.button
+        onClick={handleContactClick}
+        className="relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold overflow-hidden group"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <span className="relative z-10 text-sm sm:text-base">INITIALIZE PROTOCOL</span>
         <motion.div
-          className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-        >
-          {/* Left Column - Text Content */}
-          <div className="lg:w-1/2 flex flex-col space-y-8">
-            <motion.div
-              className="flex items-center gap-4 mb-6"
-              variants={itemVariants}
-            >
-              <motion.div
-                className="p-3 rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow"
-                whileHover={{ rotate: 15 }}
-              >
-                <FaGoogle className="text-3xl text-[#4285F4]" />
+          className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
+          animate={{ x: ["-100%", "100%"] }}
+          transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
+        />
+      </motion.button>
+
+      <motion.button
+        onClick={handleAboutClick}
+        className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border border-cyan-400 text-cyan-400 rounded-lg font-semibold hover:bg-cyan-400/10 transition-all text-sm sm:text-base"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        VIEW DASHBOARD
+      </motion.button>
+    </div>
               </motion.div>
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
-                Buzzbandits
-              </h1>
-            </motion.div>
+            </div>
 
-            <motion.h2
-              className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight"
-              variants={itemVariants}
-            >
-              Digital Marketing
-              <br />
-              <span className="bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
-                Perfected
-              </span>
-            </motion.h2>
-
-            <motion.p
-              className="text-xl text-gray-600 md:pr-8 leading-relaxed"
-              variants={itemVariants}
-            >
-              At Buzzbandits, we combine{" "}
-              <span className="text-[#4285F4] font-semibold">
-                cutting-edge technology
-              </span>{" "}
-              with{" "}
-              <span className="text-[#34A853] font-semibold">
-                data-driven strategies
-              </span>{" "}
-              to deliver measurable results. With over 5 years of experience,
-              we've helped 200+ businesses scale their digital presence through:
-            </motion.p>
-
-            <motion.div
-              className="grid grid-cols-2 gap-4"
-              variants={itemVariants}
-            >
-              {[
-                "SEO Optimization",
-                "Social Media",
-                "PPC Campaigns",
-                "Content Strategy",
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center space-x-2 bg-white/80 p-3 rounded-lg"
-                >
-                  <FaCheckCircle className="text-[#34A853]" />
-                  <span className="text-gray-700">{item}</span>
+            {/* Right Column - Interactive Elements */}
+            <div className="lg:col-span-5 mt-8 lg:mt-0">
+              <motion.div variants={itemVariants}>
+                {/* Marketing Dashboard */}
+                <div className="mb-8 sm:mb-12 lg:mb-16">
+                  <MarketingDashboard />
                 </div>
-              ))}
-            </motion.div>
-
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 mt-8"
-              variants={itemVariants}
-            >
-              <button
-                onClick={() => navigate("/contact")}
-                className="bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all"
-              >
-                Start Your Journey
-              </button>
-              <button
-                onClick={() => {
-                  const section = document.getElementById("AboutSection");
-                  if (section) {
-                    section.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="bg-white text-gray-600 px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-lg transition-all border-2 border-gray-100"
-              >
-                Learn More
-              </button>
-            </motion.div>
-          </div>
-
-          {/* Right Column - Visual Elements */}
-          <div className="lg:w-1/2 w-full mt-8 lg:mt-0">
-            <div className="relative bg-gradient-to-tr from-[#4285F4]/20 to-[#34A853]/20 rounded-3xl overflow-hidden p-4 md:p-6 lg:p-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 lg:gap-6">
-                {[
-                  {
-                    title: "ROI Focused",
-                    color: "#34A853",
-                    icon: <FaChartLine />,
-                    desc: "Maximize your marketing budget with performance-based strategies",
-                  },
-                  {
-                    title: "Full Funnel",
-                    color: "#4285F4",
-                    icon: <FaLayerGroup />,
-                    desc: "End-to-end solutions from awareness to conversion",
-                  },
-                  {
-                    title: "Real-Time Data",
-                    color: "#FBBC04",
-                    icon: <FaDatabase />,
-                    desc: "Instant insights with our advanced analytics dashboard",
-                  },
-                  {
-                    title: "360° Strategy",
-                    color: "#EA4335",
-                    icon: <FaCrosshairs />,
-                    desc: "Omnichannel approach for maximum market penetration",
-                  },
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    className="bg-white/90 backdrop-blur-sm p-3 md:p-5 lg:p-6 rounded-xl lg:rounded-2xl shadow-lg hover:shadow-xl transition-all"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: index * 0.1,
-                      type: "spring",
-                      stiffness: 100,
-                    }}
-                    whileHover={{
-                      y: -8,
-                      transition: { duration: 0.2 },
-                    }}
-                    whileTap={{ scale: 0.97 }} // Added tap animation for mobile
-                  >
-                    <div className="flex items-center md:flex-col md:items-center gap-3 md:gap-0">
-                      {/* Icon Container */}
-                      <motion.div
-                        className="p-2 md:p-4 rounded-lg shrink-0"
-                        style={{ backgroundColor: `${feature.color}10` }}
-                        whileHover={{ rotate: index % 2 === 0 ? -10 : 10 }}
-                      >
-                        {React.cloneElement(feature.icon, {
-                          className: "text-2xl md:text-3xl lg:text-4xl",
-                          style: { color: feature.color },
-                        })}
-                      </motion.div>
-
-                      {/* Text Content */}
-                      <div className="md:text-center">
-                        <motion.h3
-                          className="text-base md:text-lg lg:text-xl font-bold text-gray-800"
-                          whileHover={{ color: feature.color }}
-                        >
-                          {feature.title}
-                        </motion.h3>
-                        <p className="text-xs md:text-sm text-gray-600 mt-1 hidden md:block">
-                          {feature.desc}
-                        </p>
+                
+                {/* Marketing Feature Cards - Added proper spacing */}
+                <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+                  {[
+                    { icon: <FaSearch />, title: "SEO Rank", value: "#1", desc: "Avg Position" },
+                    { icon: <FaChartLine />, title: "Ad Spend", value: "$45K", desc: "Monthly Budget" },
+                    { icon: <FaNetworkWired />, title: "Reach", value: "2.8M", desc: "Impressions" },
+                    { icon: <FaCube />, title: "Leads", value: "1.2K", desc: "This Month" },
+                  ].map((feature, i) => (
+                    <motion.div
+                      key={i}
+                      className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-xl border border-cyan-400/20 hover:border-cyan-400/50 transition-all group"
+                      whileHover={{ 
+                        scale: 1.02,
+                        boxShadow: "0 10px 30px rgba(0, 255, 255, 0.2)"
+                      }}
+                      variants={itemVariants}
+                    >
+                      <div className="flex items-center justify-between mb-2 sm:mb-3">
+                        <div className="text-cyan-400 text-lg sm:text-xl lg:text-2xl">{feature.icon}</div>
+                        <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{feature.value}</div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Process Section */}
-        <motion.div
-          className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-4 gap-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          {[
-            { title: "Discovery", icon: <FaSearch />, color: "#4285F4" },
-            { title: "Strategy", icon: <FaChess />, color: "#34A853" },
-            { title: "Execution", icon: <FaRocket />, color: "#FBBC04" },
-            { title: "Optimization", icon: <FaChartBar />, color: "#EA4335" },
-          ].map((step, index) => (
-            <div
-              key={index}
-              className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
-            >
-              <div className="flex items-center gap-4">
-                <div
-                  className="p-3 rounded-lg"
-                  style={{ backgroundColor: `${step.color}10` }}
-                >
-                  {React.cloneElement(step.icon, {
-                    className: "text-2xl",
-                    style: { color: step.color },
-                  })}
+                      <div className="text-sm sm:text-base text-gray-400 mb-1">{feature.title}</div>
+                      <div className="text-xs sm:text-sm text-gray-500">{feature.desc}</div>
+                    </motion.div>
+                  ))}
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Step {index + 1}</p>
-                  <h3 className="text-lg font-bold text-gray-800">
-                    {step.title}
-                  </h3>
-                </div>
-              </div>
-              <p className="mt-4 text-gray-600 text-sm">
-                {
-                  [
-                    "Deep dive into your business objectives",
-                    "Customized campaign planning",
-                    "Rapid implementation across channels",
-                    "Continuous performance enhancement",
-                  ][index]
-                }
-              </p>
+              </motion.div>
             </div>
-          ))}
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Background Animation Elements */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-green-50/50 to-transparent" />
+      {/* Bottom Process Bar - Added proper spacing */}
+      <motion.div
+        className="relative z-10 bg-black/80 backdrop-blur-sm border-t border-cyan-400/20 p-6 sm:p-8 lg:p-10 mt-20 sm:mt-24 lg:mt-32"
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ delay: 1 }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
+            {[
+              { title: "ANALYZE", desc: "AI audience segmentation", icon: <FaSearch /> },
+              { title: "OPTIMIZE", desc: "Real-time bid management", icon: <FaChess /> },
+              { title: "SCALE", desc: "Multi-platform deployment", icon: <FaRocket /> },
+              { title: "REPORT", desc: "Automated insights delivery", icon: <FaChartBar /> },
+            ].map((step, i) => (
+              <motion.div
+                key={i}
+                className="flex items-center gap-4 sm:gap-6 group"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.2 + i * 0.1 }}
+              >
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center border border-cyan-400/30 group-hover:border-cyan-400/60 transition-all flex-shrink-0">
+                  <div className="text-cyan-400 text-xl sm:text-2xl lg:text-3xl">{step.icon}</div>
+                </div>
+                <div className="min-w-0">
+                  <div className="text-white font-semibold text-base sm:text-lg lg:text-xl">{step.title}</div>
+                  <div className="text-gray-400 text-sm sm:text-base">{step.desc}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 };
