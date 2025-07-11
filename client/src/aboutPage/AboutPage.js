@@ -138,34 +138,14 @@ const FuturisticBackground = () => {
 };
 
 // Digital Marketing Metrics Dashboard
+
+
 const MarketingMetrics = () => {
-  const [metrics, setMetrics] = useState({
-    campaigns: 0,
-    roi: 0,
-    clients: 0,
-    reach: 0
-  });
-
-  useEffect(() => {
-    const updateMetrics = () => {
-      setMetrics({
-        campaigns: Math.floor(Math.random() * 50) + 150,
-        roi: Math.floor(Math.random() * 200) + 400,
-        clients: Math.floor(Math.random() * 100) + 300,
-        reach: Math.floor(Math.random() * 10) + 45
-      });
-    };
-
-    updateMetrics();
-    const interval = setInterval(updateMetrics, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
   const stats = [
-    { number: metrics.campaigns, label: "Active Campaigns", suffix: "+", color: "#00ffff" },
-    { number: metrics.roi, label: "Average ROI", suffix: "%", color: "#0080ff" },
-    { number: metrics.clients, label: "Happy Clients", suffix: "+", color: "#8000ff" },
-    { number: metrics.reach, label: "Million Reach", suffix: "M+", color: "#ff0080" },
+    { number: 185, label: "Active Campaigns", suffix: "+", color: "#00ffff" },
+    { number: 512, label: "Average ROI", suffix: "%", color: "#0080ff" },
+    { number: 368, label: "Happy Clients", suffix: "+", color: "#8000ff" },
+    { number: 54, label: "Million Reach", suffix: "M+", color: "#ff0080" },
   ];
 
   return (
@@ -217,6 +197,7 @@ const MarketingMetrics = () => {
     </div>
   );
 };
+
 
 const AboutUs = ({ setActiveIndex }) => {
   const navigate = useNavigate();
@@ -289,7 +270,7 @@ const AboutUs = ({ setActiveIndex }) => {
   };
 
   const handleViewCaseStudiesClick = () => {
-    const target = document.querySelector('#TestimonySection');
+    const target = document.querySelector('#Clients');
     if (target) {
       setActiveIndex(2); // Testimonials index
       target.scrollIntoView({ behavior: 'smooth' });

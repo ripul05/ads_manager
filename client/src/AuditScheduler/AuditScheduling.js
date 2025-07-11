@@ -570,7 +570,7 @@ const handleSubmit = async () => {
         </div>
 
         {/* Footer */}
-        <div className="relative z-10 flex-none p-6 sm:p-8 border-t border-cyan-400/20">
+        {/* <div className="relative z-10 flex-none p-6 sm:p-8 border-t border-cyan-400/20">
           <div className="flex items-center justify-between text-xs sm:text-sm text-gray-400">
             <div className="flex items-center gap-2">
               <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
@@ -582,7 +582,7 @@ const handleSubmit = async () => {
               <span>AI-POWERED SCHEDULING</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       
       {/* Additional CSS for animations */}
@@ -604,5 +604,4 @@ const handleSubmit = async () => {
     </div>
   );
 };
-
 export default AuditScheduling;

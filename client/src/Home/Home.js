@@ -1,6 +1,6 @@
 // export default HomePage;
 import { motion } from "framer-motion";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import {
@@ -20,8 +20,9 @@ import {
   FaCube,
   FaBars,
   FaTimes,
+  FaEnvelope,
 } from "react-icons/fa";
-
+import { BarChart3,ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Mobile-optimized Futuristic Background
 const FuturisticBackground = () => {
@@ -46,8 +47,8 @@ const FuturisticBackground = () => {
     };
 
     generateNodes();
-    window.addEventListener('resize', generateNodes);
-    return () => window.removeEventListener('resize', generateNodes);
+    window.addEventListener("resize", generateNodes);
+    return () => window.removeEventListener("resize", generateNodes);
   }, []);
 
   return (
@@ -61,10 +62,11 @@ const FuturisticBackground = () => {
               linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: window.innerWidth < 768 ? '50px 50px' : '100px 100px'
+            backgroundSize:
+              window.innerWidth < 768 ? "50px 50px" : "100px 100px",
           }}
           animate={{
-            backgroundPosition: ['0px 0px', '50px 50px'],
+            backgroundPosition: ["0px 0px", "50px 50px"],
           }}
           transition={{
             duration: 20,
@@ -79,30 +81,32 @@ const FuturisticBackground = () => {
         {nodes.map((node, i) => (
           <g key={node.id}>
             {/* Reduced connection lines for mobile */}
-            {window.innerWidth >= 768 && nodes.slice(i + 1).map((otherNode, j) => {
-              const distance = Math.sqrt(
-                Math.pow(node.x - otherNode.x, 2) + Math.pow(node.y - otherNode.y, 2)
-              );
-              return distance < 30 ? (
-                <motion.line
-                  key={j}
-                  x1={`${node.x}%`}
-                  y1={`${node.y}%`}
-                  x2={`${otherNode.x}%`}
-                  y2={`${otherNode.y}%`}
-                  stroke="rgba(0, 255, 255, 0.2)"
-                  strokeWidth="1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: [0, 0.6, 0] }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                  }}
-                />
-              ) : null;
-            })}
-            
+            {window.innerWidth >= 768 &&
+              nodes.slice(i + 1).map((otherNode, j) => {
+                const distance = Math.sqrt(
+                  Math.pow(node.x - otherNode.x, 2) +
+                    Math.pow(node.y - otherNode.y, 2)
+                );
+                return distance < 30 ? (
+                  <motion.line
+                    key={j}
+                    x1={`${node.x}%`}
+                    y1={`${node.y}%`}
+                    x2={`${otherNode.x}%`}
+                    y2={`${otherNode.y}%`}
+                    stroke="rgba(0, 255, 255, 0.2)"
+                    strokeWidth="1"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 0.6, 0] }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      delay: i * 0.2,
+                    }}
+                  />
+                ) : null;
+              })}
+
             <motion.circle
               cx={`${node.x}%`}
               cy={`${node.y}%`}
@@ -126,9 +130,9 @@ const FuturisticBackground = () => {
       <div className="hidden md:block">
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"
-          style={{ width: '2px' }}
+          style={{ width: "2px" }}
           animate={{
-            x: ['-100vw', '100vw'],
+            x: ["-100vw", "100vw"],
           }}
           transition={{
             duration: 8,
@@ -142,142 +146,253 @@ const FuturisticBackground = () => {
 };
 
 // Mobile-optimized Marketing Dashboard
-const MarketingDashboard = () => {
-  const [channels, setChannels] = useState([]);
-  const [metrics, setMetrics] = useState({
-    engagement: 0,
-    roi: 0,
-    reach: 0,
-    leads: 0
-  });
 
-  useEffect(() => {
-    const generateData = () => {
-      const channelData = [
-        { platform: "Google", progress: Math.random() * 100, color: "#4285F4", icon: <FaGoogle /> },
-        { platform: "Meta", progress: Math.random() * 100, color: "#1877F2", icon: <FaChartLine /> },
-        { platform: "SEO", progress: Math.random() * 100, color: "#0F9D58", icon: <FaSearch /> },
-        { platform: "Email", progress: Math.random() * 100, color: "#EA4335", icon: <FaDatabase /> }
-      ];
-      
-      setChannels(channelData);
-      
-      setMetrics({
-        engagement: (Math.random() * 15 + 5).toFixed(1),
-        roi: (Math.random() * 8 + 3).toFixed(1),
-        reach: Math.floor(Math.random() * 5000000 + 1000000),
-        leads: Math.floor(Math.random() * 5000 + 1000)
-      });
-    };
 
-    generateData();
-    const interval = setInterval(generateData, 3000);
-    return () => clearInterval(interval);
-  }, []);
+// const MarketingDashboard = () => {
+//   const [currentAudience, setCurrentAudience] = useState(0);
+//   const [audiences] = useState([
+//     { 
+//       segment: "High-Value Customers", 
+//       size: "2.3M", 
+//       engagement: 89, 
+//       conversion: 12.4,
+//       color: "#10B981"
+//     },
+//     { 
+//       segment: "New Prospects", 
+//       size: "5.7M", 
+//       engagement: 67, 
+//       conversion: 3.8,
+//       color: "#3B82F6"
+//     },
+//     { 
+//       segment: "Retargeting Pool", 
+//       size: "1.8M", 
+//       engagement: 74, 
+//       conversion: 8.2,
+//       color: "#8B5CF6"
+//     }
+//   ]);
 
-  return (
-    <div className="relative w-full h-56 sm:h-64 md:h-72 bg-black/40 backdrop-blur-sm border border-cyan-400/30 rounded-xl p-3 sm:p-4 overflow-hidden">
-      {/* Header */}
-      <div className="absolute top-2 sm:top-3 left-3 sm:left-4 text-cyan-400 text-xs sm:text-sm font-mono flex items-center">
-        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full mr-2 animate-pulse"></div>
-        <span className="hidden sm:inline">MARKETING ANALYTICS v4.2</span>
-        <span className="sm:hidden">ANALYTICS</span>
-      </div>
-      
-      {/* Main content */}
-      <div className="mt-8 sm:mt-10 h-full flex flex-col">
-        {/* Metrics */}
-        <div className="grid grid-cols-4 gap-1 sm:gap-2 mb-4 sm:mb-6 px-1">
-          <div className="text-center">
-            <div className="text-cyan-400 text-sm sm:text-lg font-bold">{metrics.engagement}%</div>
-            <div className="text-gray-400 text-xs mt-1">ENGAGE</div>
-          </div>
-          <div className="text-center">
-            <div className="text-purple-400 text-sm sm:text-lg font-bold">{metrics.roi}x</div>
-            <div className="text-gray-400 text-xs mt-1">ROI</div>
-          </div>
-          <div className="text-center">
-            <div className="text-blue-400 text-sm sm:text-lg font-bold">{(metrics.reach / 1000000).toFixed(1)}M</div>
-            <div className="text-gray-400 text-xs mt-1">REACH</div>
-          </div>
-          <div className="text-center">
-            <div className="text-green-400 text-sm sm:text-lg font-bold">{(metrics.leads / 1000).toFixed(1)}K</div>
-            <div className="text-gray-400 text-xs mt-1">LEADS</div>
-          </div>
-        </div>
-        
-        {/* Channel bars */}
-        <div className="flex-1 grid grid-cols-4 gap-2 sm:gap-3 px-1">
-          {channels.map((channel, i) => (
-            <motion.div 
-              key={i}
-              className="flex flex-col items-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <div className="text-gray-300 mb-2 text-sm sm:text-lg">{channel.icon}</div>
-              <div className="w-full h-12 sm:h-16 md:h-20 relative flex flex-col justify-end">
-                <div 
-                  className="text-xs font-mono mb-1 text-center"
-                  style={{ color: channel.color }}
-                >
-                  {channel.progress.toFixed(0)}%
-                </div>
-                
-                <div className="relative w-full h-1 sm:h-2 flex items-center">
-                  <div className="absolute w-full bg-gray-800 rounded-full h-0.5 sm:h-1"></div>
-                  <motion.div
-                    className="absolute rounded-full h-0.5 sm:h-1"
-                    style={{ 
-                      backgroundColor: channel.color,
-                      width: `${channel.progress}%`
-                    }}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${channel.progress}%` }}
-                    transition={{ duration: 1.5, delay: i * 0.1 }}
-                  />
-                  <motion.div
-                    className="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
-                    style={{ 
-                      backgroundColor: channel.color,
-                      left: `${channel.progress}%`
-                    }}
-                    animate={{ 
-                      scale: [1, 1.3, 1],
-                      opacity: [0.8, 1, 0.8],
-                    }}
-                    transition={{ 
-                      duration: 2, 
-                      repeat: Infinity,
-                      delay: i * 0.3
-                    }}
-                  />
-                </div>
-                <div className="text-gray-400 text-xs mt-1 sm:mt-1.5 text-center truncate w-full">
-                  {channel.platform}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        
-        {/* Scanning line */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-          initial={{ x: '-100%' }}
-          animate={{ x: '100%' }}
-          transition={{ 
-            duration: 3, 
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      </div>
-    </div>
-  );
-};
+//   const [campaignData] = useState({
+//     cpa: "$23.50",
+//     roas: "4.2x",
+//     ctr: "2.8%",
+//     cpm: "$12.40"
+//   });
 
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setCurrentAudience(prev => (prev + 1) % audiences.length);
+//     }, 4000);
+//     return () => clearInterval(interval);
+//   }, [audiences.length]);
+
+//   const goToAudience = (index) => {
+//     setCurrentAudience(index);
+//   };
+
+//   return (
+//     <div className="relative w-full bg-black/60 backdrop-blur-sm border border-cyan-400/20 rounded-2xl overflow-hidden">
+//       {/* Campaign Command Center Header */}
+//       <div className="p-3 sm:p-4 border-b border-gray-700/50">
+//         <div className="flex items-center justify-between">
+//           <div className="flex items-center gap-2">
+//             <FaAtom className="text-cyan-400 text-sm animate-spin" style={{ animationDuration: '4s' }} />
+//             <span className="text-cyan-400 text-xs sm:text-sm font-mono">CAMPAIGN COMMAND CENTER</span>
+//           </div>
+//           <div className="flex items-center gap-2 text-xs text-gray-400">
+//             <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+//             <span className="hidden sm:inline">OPTIMIZING</span>
+//             <span className="sm:hidden">LIVE</span>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Mobile Layout */}
+//       <div className="block sm:hidden p-3 space-y-3">
+//         {/* Current Audience Segment */}
+//         <div className="space-y-2">
+//           <div className="text-white text-sm font-medium">Active Segment</div>
+//           <motion.div
+//             key={currentAudience}
+//             initial={{ opacity: 0, x: -20 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             className="bg-gray-900/50 rounded-lg p-3 border border-gray-700/50"
+//           >
+//             <div className="flex items-center justify-between mb-2">
+//               <div className="text-white text-sm font-medium">
+//                 {audiences[currentAudience].segment}
+//               </div>
+//               <div 
+//                 className="text-sm font-bold"
+//                 style={{ color: audiences[currentAudience].color }}
+//               >
+//                 {audiences[currentAudience].size}
+//               </div>
+//             </div>
+            
+//             {/* Engagement Bar */}
+//             <div className="space-y-1">
+//               <div className="flex justify-between text-xs text-gray-400">
+//                 <span>Engagement</span>
+//                 <span>{audiences[currentAudience].engagement}%</span>
+//               </div>
+//               <div className="w-full bg-gray-700 rounded-full h-1">
+//                 <motion.div
+//                   className="h-1 rounded-full"
+//                   style={{ backgroundColor: audiences[currentAudience].color }}
+//                   initial={{ width: 0 }}
+//                   animate={{ width: `${audiences[currentAudience].engagement}%` }}
+//                   transition={{ duration: 1.5 }}
+//                 />
+//               </div>
+//             </div>
+            
+//             {/* Conversion Rate */}
+//             <div className="mt-2 text-xs text-gray-400">
+//               CVR: <span style={{ color: audiences[currentAudience].color }}>
+//                 {audiences[currentAudience].conversion}%
+//               </span>
+//             </div>
+//           </motion.div>
+//         </div>
+
+//         {/* Campaign KPIs - Mobile */}
+//         <div className="space-y-2">
+//           <div className="text-white text-sm font-medium">Campaign KPIs</div>
+//           <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-700/50">
+//             <div className="space-y-2 text-xs">
+//               <div className="flex justify-between">
+//                 <span className="text-gray-400">Cost per Acquisition:</span>
+//                 <span className="text-green-400 font-bold">{campaignData.cpa}</span>
+//               </div>
+//               <div className="flex justify-between">
+//                 <span className="text-gray-400">Return on Ad Spend:</span>
+//                 <span className="text-blue-400 font-bold">{campaignData.roas}</span>
+//               </div>
+//               <div className="flex justify-between">
+//                 <span className="text-gray-400">Click-Through Rate:</span>
+//                 <span className="text-purple-400 font-bold">{campaignData.ctr}</span>
+//               </div>
+//               <div className="flex justify-between">
+//                 <span className="text-gray-400">Cost per Mille:</span>
+//                 <span className="text-yellow-400 font-bold">{campaignData.cpm}</span>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Segment Indicators - Mobile */}
+//         <div className="flex gap-1 justify-center pt-2">
+//           {audiences.map((_, index) => (
+//             <button
+//               key={index}
+//               onClick={() => goToAudience(index)}
+//               className={`rounded-full transition-all duration-300 ${
+//                 index === currentAudience 
+//                   ? 'bg-cyan-400 w-3 h-1.5' 
+//                   : 'bg-gray-600 hover:bg-gray-500 w-1.5 h-1.5'
+//               }`}
+//             />
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* Desktop Layout */}
+//       <div className="hidden sm:block p-4">
+//         <div className="space-y-4">
+//           {/* Current Audience Segment */}
+//           <div className="space-y-2">
+//             <div className="text-white text-sm font-medium">Active Segment</div>
+//             <motion.div
+//               key={currentAudience}
+//               initial={{ opacity: 0, x: -20 }}
+//               animate={{ opacity: 1, x: 0 }}
+//               className="bg-gray-900/50 rounded-lg p-4 border border-gray-700/50"
+//             >
+//               <div className="flex items-center justify-between mb-2">
+//                 <div className="text-white text-sm font-medium">
+//                   {audiences[currentAudience].segment}
+//                 </div>
+//                 <div 
+//                   className="text-sm font-bold"
+//                   style={{ color: audiences[currentAudience].color }}
+//                 >
+//                   {audiences[currentAudience].size}
+//                 </div>
+//               </div>
+              
+//               {/* Engagement Bar */}
+//               <div className="space-y-1">
+//                 <div className="flex justify-between text-xs text-gray-400">
+//                   <span>Engagement</span>
+//                   <span>{audiences[currentAudience].engagement}%</span>
+//                 </div>
+//                 <div className="w-full bg-gray-700 rounded-full h-1">
+//                   <motion.div
+//                     className="h-1 rounded-full"
+//                     style={{ backgroundColor: audiences[currentAudience].color }}
+//                     initial={{ width: 0 }}
+//                     animate={{ width: `${audiences[currentAudience].engagement}%` }}
+//                     transition={{ duration: 1.5 }}
+//                   />
+//                 </div>
+//               </div>
+              
+//               {/* Conversion Rate */}
+//               <div className="mt-2 text-xs text-gray-400">
+//                 CVR: <span style={{ color: audiences[currentAudience].color }}>
+//                   {audiences[currentAudience].conversion}%
+//                 </span>
+//               </div>
+//             </motion.div>
+//           </div>
+
+//           {/* Campaign KPIs - Desktop */}
+//           <div className="space-y-2">
+//             <div className="text-white text-sm font-medium">Campaign KPIs</div>
+//             <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700/50">
+//               <div className="space-y-3 text-sm">
+//                 <div className="flex justify-between">
+//                   <span className="text-gray-400">Cost per Acquisition:</span>
+//                   <span className="text-green-400 font-bold">{campaignData.cpa}</span>
+//                 </div>
+//                 <div className="flex justify-between">
+//                   <span className="text-gray-400">Return on Ad Spend:</span>
+//                   <span className="text-blue-400 font-bold">{campaignData.roas}</span>
+//                 </div>
+//                 <div className="flex justify-between">
+//                   <span className="text-gray-400">Click-Through Rate:</span>
+//                   <span className="text-purple-400 font-bold">{campaignData.ctr}</span>
+//                 </div>
+//                 <div className="flex justify-between">
+//                   <span className="text-gray-400">Cost per Mille:</span>
+//                   <span className="text-yellow-400 font-bold">{campaignData.cpm}</span>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Segment Indicators - Desktop */}
+//           <div className="flex gap-1 justify-center pt-2">
+//             {audiences.map((_, index) => (
+//               <button
+//                 key={index}
+//                 onClick={() => goToAudience(index)}
+//                 className={`rounded-full transition-all duration-300 hover:scale-110 ${
+//                   index === currentAudience 
+//                     ? 'bg-cyan-400 w-3 h-1.5' 
+//                     : 'bg-gray-600 hover:bg-gray-500 w-1.5 h-1.5'
+//                 }`}
+//               />
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 const HomePage = ({ activeIndex, setActiveIndex }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
@@ -317,11 +432,14 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
   };
 
   return (
-    <div id="HomeSection" className="min-h-screen bg-black relative overflow-hidden">
+    <div
+      id="HomeSection"
+      className="min-h-screen bg-black relative overflow-hidden"
+    >
       {/* Futuristic Background */}
       <Navbar activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
       <FuturisticBackground />
-      
+
       {/* Main Content - Added proper spacing for navbar */}
       <div className="relative z-10 min-h-screen flex items-center pt-20 md:pt-24 lg:pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -342,32 +460,31 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                     {currentTime.toLocaleTimeString()}
                   </span>
                 </div>
-                
+
                 {/* Brand */}
                 <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-4 mb-6 sm:mb-8">
-  <motion.div
-    className="relative"
-    animate={{ rotate: [0, 360] }}
-    transition={{
-      duration: 20,
-      repeat: Infinity,
-      ease: "linear",
-    }}
-  >
-    <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center overflow-hidden">
-      <img
-        src="/BuzzBandits.png"
-        alt="BuzzBandits Logo"
-        className="w-full h-full object-contain"
-      />
-    </div>
-  </motion.div>
+                  <motion.div
+                    className="relative"
+                    animate={{ rotate: [0, 360] }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  >
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center overflow-hidden">
+                      <img
+                        src="/BuzzBandits.png"
+                        alt="BuzzBandits Logo"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </motion.div>
 
-  <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-    BUZZBANDITS
-  </h1>
-</div>
-
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    BUZZBANDITS
+                  </h1>
+                </div>
 
                 {/* Main heading */}
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
@@ -382,8 +499,9 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
 
                 {/* Description */}
                 <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0">
-                  AI-powered marketing automation that maximizes ROI through intelligent targeting, 
-                  real-time optimization, and predictive audience behavior analysis.
+                  AI-powered marketing automation that maximizes ROI through
+                  intelligent targeting, real-time optimization, and predictive
+                  audience behavior analysis.
                 </p>
 
                 {/* Stats - Added proper spacing */}
@@ -398,37 +516,47 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                       className="text-center"
                       variants={itemVariants}
                     >
-                      <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-cyan-400">{stat.value}</div>
-                      <div className="text-xs sm:text-sm text-gray-400">{stat.label}</div>
+                      <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-cyan-400">
+                        {stat.value}
+                      </div>
+                      <div className="text-xs sm:text-sm text-gray-400">
+                        {stat.label}
+                      </div>
                     </motion.div>
                   ))}
                 </div>
 
                 {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center lg:items-start">
-      <motion.button
-        onClick={handleContactClick}
-        className="relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold overflow-hidden group"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <span className="relative z-10 text-sm sm:text-base">INITIALIZE PROTOCOL</span>
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
-        />
-      </motion.button>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center lg:items-start">
+                  <motion.button
+                    onClick={handleContactClick}
+                    className="relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold overflow-hidden group"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span className="relative z-10 text-sm sm:text-base">
+                      INITIALIZE PROTOCOL
+                    </span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      animate={{ x: ["-100%", "100%"] }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        repeatType: "loop",
+                      }}
+                    />
+                  </motion.button>
 
-      <motion.button
-        onClick={handleAboutClick}
-        className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border border-cyan-400 text-cyan-400 rounded-lg font-semibold hover:bg-cyan-400/10 transition-all text-sm sm:text-base"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        VIEW DASHBOARD
-      </motion.button>
-    </div>
+                  <motion.button
+                    onClick={handleAboutClick}
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border border-cyan-400 text-cyan-400 rounded-lg font-semibold hover:bg-cyan-400/10 transition-all text-sm sm:text-base"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    VIEW DASHBOARD
+                  </motion.button>
+                </div>
               </motion.div>
             </div>
 
@@ -437,32 +565,60 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
               <motion.div variants={itemVariants}>
                 {/* Marketing Dashboard */}
                 <div className="mb-8 sm:mb-12 lg:mb-16">
-                  <MarketingDashboard />
-                </div>
                 
+                </div>
+
                 {/* Marketing Feature Cards - Added proper spacing */}
                 <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
                   {[
-                    { icon: <FaSearch />, title: "SEO Rank", value: "#1", desc: "Avg Position" },
-                    { icon: <FaChartLine />, title: "Ad Spend", value: "$45K", desc: "Monthly Budget" },
-                    { icon: <FaNetworkWired />, title: "Reach", value: "2.8M", desc: "Impressions" },
-                    { icon: <FaCube />, title: "Leads", value: "1.2K", desc: "This Month" },
+                    {
+                      icon: <FaSearch />,
+                      title: "SEO Rank",
+                      value: "#1",
+                      desc: "Avg Position",
+                    },
+                    {
+                      icon: <FaChartLine />,
+                      title: "Ad Spend",
+                      value: "$45K",
+                      desc: "Monthly Budget",
+                    },
+                    {
+                      icon: <FaNetworkWired />,
+                      title: "Reach",
+                      value: "2.8M",
+                      desc: "Impressions",
+                    },
+                    {
+                      icon: <FaCube />,
+                      title: "Leads",
+                      value: "1.2K",
+                      desc: "This Month",
+                    },
                   ].map((feature, i) => (
                     <motion.div
                       key={i}
                       className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-xl border border-cyan-400/20 hover:border-cyan-400/50 transition-all group"
-                      whileHover={{ 
+                      whileHover={{
                         scale: 1.02,
-                        boxShadow: "0 10px 30px rgba(0, 255, 255, 0.2)"
+                        boxShadow: "0 10px 30px rgba(0, 255, 255, 0.2)",
                       }}
                       variants={itemVariants}
                     >
                       <div className="flex items-center justify-between mb-2 sm:mb-3">
-                        <div className="text-cyan-400 text-lg sm:text-xl lg:text-2xl">{feature.icon}</div>
-                        <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{feature.value}</div>
+                        <div className="text-cyan-400 text-lg sm:text-xl lg:text-2xl">
+                          {feature.icon}
+                        </div>
+                        <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+                          {feature.value}
+                        </div>
                       </div>
-                      <div className="text-sm sm:text-base text-gray-400 mb-1">{feature.title}</div>
-                      <div className="text-xs sm:text-sm text-gray-500">{feature.desc}</div>
+                      <div className="text-sm sm:text-base text-gray-400 mb-1">
+                        {feature.title}
+                      </div>
+                      <div className="text-xs sm:text-sm text-gray-500">
+                        {feature.desc}
+                      </div>
                     </motion.div>
                   ))}
                 </div>
@@ -482,10 +638,26 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
             {[
-              { title: "ANALYZE", desc: "AI audience segmentation", icon: <FaSearch /> },
-              { title: "OPTIMIZE", desc: "Real-time bid management", icon: <FaChess /> },
-              { title: "SCALE", desc: "Multi-platform deployment", icon: <FaRocket /> },
-              { title: "REPORT", desc: "Automated insights delivery", icon: <FaChartBar /> },
+              {
+                title: "ANALYZE",
+                desc: "AI audience segmentation",
+                icon: <FaSearch />,
+              },
+              {
+                title: "OPTIMIZE",
+                desc: "Real-time bid management",
+                icon: <FaChess />,
+              },
+              {
+                title: "SCALE",
+                desc: "Multi-platform deployment",
+                icon: <FaRocket />,
+              },
+              {
+                title: "REPORT",
+                desc: "Automated insights delivery",
+                icon: <FaChartBar />,
+              },
             ].map((step, i) => (
               <motion.div
                 key={i}
@@ -495,11 +667,17 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                 transition={{ delay: 1.2 + i * 0.1 }}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center border border-cyan-400/30 group-hover:border-cyan-400/60 transition-all flex-shrink-0">
-                  <div className="text-cyan-400 text-xl sm:text-2xl lg:text-3xl">{step.icon}</div>
+                  <div className="text-cyan-400 text-xl sm:text-2xl lg:text-3xl">
+                    {step.icon}
+                  </div>
                 </div>
                 <div className="min-w-0">
-                  <div className="text-white font-semibold text-base sm:text-lg lg:text-xl">{step.title}</div>
-                  <div className="text-gray-400 text-sm sm:text-base">{step.desc}</div>
+                  <div className="text-white font-semibold text-base sm:text-lg lg:text-xl">
+                    {step.title}
+                  </div>
+                  <div className="text-gray-400 text-sm sm:text-base">
+                    {step.desc}
+                  </div>
                 </div>
               </motion.div>
             ))}
