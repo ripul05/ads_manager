@@ -1,26 +1,45 @@
 import React, { useState, useEffect } from "react";
 import LandingForm from "./LandingForm";
-import Navbar from "../Home/Navbar"
+import Navbar from "../Home/Navbar";
+import {AuditScheduling} from "../AuditScheduler/AuditScheduling";
+
+
 import {
-  FaGoogle,
+  FaPhoneAlt as Phone,
+  FaSearch as Search,
+  FaBullseye as Target,
+  FaChartLine as TrendingUp,
+  FaCode as Code,
+  FaTimes as X,
+  FaArrowRight as ArrowRight,
+  FaCheckCircle as CheckCircle,
+  FaClock as Clock,
+  FaGlobe as Globe,
   FaRocket,
-  FaChartLine,
-  FaPhoneAlt,
-  FaLock,
-  FaCheckCircle,
-  FaAtom,
-  FaBolt,
   FaNetworkWired,
   FaCube,
-  FaSearch,
+  FaLock,
+  FaShieldAlt,
+  FaStar,
+  FaGoogle,
+  FaLightbulb,
+  FaFacebook,
+  FaAd,
+  FaFileAlt,
   FaChartBar,
-  FaDatabase,
-  FaChess,
-  FaLayerGroup,
-  FaCrosshairs,
+  FaTools,
+  FaMobile
 } from "react-icons/fa";
-import { motion } from "framer-motion";
-import AuditScheduling from "../AuditScheduler/AuditScheduling";
+
+import {
+  Zap,
+  Shield,
+  Cpu
+} from 'lucide-react';
+
+
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 // Enhanced Futuristic Background matching home page
 const FuturisticBackground = () => {
@@ -148,18 +167,617 @@ const FuturisticBackground = () => {
   );
 };
 
-function ContactPage({ setActiveIndex }) {
+
+export const QuickConsultationModal = ({
+  showModal,
+  setShowModal,
+  formData,
+  setFormData,      
+  handleChange,
+  pageType = 'contact',
+  onSuccess // Add this prop
+}) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    console.log('Success modal state:', showSuccess);
+  }, [showSuccess]);
+
+  if (!showModal && !showSuccess) return null;
+  
+  const pageConfig = {
+    contact: {
+      icon: <Phone className="w-5 h-5" />,
+      title: "Quick Consultation",
+      subtitle: "Let's discuss your marketing strategy",
+      messagePlaceholder: "Tell us about your marketing goals and challenges...",
+      buttonText: "Send Message",
+      accentColor: "cyan",
+      successTitle: "Message Sent Successfully!",
+      successSubtitle: "We'll get back to you within 24 hours"
+    },
+    googleAds: {
+      icon: <Search className="w-5 h-5" />,
+      title: "Google Ads Consultation",
+      subtitle: "Optimize your search advertising",
+      messagePlaceholder: "Describe your Google Ads goals and current challenges...",
+      buttonText: "Get Strategy",
+      accentColor: "emerald",
+      successTitle: "Google Ads Consultation Requested!",
+      successSubtitle: "Our ads specialist will contact you shortly"
+    },
+    metaAds: {
+      icon: <Target className="w-5 h-5" />,
+      title: "Meta Ads Consultation",
+      subtitle: "Enhance your social media presence",
+      messagePlaceholder: "Share your Meta advertising objectives...",
+      buttonText: "Get Strategy",
+      accentColor: "violet",
+      successTitle: "Meta Ads Consultation Requested!",
+      successSubtitle: "Our social media expert will be in touch"
+    },
+    seo: {
+      icon: <TrendingUp className="w-5 h-5" />,
+      title: "SEO Consultation",
+      subtitle: "Improve your search visibility",
+      messagePlaceholder: "Tell us about your website and SEO goals...",
+      buttonText: "Get Audit",
+      accentColor: "green",
+      successTitle: "SEO Consultation Requested!",
+      successSubtitle: "Our SEO team will analyze your needs and contact you"
+    },
+    webDevelopment: {
+      icon: <Code className="w-5 h-5" />,
+      title: "Development Consultation",
+      subtitle: "Build websites that convert",
+      messagePlaceholder: "Describe your website requirements...",
+      buttonText: "Get Quote",
+      accentColor: "purple",
+      successTitle: "Development Quote Requested!",
+      successSubtitle: "We'll review your requirements and send a proposal"
+    }
+  };
+
+  const config = pageConfig[pageType] || pageConfig.contact;
+
+  // Define color mappings for the accent colors
+  const accentColorClasses = {
+    cyan: {
+      border: "border-cyan-400/30",
+      text: "text-cyan-400",
+      bg: "bg-cyan-500",
+      gradient: "from-cyan-500 to-blue-600"
+    },
+    emerald: {
+      border: "border-emerald-400/30",
+      text: "text-emerald-400",
+      bg: "bg-emerald-500",
+      gradient: "from-emerald-500 to-green-600"
+    },
+    violet: {
+      border: "border-violet-400/30",
+      text: "text-violet-400",
+      bg: "bg-violet-500",
+      gradient: "from-violet-500 to-purple-600"
+    },
+    green: {
+      border: "border-green-400/30",
+      text: "text-green-400",
+      bg: "bg-green-500",
+      gradient: "from-green-500 to-emerald-600"
+    },
+    purple: {
+      border: "border-purple-400/30",
+      text: "text-purple-400",
+      bg: "bg-purple-500",
+      gradient: "from-purple-500 to-violet-600"
+    }
+  };
+
+  const colors = accentColorClasses[config.accentColor] || accentColorClasses.cyan;
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}requestCallback/getInTouch`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        setFormData({ name: '', email: '', message: '' });
+        onSuccess(); //
+      }
+    } catch (err) {
+      console.error('Submission error:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <>
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Modal Box */}
+            <motion.div
+              className={`bg-gray-900/95 backdrop-blur-md border ${colors.border} rounded-2xl max-w-md w-full p-8 relative overflow-hidden shadow-2xl`}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Animated background */}
+              <div className="absolute inset-0 opacity-5">
+                <motion.div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage: `radial-gradient(circle at 2px 2px, ${config.accentColor === 'cyan' ? 'rgba(0,255,255,0.5)' : 'rgba(34,197,94,0.5)'} 1px, transparent 0)`,
+                    backgroundSize: '50px 50px'
+                  }}
+                  animate={{
+                    backgroundPosition: ['0px 0px', '50px 50px'],
+                  }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                />
+              </div>
+
+              {/* Close Button */}
+              <motion.button
+                onClick={() => setShowModal(false)}
+                className={`absolute top-6 right-6 text-gray-400 hover:${colors.text} transition-colors z-10 p-2 rounded-full hover:bg-${config.accentColor}-400/10`}
+                type="button"
+                whileHover={{
+                  scale: 1.1,
+                  backgroundColor: `rgba(34, 211, 238, 0.15)`
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <X className="w-6 h-6" />
+              </motion.button>
+
+              {/* Header */}
+              <div className="text-center mb-8 relative z-10">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <motion.div
+                    className={`p-3 rounded-full bg-gradient-to-r ${colors.gradient} text-white shadow-lg`}
+                    animate={{
+                      boxShadow: [
+                        `0 0 20px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`,
+                        `0 0 30px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.5)' : 'rgba(34, 197, 94, 0.5)'}`,
+                        `0 0 20px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`
+                      ]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    {config.icon}
+                  </motion.div>
+                </div>
+
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                  {config.title}
+                </h3>
+
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  {config.subtitle}
+                </p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleFormSubmit} className="space-y-6 relative z-10">
+                <div className="space-y-4">
+                  <div>
+                    <label className={`block text-sm font-medium ${colors.text} mb-2`}>Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200`}
+                      placeholder="Enter your name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className={`block text-sm font-medium ${colors.text} mb-2`}>Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200`}
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className={`block text-sm font-medium ${colors.text} mb-2`}>Message</label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      rows={4}
+                      className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200 resize-none`}
+                      placeholder={config.messagePlaceholder}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full px-6 py-4 bg-gradient-to-r ${colors.gradient} text-white rounded-lg font-semibold relative overflow-hidden group transition-all duration-200 disabled:opacity-50 shadow-lg hover:shadow-xl`}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    {isSubmitting ? (
+                      <>
+                        <motion.div
+                          className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        {config.buttonText}
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                      </>
+                    )}
+                  </span>
+
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+                  />
+                </motion.button>
+              </form>
+
+              {/* Features */}
+              <div className="mt-8 grid grid-cols-2 gap-4 relative z-10">
+                {[
+                  { icon: <CheckCircle className="w-4 h-4" />, text: "Free Consultation" },
+                  { icon: <Clock className="w-4 h-4" />, text: "Quick Response" },
+                  { icon: <Shield className="w-4 h-4" />, text: "Secure & Private" },
+                  { icon: <Globe className="w-4 h-4" />, text: "Expert Team" }
+                ].map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex items-center gap-2 text-sm text-gray-400"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index }}
+                  >
+                    <span className={colors.text}>{feature.icon}</span>
+                    <span>{feature.text}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+export const ConsultationSuccessModal = ({ 
+  onClose, 
+  pageType = 'contact',
+  accentColor = 'cyan' 
+}) => {
+  // Define all page configurations internally
+  const pageConfig = {
+    contact: {
+      title: "Message Sent Successfully!",
+      subtitle: "We'll get back to you within 24 hours",
+      icon: <CheckCircle className="text-green-400" />,
+      features: [
+        { icon: <Clock className="text-yellow-400" />, text: "24-hour response time" },
+        { icon: <FaShieldAlt className="text-green-400" />, text: "Secure communication" }
+      ],
+      rocketColor: "text-cyan-400"
+    },
+    googleAds: {
+      title: "Google Ads Consultation Booked!",
+      subtitle: "Our PPC specialist will contact you shortly",
+      icon: <FaGoogle className="text-blue-400" />,
+      features: [
+        { icon: <TrendingUp className="text-blue-400" />, text: "Free audit report" },
+        { icon: <FaLightbulb className="text-yellow-400" />, text: "Custom strategy session" }
+      ],
+      rocketColor: "text-blue-400"
+    },
+    metaAds: {
+      title: "Meta Ads Consultation Confirmed!",
+      subtitle: "Our social media expert will reach out soon",
+      icon: <FaFacebook className="text-blue-600" />,
+      features: [
+        { icon: <Target className="text-red-400" />, text: "Audience targeting analysis" },
+        { icon: <FaAd className="text-purple-400" />, text: "Creative strategy review" }
+      ],
+      rocketColor: "text-purple-400"
+    },
+    seo: {
+      title: "SEO Audit Requested!",
+      subtitle: "Our experts will analyze your site within 48 hours",
+      icon: <Search className="text-green-400" />,
+      features: [
+        { icon: <FaFileAlt className="text-blue-400" />, text: "Comprehensive SEO report" },
+        { icon: <FaChartBar className="text-green-400" />, text: "Traffic analysis" },
+        { icon: <FaTools className="text-yellow-400" />, text: "Custom optimization plan" }
+      ],
+      rocketColor: "text-green-400"
+    },
+    webDevelopment: {
+      title: "Development Quote Requested!",
+      subtitle: "We'll review your requirements and send a proposal",
+      icon: <Code className="text-purple-400" />,
+      features: [
+        { icon: <FaMobile className="text-blue-400" />, text: "Responsive design review" },
+        { icon: <FaRocket className="text-red-400" />, text: "Performance optimization" }
+      ],
+      rocketColor: "text-purple-400"
+    }
+  };
+
+  // Get the config for the current page type
+  const config = pageConfig[pageType] || pageConfig.contact;
+
+  // Define color mappings for the accent colors
+  const accentColorClasses = {
+    cyan: {
+      border: "border-cyan-400/30",
+      text: "text-cyan-400",
+      bg: "bg-cyan-500/10"
+    },
+    emerald: {
+      border: "border-emerald-400/30",
+      text: "text-emerald-400",
+      bg: "bg-emerald-500/10"
+    },
+    violet: {
+      border: "border-violet-400/30",
+      text: "text-violet-400",
+      bg: "bg-violet-500/10"
+    },
+    green: {
+      border: "border-green-400/30",
+      text: "text-green-400",
+      bg: "bg-green-500/10"
+    },
+    purple: {
+      border: "border-purple-400/30",
+      text: "text-purple-400",
+      bg: "bg-purple-500/10"
+    }
+  };
+
+  const colors = accentColorClasses[accentColor] || accentColorClasses.cyan;
+
+  // State to control when to start closing
+  const [startClosing, setStartClosing] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStartClosing(true);
+    }, 4000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Handle the actual closing after exit animation completes
+  useEffect(() => {
+    if (startClosing) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 500); // Matches exit animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [startClosing, onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center"
+    >
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-0 bg-black/20 backdrop-blur-sm"
+      />
+
+      {/* Modal Content */}
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.8, opacity: 0, y: 50 }}
+        className="relative z-10 text-center px-8 w-full max-w-md"
+      >
+        <motion.div
+          className={`bg-gradient-to-r from-gray-900/90 to-gray-800/90 backdrop-blur-xl border ${colors.border} rounded-2xl p-8 shadow-2xl`}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          {/* Close Button */}
+          <motion.button
+            onClick={onClose}
+            className={`absolute top-4 right-4 text-gray-400 hover:${colors.text} transition-colors p-2 rounded-full hover:${colors.bg}`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <X className="w-5 h-5" />
+          </motion.button>
+
+          {/* Success Icon */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+            className="text-6xl mb-4"
+          >
+            {config.icon}
+          </motion.div>
+
+          {/* Title & Subtitle */}
+          <motion.h3
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className={`text-2xl font-bold ${colors.text} mb-2`}
+          >
+            {config.title}
+          </motion.h3>
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-gray-300 mb-6"
+          >
+            {config.subtitle}
+          </motion.p>
+
+          {/* Rocket Animation */}
+          <motion.div
+            initial={{ x: 0, y: 0, scale: 1 }}
+            animate={{
+              x: [0, 100, 300, 800],
+              y: [0, -50, -150, -400],
+              scale: [1, 1.2, 0.8, 0.3],
+              rotate: [0, 15, 30, 45],
+            }}
+            transition={{
+              duration: 4,
+              delay: 1,
+              ease: "easeInOut",
+            }}
+            className="text-4xl inline-block"
+          >
+            <FaRocket className={config.rocketColor} />
+          </motion.div>
+
+          {/* Rocket Trail */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{
+              opacity: [0, 1, 1, 0],
+              scale: [0, 1, 1.5, 2],
+              x: [0, 50, 150, 400],
+            }}
+            transition={{
+              duration: 3.5,
+              delay: 1.5,
+              ease: "easeOut",
+            }}
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          >
+            <div className={`w-20 h-1 bg-gradient-to-r ${colors.text.replace('text', 'from')} to-transparent rounded-full opacity-60`}></div>
+          </motion.div>
+
+          {/* Features */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="space-y-3 mt-8"
+          >
+            {config.features.map((feature, index) => (
+              <motion.div
+                key={index}
+                className="flex items-center justify-center gap-2 text-sm"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 + (index * 0.1) }}
+              >
+                {feature.icon}
+                <span className="text-gray-300">{feature.text}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Floating Particles */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0],
+              x: Math.random() * 400 - 200,
+              y: Math.random() * 400 - 200,
+            }}
+            transition={{
+              duration: 2,
+              delay: 0.5 + i * 0.1,
+              ease: "easeOut",
+            }}
+            className={`absolute w-2 h-2 ${colors.text} rounded-full pointer-events-none`}
+          />
+        ))}
+        <motion.div 
+          className="mt-4 h-1 bg-gray-700 rounded-full overflow-hidden"
+          initial={{ scaleX: 1 }}
+          animate={{ scaleX: 0 }}
+          transition={{ duration: 5, ease: "linear" }}
+        >
+          <div className={`h-full ${colors.text.replace('text', 'bg')}`} />
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+};
+export const ContactPage=({ setActiveIndex })=> {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
-  const [showThankYouModal, setShowThankYouModal] = useState(false);
   const [showScheduling, setShowScheduling] = useState(false);
   const [occupiedSlots, setOccupiedSlots] = useState([]);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Update time
   useEffect(() => {
@@ -170,7 +788,7 @@ function ContactPage({ setActiveIndex }) {
   const handleOpenScheduling = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/auditScheduling/occupiedTimeslots`
+        `${process.env.REACT_APP_API_BASE_URL}auditScheduling/occupiedTimeslots`
       );
       const data = await response.json();
       setOccupiedSlots(data.occupiedSlots);
@@ -196,7 +814,7 @@ function ContactPage({ setActiveIndex }) {
     };
   
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/requestCallback/getInTouch`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}requestCallback/getInTouch`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -350,7 +968,7 @@ function ContactPage({ setActiveIndex }) {
                   >
                     <div className="flex items-center gap-3 mb-2">
                       <div className="p-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 rounded-lg">
-                        <FaChartLine className="text-blue-400 text-lg" />
+                        <TrendingUp className="text-blue-400 text-lg" />
                       </div>
                       <div>
                         <h3 className="font-bold text-white">Performance Analytics</h3>
@@ -387,7 +1005,7 @@ function ContactPage({ setActiveIndex }) {
                     whileTap={{ scale: 0.95 }}
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
-                      <FaPhoneAlt className="text-base md:text-lg" />
+                      <Phone className="text-base md:text-lg" />
                       <span className="text-sm md:text-base">REQUEST CONSULTATION</span>
                     </span>
                     <motion.div
@@ -486,7 +1104,7 @@ function ContactPage({ setActiveIndex }) {
                           boxShadow: "0 0 40px rgba(6, 182, 212, 0.3)"
                         }}
                       >
-                        <FaCheckCircle className="text-3xl md:text-4xl text-cyan-400" />
+                        <CheckCircle className="text-3xl md:text-4xl text-cyan-400" />
                       </motion.div>
                       
                       <motion.h3 
@@ -547,109 +1165,28 @@ function ContactPage({ setActiveIndex }) {
 
       {/* Modal for quick consultation */}
       {showModal && (
-        <motion.div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <motion.div
-            className="bg-gradient-to-br from-gray-800/90 via-gray-900/90 to-black/90 backdrop-blur-md border border-cyan-400/30 rounded-xl max-w-md w-full p-6 relative"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              boxShadow: "0 0 50px rgba(6, 182, 212, 0.2)"
-            }}
-          >
-            <motion.button
-              onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </motion.button>
+  <QuickConsultationModal
+    showModal={showModal}
+    setShowModal={setShowModal}
+    formData={formData}
+    setFormData={setFormData}
+    handleChange={handleChange}
+    pageType="contact"
+    onSuccess={() => {
+      setShowModal(false);
+      setShowSuccessModal(true);
+    }}
+  />
+)}
 
-            <div className="text-center mb-6">
-              <motion.div
-                className="inline-flex items-center gap-3 mb-3"
-                whileHover={{ scale: 1.05 }}
-              >
-                <FaPhoneAlt className="text-2xl text-cyan-400" />
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  QUICK CONSULTATION
-                </h3>
-              </motion.div>
-              <p className="text-gray-300 text-sm">
-                Get instant marketing strategy recommendations
-              </p>
-            </div>
+{showSuccessModal && (
+  <ConsultationSuccessModal 
+    onClose={() => setShowSuccessModal(false)}
+    pageType="contact"
+    accentColor="green"
+  />
+)}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-cyan-400/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 backdrop-blur-sm"
-                  placeholder="Enter your name"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-cyan-400/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 backdrop-blur-sm"
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Message
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-cyan-400/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 backdrop-blur-sm resize-none"
-                  placeholder="Tell us about your marketing goals..."
-                  required
-                />
-              </div>
-
-              <motion.button
-                type="submit"
-                className="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
-                whileHover={{ 
-                  scale: 1.02,
-                  boxShadow: "0 0 30px rgba(6, 182, 212, 0.4)"
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                SEND MESSAGE
-              </motion.button>
-            </form>
-          </motion.div>
-        </motion.div>
-      )}
 
       {/* Scheduling Modal */}
             {showScheduling && (
@@ -661,5 +1198,3 @@ function ContactPage({ setActiveIndex }) {
     </div>
   );
 }
-
-export default ContactPage;

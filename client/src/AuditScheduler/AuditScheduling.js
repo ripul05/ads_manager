@@ -16,7 +16,8 @@ import {
   FaShieldAlt,
   FaRocket,
   FaCheckCircle,
-  FaStar
+  FaStar,
+  FaTimes
 } from "react-icons/fa";
 
 moment.locale("en");
@@ -90,7 +91,9 @@ const FuturisticOverlay = () => {
   );
 };
 
-const AuditScheduling = ({ occupiedSlots, onClose }) => {
+// Updated AuditSuccessModal with auto-close functionality
+
+export const  AuditScheduling = ({ occupiedSlots, onClose }) => {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState("");
@@ -192,7 +195,7 @@ const handleSubmit = async () => {
       meetingType: "Google Ads Audit",
     };
 
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auditScheduling`, {
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}auditScheduling`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -568,21 +571,6 @@ const handleSubmit = async () => {
             </div>
           )}
         </div>
-
-        {/* Footer */}
-        {/* <div className="relative z-10 flex-none p-6 sm:p-8 border-t border-cyan-400/20">
-          <div className="flex items-center justify-between text-xs sm:text-sm text-gray-400">
-            <div className="flex items-center gap-2">
-              <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
-              <span>SECURE CONNECTION</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>BUZZBANDITS SYSTEMS</span>
-              <span>•</span>
-              <span>AI-POWERED SCHEDULING</span>
-            </div>
-          </div>
-        </div> */}
       </div>
       
       {/* Additional CSS for animations */}
@@ -604,4 +592,3 @@ const handleSubmit = async () => {
     </div>
   );
 };
-export default AuditScheduling;

@@ -242,7 +242,6 @@ const AboutUs = ({ setActiveIndex }) => {
 
   const certifications = [
     { name: "Google Ads Certified", icon: <FaGoogle />, level: "Expert" },
-    { name: "Facebook Blueprint", icon: <FaChartLine />, level: "Advanced" },
     { name: "Google Analytics", icon: <FaDatabase />, level: "Certified" },
     { name: "HubSpot Certified", icon: <FaRocket />, level: "Partner" },
   ];
@@ -501,19 +500,22 @@ const AboutUs = ({ setActiveIndex }) => {
               <span className="text-cyan-400">Certified</span> Excellence
             </motion.h3>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
-              {certifications.map((cert, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="bg-black/40 backdrop-blur-sm rounded-xl border border-cyan-400/20 p-4 hover:border-cyan-400/50 transition-all group"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <div className="text-2xl text-cyan-400 mb-2">{cert.icon}</div>
-                  <div className="text-white font-semibold text-sm mb-1">{cert.name}</div>
-                  <div className="text-gray-400 text-xs">{cert.level}</div>
-                </motion.div>
-              ))}
+            {/* Centered container for 3 certificates */}
+            <div className="flex justify-center mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-4xl">
+                {certifications.map((cert, index) => (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    className="bg-black/40 backdrop-blur-sm rounded-xl border border-cyan-400/20 p-4 hover:border-cyan-400/50 transition-all group"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <div className="text-2xl text-cyan-400 mb-2">{cert.icon}</div>
+                    <div className="text-white font-semibold text-sm mb-1">{cert.name}</div>
+                    <div className="text-gray-400 text-xs">{cert.level}</div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
             <motion.p variants={itemVariants} className="text-gray-300 max-w-2xl mx-auto">

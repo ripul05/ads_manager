@@ -154,7 +154,7 @@ const FuturisticBackground = () => {
 const LiveMetrics = () => {
   const metrics = [
     {
-      value: 172,
+      value: "50+",
       label: "Active Clients",
       icon: <FaNetworkWired />,
       color: "text-cyan-400",
@@ -166,13 +166,13 @@ const LiveMetrics = () => {
       color: "text-blue-400",
     },
     {
-      value: 98,
+      value: "185+",
       label: "Live Campaigns",
       icon: <FaRocket />,
       color: "text-purple-400",
     },
     {
-      value: "$2900K",
+      value: "$45K+",
       label: "Monthly Spend",
       icon: <FaDatabase />,
       color: "text-pink-300", // Updated to softer pink
@@ -392,43 +392,72 @@ const TestimonialPage = () => {
     ));
   };
 
-  const getServiceIcon = (serviceType) => {
-    switch (serviceType) {
-      case "Google Ads":
-        return <FaGoogle />;
-      case "PPC Management":
-        return <FaCrosshairs />;
-      case "Campaign Management":
-        return <FaLayerGroup />;
-      case "Shopping Ads":
-        return <FaCube />;
-      case "Search Ads":
-        return <FaSearch />;
-      case "Multi-Channel":
-        return <FaNetworkWired />;
-      default:
-        return <FaChartLine />;
-    }
-  };
+const getServiceIcon = (serviceType) => {
+  switch (serviceType) {
+    case "Google Ads":
+      return <FaGoogle />;
+    case "PPC Management":
+      return <FaCrosshairs />;
+    case "Campaign Management":
+      return <FaLayerGroup />;
+    case "Shopping Ads":
+      return <FaCube />;
+    case "Search Ads":
+      return <FaSearch />;
+    case "Multi-Channel":
+      return <FaNetworkWired />;
+    default:
+      return <FaChartLine />;
+  }
+};
 
-  const getServiceColor = (serviceType) => {
-    switch (serviceType) {
-      case "Google Ads":
-        return "from-cyan-400 to-blue-400";
-      case "PPC Management":
-        return "from-blue-400 to-purple-400";
-      case "Campaign Management":
-        return "from-purple-400 to-pink-400";
-      case "Shopping Ads":
-        return "from-pink-400 to-red-400";
-      case "Search Ads":
-        return "from-green-400 to-cyan-400";
-      case "Multi-Channel":
-        return "from-orange-400 to-yellow-400";
-      default:
-        return "from-cyan-400 to-blue-400";
-    }
-  };
+const getServiceColor = (serviceType) => {
+  switch (serviceType) {
+    case "Google Ads":
+      return {
+        gradient: "from-cyan-600/20 to-blue-600/20",
+        text: "text-cyan-300",
+        border: "border-cyan-500/30"
+      };
+    case "PPC Management":
+      return {
+        gradient: "from-blue-600/20 to-purple-600/20",
+        text: "text-blue-300",
+        border: "border-blue-500/30"
+      };
+    case "Campaign Management":
+      return {
+        gradient: "from-purple-600/20 to-pink-600/20",
+        text: "text-purple-300",
+        border: "border-purple-500/30"
+      };
+    case "Shopping Ads":
+      return {
+        gradient: "from-pink-600/20 to-red-600/20",
+        text: "text-pink-300",
+        border: "border-pink-500/30"
+      };
+    case "Search Ads":
+      return {
+        gradient: "from-green-600/20 to-cyan-600/20",
+        text: "text-green-300",
+        border: "border-green-500/30"
+      };
+    case "Multi-Channel":
+      return {
+        gradient: "from-orange-600/20 to-yellow-600/20",
+        text: "text-orange-300",
+        border: "border-orange-500/30"
+      };
+    default:
+      return {
+        gradient: "from-cyan-600/20 to-blue-600/20",
+        text: "text-cyan-300",
+        border: "border-cyan-500/30"
+      };
+  }
+};
+
 
   // Duplicate testimonials for infinite scroll
   const duplicatedTestimonials = [...testimonials, ...testimonials];
@@ -584,27 +613,24 @@ const TestimonialPage = () => {
                       </div>
 
                       {/* Footer */}
-                      <div className="flex items-center justify-between">
-                        <div
-                          className={`flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r ${getServiceColor(
-                            testimonial.serviceType
-                          )} bg-opacity-20 border border-cyan-400/30`}
-                        >
-                          <div className="text-cyan-400">
-                            {getServiceIcon(testimonial.serviceType)}
-                          </div>
-                          <span className="text-cyan-400 text-sm font-semibold">
-                            {testimonial.serviceType}
-                          </span>
+                    <div className="flex items-center justify-between">
+                      <div
+                        className={`flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r ${getServiceColor(testimonial.serviceType).gradient} ${getServiceColor(testimonial.serviceType).border}`}
+                      >
+                        <div className={getServiceColor(testimonial.serviceType).text}>
+                          {getServiceIcon(testimonial.serviceType)}
                         </div>
-
-                        <div className="text-right">
-                          <div className="text-gray-400 text-xs">Ad Spend</div>
-                          <div className="text-cyan-400 font-bold text-sm">
-                            {testimonial.adSpend}
-                          </div>
+                        <span className={`${getServiceColor(testimonial.serviceType).text} text-sm font-semibold`}>
+                          {testimonial.serviceType}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-gray-400 text-xs">Ad Spend</div>
+                        <div className="text-cyan-400 font-bold text-sm">
+                          {testimonial.adSpend}
                         </div>
                       </div>
+                    </div>
                     </div>
                   </motion.div>
                 ))}
