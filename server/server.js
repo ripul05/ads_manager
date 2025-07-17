@@ -24,5 +24,5 @@ app.use("/", routes);
 // app.use('/reports', express.static(path.join(__dirname, 'lighthouse-reports')));
 
 app.listen(PORT, () => {
-    console.log(`Server is listening on PORT: ${PORT}`);
+
 });

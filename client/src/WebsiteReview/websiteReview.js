@@ -414,7 +414,7 @@ const EmailReportModal = ({ isOpen, onClose, websiteUrl, setShowSuccessModal }) 
     }
 
     try {
-      console.log("Submitting form data:", formData);
+
 
       // Create a timeout promise
       const timeoutPromise = new Promise((_, reject) => 
@@ -422,7 +422,7 @@ const EmailReportModal = ({ isOpen, onClose, websiteUrl, setShowSuccessModal }) 
       );
 
       // Create the fetch promise
-      const fetchPromise = fetch("/requestCallback/generate-report", {
+      const fetchPromise = fetch(`${process.env.REACT_APP_API_BASE_URL}requestCallback/generate-report`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -435,7 +435,7 @@ const EmailReportModal = ({ isOpen, onClose, websiteUrl, setShowSuccessModal }) 
       const result = await response.json();
 
       if (response.ok) {
-        console.log("Report generated successfully:", result);
+
         setIsSubmitting(false);
         onClose();
         setShowSuccessModal(true);
@@ -451,7 +451,7 @@ const EmailReportModal = ({ isOpen, onClose, websiteUrl, setShowSuccessModal }) 
       
       if (error.message === 'timeout') {
         // If timeout occurs, show success modal and close
-        console.log("Request timed out, showing success modal");
+
         onClose();
         setShowSuccessModal(true);
       } else {
@@ -1167,7 +1167,7 @@ const WebsiteReviewPage = () => {
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [showModal, setShowModal] = useState(true); // Add this state
+  const [showModal, setShowModal] = useState(false); // Add this state
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 

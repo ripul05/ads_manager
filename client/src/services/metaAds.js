@@ -1,32 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from '../Home/Navbar';
-import Footer from '../Home/footer';
-import { QuickConsultationModal } from '../ContactPage/ContactPage';
-import { 
-  FaFacebook, 
+import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import Navbar from "../Home/Navbar";
+import Footer from "../Home/footer";
+import { QuickConsultationModal } from "../ContactPage/ContactPage";
+import {
+  FaFacebook,
   FaInstagram,
-  FaRocket, 
-  FaChartLine, 
-  FaUsers, 
+  FaRocket,
+  FaChartLine,
+  FaUsers,
   FaBullseye,
   FaEye,
-  FaMousePointer,
   FaArrowDown,
   FaPlay,
   FaCheckCircle,
-  FaStar,
   FaShieldAlt,
-  FaCog,
   FaLightbulb,
   FaGlobe,
   FaMobile,
-  FaDesktop,
-  FaTablet,
   FaHeart,
-  FaComments,
-  FaShare
-} from 'react-icons/fa';
+} from "react-icons/fa";
 
 const FuturisticBackground = () => {
   const [nodes, setNodes] = useState([]);
@@ -63,7 +56,8 @@ const FuturisticBackground = () => {
               linear-gradient(rgba(66, 103, 178, 0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(66, 103, 178, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: window.innerWidth < 768 ? "50px 50px" : "100px 100px",
+            backgroundSize:
+              window.innerWidth < 768 ? "50px 50px" : "100px 100px",
           }}
           animate={{
             backgroundPosition: ["0px 0px", "50px 50px"],
@@ -130,18 +124,21 @@ const FuturisticBackground = () => {
 const MetaAdsPage = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const detailsRef = useRef(null);
-    const [showModal, setShowModal] = useState(false);
-    const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  
-    const handleChange = (e) => {
-      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log("Form Data:", formData);
-      setShowModal(false);
-    };
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowModal(false);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -153,14 +150,14 @@ const MetaAdsPage = () => {
     const scrollToTop = () => {
       // Method 1: Direct scroll
       window.scrollTo(0, 0);
-      
+
       // Method 2: Smooth scroll
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: 'instant'
+        behavior: "instant",
       });
-      
+
       // Method 3: Document body scroll
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
@@ -168,10 +165,10 @@ const MetaAdsPage = () => {
 
     // Execute immediately
     scrollToTop();
-    
+
     // Also execute after a short delay to handle any async rendering
     const timeoutId = setTimeout(scrollToTop, 100);
-    
+
     return () => clearTimeout(timeoutId);
   }, []);
 
@@ -180,9 +177,9 @@ const MetaAdsPage = () => {
   };
 
   const handleLearnMore = () => {
-    detailsRef.current?.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
+    detailsRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -190,57 +187,80 @@ const MetaAdsPage = () => {
     {
       icon: <FaUsers />,
       title: "Advanced Audience Targeting",
-      description: "Leverage Meta's rich user data to reach your ideal customers with laser precision."
+      description:
+        "Leverage Meta's rich user data to reach your ideal customers with laser precision.",
     },
     {
       icon: <FaChartLine />,
       title: "Performance Optimization",
-      description: "AI-driven campaign optimization that maximizes conversions and minimizes costs."
+      description:
+        "AI-driven campaign optimization that maximizes conversions and minimizes costs.",
     },
     {
       icon: <FaEye />,
       title: "Creative Excellence",
-      description: "Stunning visual ads that capture attention and drive engagement across all platforms."
+      description:
+        "Stunning visual ads that capture attention and drive engagement across all platforms.",
     },
     {
       icon: <FaShieldAlt />,
       title: "Brand Safety",
-      description: "Advanced content filtering and brand protection to maintain your reputation."
-    }
+      description:
+        "Advanced content filtering and brand protection to maintain your reputation.",
+    },
   ];
 
   const services = [
     {
       title: "Facebook Advertising",
       icon: <FaFacebook />,
-      description: "Connect with billions of users through targeted Facebook ad campaigns.",
-      features: ["News Feed Ads", "Story Ads", "Marketplace Ads", "Messenger Ads"]
+      description:
+        "Connect with billions of users through targeted Facebook ad campaigns.",
+      features: [
+        "News Feed Ads",
+        "Story Ads",
+        "Marketplace Ads",
+        "Messenger Ads",
+      ],
     },
     {
       title: "Instagram Marketing",
       icon: <FaInstagram />,
-      description: "Engage younger audiences with visually stunning Instagram campaigns.",
-      features: ["Feed Posts", "Stories", "Reels", "Shopping Ads"]
+      description:
+        "Engage younger audiences with visually stunning Instagram campaigns.",
+      features: ["Feed Posts", "Stories", "Reels", "Shopping Ads"],
     },
     {
       title: "Video Campaigns",
       icon: <FaPlay />,
-      description: "Create compelling video content that drives engagement and conversions.",
-      features: ["Video Ads", "Live Streaming", "Story Videos", "Reels Content"]
+      description:
+        "Create compelling video content that drives engagement and conversions.",
+      features: [
+        "Video Ads",
+        "Live Streaming",
+        "Story Videos",
+        "Reels Content",
+      ],
     },
     {
       title: "Retargeting",
       icon: <FaBullseye />,
-      description: "Re-engage website visitors and previous customers with personalized ads.",
-      features: ["Pixel Tracking", "Custom Audiences", "Lookalike Audiences", "Dynamic Ads"]
-    }
+      description:
+        "Re-engage website visitors and previous customers with personalized ads.",
+      features: [
+        "Pixel Tracking",
+        "Custom Audiences",
+        "Lookalike Audiences",
+        "Dynamic Ads",
+      ],
+    },
   ];
 
   const stats = [
     { number: "3.8B", label: "Monthly Active Users" },
     { number: "250%", label: "Average ROAS" },
     { number: "40%", label: "Cost Reduction" },
-    { number: "24/7", label: "Campaign Monitoring" }
+    { number: "24/7", label: "Campaign Monitoring" },
   ];
 
   const containerVariants = {
@@ -263,15 +283,15 @@ const MetaAdsPage = () => {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <FuturisticBackground />
-     <Navbar isContactPage={true} />
-    <QuickConsultationModal
-       showModal={showModal}
-       setShowModal={setShowModal}
-       formData={formData}
-       handleChange={handleChange}
-       handleSubmit={handleSubmit}
+      <Navbar isContactPage={true} />
+      <QuickConsultationModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        formData={formData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
         pageType="metaAds"
-     />
+      />
       {/* Hero Section */}
       <div className="relative z-10 min-h-screen flex items-center justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -322,7 +342,7 @@ const MetaAdsPage = () => {
               <div className="flex items-center justify-center gap-6 mb-8">
                 <motion.div
                   className="flex gap-4"
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.1, 1],
                   }}
                   transition={{
@@ -349,7 +369,7 @@ const MetaAdsPage = () => {
                       duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: 0.5
+                      delay: 0.5,
                     }}
                   >
                     <FaInstagram />
@@ -366,17 +386,25 @@ const MetaAdsPage = () => {
             </motion.div>
 
             {/* Subtitle */}
-            <motion.p 
+            <motion.p
               className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto"
               variants={itemVariants}
             >
-              Dominate social media with AI-powered Meta advertising that delivers
-              <span className="text-blue-400 font-semibold"> exceptional engagement</span> and 
-              <span className="text-pink-400 font-semibold"> record-breaking conversions</span>
+              Dominate social media with AI-powered Meta advertising that
+              delivers
+              <span className="text-blue-400 font-semibold">
+                {" "}
+                exceptional engagement
+              </span>{" "}
+              and
+              <span className="text-pink-400 font-semibold">
+                {" "}
+                record-breaking conversions
+              </span>
             </motion.p>
 
             {/* Action Buttons */}
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-6 justify-center items-center"
               variants={itemVariants}
             >
@@ -418,7 +446,7 @@ const MetaAdsPage = () => {
             </motion.div>
 
             {/* Quick Stats */}
-            <motion.div 
+            <motion.div
               className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"
               variants={containerVariants}
             >
@@ -442,7 +470,6 @@ const MetaAdsPage = () => {
       {/* Detailed Information Section */}
       <div ref={detailsRef} className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
           {/* Features Section */}
           <motion.div
             initial="hidden"
@@ -453,13 +480,15 @@ const MetaAdsPage = () => {
           >
             <motion.div variants={itemVariants} className="text-center mb-16">
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Why Choose Our 
+                Why Choose Our
                 <span className="bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-                  {" "}Meta Ads
+                  {" "}
+                  Meta Ads
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Harness the power of the world's largest social media platforms to grow your business
+                Harness the power of the world's largest social media platforms
+                to grow your business
               </p>
             </motion.div>
 
@@ -474,15 +503,15 @@ const MetaAdsPage = () => {
                   <div className="flex items-start gap-6">
                     <motion.div
                       className="text-4xl text-blue-400 flex-shrink-0"
-                      animate={{ 
+                      animate={{
                         rotate: [0, 10, -10, 0],
-                        scale: [1, 1.1, 1]
+                        scale: [1, 1.1, 1],
                       }}
                       transition={{
                         duration: 4,
                         repeat: Infinity,
                         ease: "easeInOut",
-                        delay: index * 0.5
+                        delay: index * 0.5,
                       }}
                     >
                       {feature.icon}
@@ -491,9 +520,7 @@ const MetaAdsPage = () => {
                       <h4 className="text-xl font-semibold text-white mb-3">
                         {feature.title}
                       </h4>
-                      <p className="text-gray-300">
-                        {feature.description}
-                      </p>
+                      <p className="text-gray-300">{feature.description}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -513,11 +540,13 @@ const MetaAdsPage = () => {
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Our Meta Ads
                 <span className="bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-                  {" "}Services
+                  {" "}
+                  Services
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Comprehensive social media advertising across Facebook, Instagram, and Messenger
+                Comprehensive social media advertising across Facebook,
+                Instagram, and Messenger
               </p>
             </motion.div>
 
@@ -532,7 +561,7 @@ const MetaAdsPage = () => {
                   <div className="flex items-start gap-6 mb-6">
                     <motion.div
                       className="text-4xl text-blue-400 flex-shrink-0"
-                      animate={{ 
+                      animate={{
                         rotate: [0, 360],
                       }}
                       transition={{
@@ -541,8 +570,12 @@ const MetaAdsPage = () => {
                         ease: "linear",
                       }}
                       style={{
-                        color: service.title === "Instagram Marketing" ? "#E4405F" : 
-                               service.title === "Facebook Advertising" ? "#4267B2" : "#4267B2"
+                        color:
+                          service.title === "Instagram Marketing"
+                            ? "#E4405F"
+                            : service.title === "Facebook Advertising"
+                            ? "#4267B2"
+                            : "#4267B2",
                       }}
                     >
                       {service.icon}
@@ -556,7 +589,7 @@ const MetaAdsPage = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     {service.features.map((feature, featureIndex) => (
                       <motion.div
@@ -588,7 +621,8 @@ const MetaAdsPage = () => {
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Our
                 <span className="bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-                  {" "}Process
+                  {" "}
+                  Process
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
@@ -601,21 +635,24 @@ const MetaAdsPage = () => {
                 {
                   step: "01",
                   title: "Audience Research",
-                  description: "Deep dive into your target audience demographics, behaviors, and preferences across social platforms.",
-                  icon: <FaUsers />
+                  description:
+                    "Deep dive into your target audience demographics, behaviors, and preferences across social platforms.",
+                  icon: <FaUsers />,
                 },
                 {
                   step: "02",
                   title: "Creative Development",
-                  description: "Design compelling visuals and copy that resonate with your audience and drive engagement.",
-                  icon: <FaLightbulb />
+                  description:
+                    "Design compelling visuals and copy that resonate with your audience and drive engagement.",
+                  icon: <FaLightbulb />,
                 },
                 {
                   step: "03",
                   title: "Optimize & Scale",
-                  description: "Continuous testing, optimization, and scaling to maximize your social media advertising ROI.",
-                  icon: <FaChartLine />
-                }
+                  description:
+                    "Continuous testing, optimization, and scaling to maximize your social media advertising ROI.",
+                  icon: <FaChartLine />,
+                },
               ].map((process, index) => (
                 <motion.div
                   key={index}
@@ -625,14 +662,14 @@ const MetaAdsPage = () => {
                 >
                   <motion.div
                     className="text-6xl text-blue-400 mb-6"
-                    animate={{ 
+                    animate={{
                       y: [0, -10, 0],
                     }}
                     transition={{
                       duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: index * 0.5
+                      delay: index * 0.5,
                     }}
                   >
                     {process.icon}
@@ -643,9 +680,7 @@ const MetaAdsPage = () => {
                   <h4 className="text-xl font-semibold text-white mb-4">
                     {process.title}
                   </h4>
-                  <p className="text-gray-300">
-                    {process.description}
-                  </p>
+                  <p className="text-gray-300">{process.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -663,11 +698,13 @@ const MetaAdsPage = () => {
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Platform
                 <span className="bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-                  {" "}Advantages
+                  {" "}
+                  Advantages
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Why Meta platforms are essential for your digital marketing strategy
+                Why Meta platforms are essential for your digital marketing
+                strategy
               </p>
             </motion.div>
 
@@ -675,40 +712,46 @@ const MetaAdsPage = () => {
               {[
                 {
                   title: "Massive Reach",
-                  description: "Access to 3.8 billion monthly active users across Facebook, Instagram, and Messenger",
+                  description:
+                    "Access to 3.8 billion monthly active users across Facebook, Instagram, and Messenger",
                   icon: <FaGlobe />,
-                  color: "text-blue-400"
+                  color: "text-blue-400",
                 },
                 {
                   title: "Advanced Targeting",
-                  description: "Precise audience targeting based on demographics, interests, behaviors, and custom data",
+                  description:
+                    "Precise audience targeting based on demographics, interests, behaviors, and custom data",
                   icon: <FaBullseye />,
-                  color: "text-purple-400"
+                  color: "text-purple-400",
                 },
                 {
                   title: "Visual Storytelling",
-                  description: "Perfect platforms for showcasing products and services through compelling visual content",
+                  description:
+                    "Perfect platforms for showcasing products and services through compelling visual content",
                   icon: <FaEye />,
-                  color: "text-pink-400"
+                  color: "text-pink-400",
                 },
                 {
                   title: "Mobile-First",
-                  description: "Optimized for mobile users where most social media consumption happens",
+                  description:
+                    "Optimized for mobile users where most social media consumption happens",
                   icon: <FaMobile />,
-                  color: "text-blue-400"
+                  color: "text-blue-400",
                 },
                 {
                   title: "Engagement Focus",
-                  description: "Built for interaction, comments, shares, and building community around your brand",
+                  description:
+                    "Built for interaction, comments, shares, and building community around your brand",
                   icon: <FaHeart />,
-                  color: "text-pink-400"
+                  color: "text-pink-400",
                 },
                 {
                   title: "Real-Time Analytics",
-                  description: "Comprehensive insights and analytics to measure and optimize campaign performance",
+                  description:
+                    "Comprehensive insights and analytics to measure and optimize campaign performance",
                   icon: <FaChartLine />,
-                  color: "text-purple-400"
-                }
+                  color: "text-purple-400",
+                },
               ].map((advantage, index) => (
                 <motion.div
                   key={index}
@@ -718,15 +761,15 @@ const MetaAdsPage = () => {
                 >
                   <motion.div
                     className={`text-4xl ${advantage.color} mb-4`}
-                    animate={{ 
+                    animate={{
                       scale: [1, 1.1, 1],
-                      rotate: [0, 5, -5, 0]
+                      rotate: [0, 5, -5, 0],
                     }}
                     transition={{
                       duration: 4,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: index * 0.3
+                      delay: index * 0.3,
                     }}
                   >
                     {advantage.icon}
@@ -741,22 +784,20 @@ const MetaAdsPage = () => {
               ))}
             </div>
           </motion.div>
-
         </div>
       </div>
-      <Footer/>
+      <Footer />
       {/* Scanning line effect */}
       <motion.div
         className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"
-        initial={{ x: '-100%' }}
-        animate={{ x: '100%' }}
-        transition={{ 
-          duration: 3, 
+        initial={{ x: "-100%" }}
+        animate={{ x: "100%" }}
+        transition={{
+          duration: 3,
           repeat: Infinity,
-          ease: "linear"
+          ease: "linear",
         }}
       />
-
     </div>
   );
 };

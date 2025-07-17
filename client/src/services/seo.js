@@ -1,37 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Navbar from '../Home/Navbar';
-import { motion, AnimatePresence } from 'framer-motion';
-import { QuickConsultationModal,ConsultationSuccessModal } from '../ContactPage/ContactPage';
-import Footer from '../Home/footer';
+import React, { useState, useEffect, useRef } from "react";
+import Navbar from "../Home/Navbar";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  QuickConsultationModal,
+  ConsultationSuccessModal,
+} from "../ContactPage/ContactPage";
+import Footer from "../Home/footer";
 
-import { 
-  FaSearch, 
+import {
+  FaSearch,
   FaChartLine,
-  FaRocket, 
-  FaCrown, 
-  FaKeyboard, 
-  FaBullseye,
+  FaRocket,
+  FaCrown,
   FaEye,
   FaLink,
   FaArrowDown,
-  FaPlay,
   FaCheckCircle,
-  FaStar,
-  FaShieldAlt,
   FaCog,
   FaLightbulb,
   FaUsers,
   FaGlobe,
-  FaMobile,
-  FaDesktop,
-  FaTablet,
   FaCode,
   FaFileAlt,
   FaSearchPlus,
   FaTrophy,
-  FaSpeedometer,
-  FaAnchor
-} from 'react-icons/fa';
+  FaAnchor,
+} from "react-icons/fa";
 
 const FuturisticBackground = () => {
   const [nodes, setNodes] = useState([]);
@@ -68,7 +62,8 @@ const FuturisticBackground = () => {
               linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: window.innerWidth < 768 ? "50px 50px" : "100px 100px",
+            backgroundSize:
+              window.innerWidth < 768 ? "50px 50px" : "100px 100px",
           }}
           animate={{
             backgroundPosition: ["0px 0px", "50px 50px"],
@@ -136,19 +131,17 @@ const SEOPage = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [currentRank, setCurrentRank] = useState(1);
   const detailsRef = useRef(null);
-    const [showModal, setShowModal] = useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  
-    const handleChange = (e) => {
-      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log("Form Data:", formData);
-      setShowModal(false);
-    };
+  const [showModal, setShowModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -157,7 +150,7 @@ const SEOPage = () => {
 
   useEffect(() => {
     const rankTimer = setInterval(() => {
-      setCurrentRank(prev => prev >= 10 ? 1 : prev + 1);
+      setCurrentRank((prev) => (prev >= 10 ? 1 : prev + 1));
     }, 2000);
     return () => clearInterval(rankTimer);
   }, []);
@@ -167,14 +160,14 @@ const SEOPage = () => {
     const scrollToTop = () => {
       // Method 1: Direct scroll
       window.scrollTo(0, 0);
-      
+
       // Method 2: Smooth scroll
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: 'instant'
+        behavior: "instant",
       });
-      
+
       // Method 3: Document body scroll
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
@@ -182,10 +175,10 @@ const SEOPage = () => {
 
     // Execute immediately
     scrollToTop();
-    
+
     // Also execute after a short delay to handle any async rendering
     const timeoutId = setTimeout(scrollToTop, 100);
-    
+
     return () => clearTimeout(timeoutId);
   }, []);
 
@@ -194,9 +187,9 @@ const SEOPage = () => {
   };
 
   const handleLearnMore = () => {
-    detailsRef.current?.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
+    detailsRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -204,57 +197,85 @@ const SEOPage = () => {
     {
       icon: <FaSearchPlus />,
       title: "Advanced Keyword Research",
-      description: "AI-powered keyword analysis to discover high-value search terms your competitors miss."
+      description:
+        "AI-powered keyword analysis to discover high-value search terms your competitors miss.",
     },
     {
       icon: <FaChartLine />,
       title: "Technical SEO Excellence",
-      description: "Comprehensive site optimization for speed, mobile-friendliness, and search engine crawling."
+      description:
+        "Comprehensive site optimization for speed, mobile-friendliness, and search engine crawling.",
     },
     {
       icon: <FaLink />,
       title: "Authority Link Building",
-      description: "Strategic backlink campaigns from high-authority domains to boost your search rankings."
+      description:
+        "Strategic backlink campaigns from high-authority domains to boost your search rankings.",
     },
     {
       icon: <FaFileAlt />,
       title: "Content Optimization",
-      description: "Data-driven content strategies that rank higher and convert better."
-    }
+      description:
+        "Data-driven content strategies that rank higher and convert better.",
+    },
   ];
 
   const services = [
     {
       title: "On-Page SEO",
       icon: <FaCode />,
-      description: "Optimize your website's structure, content, and technical elements for search engines.",
-      features: ["Title Tag Optimization", "Meta Descriptions", "Header Structure", "Internal Linking"]
+      description:
+        "Optimize your website's structure, content, and technical elements for search engines.",
+      features: [
+        "Title Tag Optimization",
+        "Meta Descriptions",
+        "Header Structure",
+        "Internal Linking",
+      ],
     },
     {
       title: "Technical SEO",
       icon: <FaCog />,
-      description: "Fix technical issues that prevent search engines from properly indexing your site.",
-      features: ["Site Speed Optimization", "Mobile Responsiveness", "XML Sitemaps", "Schema Markup"]
+      description:
+        "Fix technical issues that prevent search engines from properly indexing your site.",
+      features: [
+        "Site Speed Optimization",
+        "Mobile Responsiveness",
+        "XML Sitemaps",
+        "Schema Markup",
+      ],
     },
     {
       title: "Link Building",
       icon: <FaLink />,
-      description: "Build high-quality backlinks from authoritative websites to increase your domain authority.",
-      features: ["Guest Posting", "Resource Page Links", "Broken Link Building", "Digital PR"]
+      description:
+        "Build high-quality backlinks from authoritative websites to increase your domain authority.",
+      features: [
+        "Guest Posting",
+        "Resource Page Links",
+        "Broken Link Building",
+        "Digital PR",
+      ],
     },
     {
       title: "Local SEO",
       icon: <FaGlobe />,
-      description: "Dominate local search results and attract customers in your geographic area.",
-      features: ["Google My Business", "Local Citations", "Review Management", "Local Keywords"]
-    }
+      description:
+        "Dominate local search results and attract customers in your geographic area.",
+      features: [
+        "Google My Business",
+        "Local Citations",
+        "Review Management",
+        "Local Keywords",
+      ],
+    },
   ];
 
   const stats = [
     { number: "300%", label: "Average Traffic Increase" },
     { number: "85%", label: "Keywords in Top 10" },
     { number: "150%", label: "Conversion Rate Boost" },
-    { number: "24/7", label: "Ranking Monitoring" }
+    { number: "24/7", label: "Ranking Monitoring" },
   ];
 
   const containerVariants = {
@@ -278,28 +299,28 @@ const SEOPage = () => {
     <div className="min-h-screen bg-black relative overflow-hidden">
       <FuturisticBackground />
       <Navbar isContactPage={true} />
-                <QuickConsultationModal
-                  showModal={showModal}
-                  setShowModal={setShowModal}
-                  formData={formData}
-                  setFormData={setFormData}
-                  handleChange={handleChange}
-                  pageType="seo"
-                  onSuccess={() => {
-                    setShowModal(false);
-                    setShowSuccessModal(true);
-                  }}
-                />
-            
-                {/* Success Modal */}
-                <AnimatePresence>
-                  {showSuccessModal && (
-                    <ConsultationSuccessModal 
-                      onClose={() => setShowSuccessModal(false)}
-                      pageType="seo"
-                    />
-                  )}
-                </AnimatePresence>
+      <QuickConsultationModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        formData={formData}
+        setFormData={setFormData}
+        handleChange={handleChange}
+        pageType="seo"
+        onSuccess={() => {
+          setShowModal(false);
+          setShowSuccessModal(true);
+        }}
+      />
+
+      {/* Success Modal */}
+      <AnimatePresence>
+        {showSuccessModal && (
+          <ConsultationSuccessModal
+            onClose={() => setShowSuccessModal(false)}
+            pageType="seo"
+          />
+        )}
+      </AnimatePresence>
       {/* Hero Section */}
       <div className="relative z-10 min-h-screen flex items-center justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -314,7 +335,8 @@ const SEOPage = () => {
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span className="text-green-400 font-mono text-sm">
-                  SEO OPTIMIZATION PROTOCOL ACTIVE - {currentTime.toLocaleTimeString()}
+                  SEO OPTIMIZATION PROTOCOL ACTIVE -{" "}
+                  {currentTime.toLocaleTimeString()}
                 </span>
               </div>
             </motion.div>
@@ -350,9 +372,9 @@ const SEOPage = () => {
               <div className="flex items-center justify-center gap-6 mb-8">
                 <motion.div
                   className="relative"
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.1, 1],
-                    rotate: [0, 10, -10, 0]
+                    rotate: [0, 10, -10, 0],
                   }}
                   transition={{
                     duration: 4,
@@ -391,17 +413,25 @@ const SEOPage = () => {
             </motion.div>
 
             {/* Subtitle */}
-            <motion.p 
+            <motion.p
               className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto"
               variants={itemVariants}
             >
-              Dominate search results with data-driven SEO strategies that deliver
-              <span className="text-green-400 font-semibold"> #1 rankings</span> and 
-              <span className="text-emerald-400 font-semibold"> organic traffic growth</span>
+              Dominate search results with data-driven SEO strategies that
+              deliver
+              <span className="text-green-400 font-semibold">
+                {" "}
+                #1 rankings
+              </span>{" "}
+              and
+              <span className="text-emerald-400 font-semibold">
+                {" "}
+                organic traffic growth
+              </span>
             </motion.p>
 
             {/* Action Buttons */}
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-6 justify-center items-center"
               variants={itemVariants}
             >
@@ -443,7 +473,7 @@ const SEOPage = () => {
             </motion.div>
 
             {/* Quick Stats */}
-            <motion.div 
+            <motion.div
               className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"
               variants={containerVariants}
             >
@@ -467,7 +497,6 @@ const SEOPage = () => {
       {/* Detailed Information Section */}
       <div ref={detailsRef} className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
           {/* Features Section */}
           <motion.div
             initial="hidden"
@@ -478,13 +507,15 @@ const SEOPage = () => {
           >
             <motion.div variants={itemVariants} className="text-center mb-16">
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Why Choose Our 
+                Why Choose Our
                 <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  {" "}SEO Services
+                  {" "}
+                  SEO Services
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Advanced SEO strategies that deliver sustainable organic growth and long-term success
+                Advanced SEO strategies that deliver sustainable organic growth
+                and long-term success
               </p>
             </motion.div>
 
@@ -499,15 +530,15 @@ const SEOPage = () => {
                   <div className="flex items-start gap-6">
                     <motion.div
                       className="text-4xl text-green-400 flex-shrink-0"
-                      animate={{ 
+                      animate={{
                         rotate: [0, 10, -10, 0],
-                        scale: [1, 1.1, 1]
+                        scale: [1, 1.1, 1],
                       }}
                       transition={{
                         duration: 4,
                         repeat: Infinity,
                         ease: "easeInOut",
-                        delay: index * 0.5
+                        delay: index * 0.5,
                       }}
                     >
                       {feature.icon}
@@ -516,9 +547,7 @@ const SEOPage = () => {
                       <h4 className="text-xl font-semibold text-white mb-3">
                         {feature.title}
                       </h4>
-                      <p className="text-gray-300">
-                        {feature.description}
-                      </p>
+                      <p className="text-gray-300">{feature.description}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -538,11 +567,13 @@ const SEOPage = () => {
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Our SEO
                 <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  {" "}Services
+                  {" "}
+                  Services
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Comprehensive SEO solutions covering all aspects of search engine optimization
+                Comprehensive SEO solutions covering all aspects of search
+                engine optimization
               </p>
             </motion.div>
 
@@ -557,7 +588,7 @@ const SEOPage = () => {
                   <div className="flex items-start gap-6 mb-6">
                     <motion.div
                       className="text-4xl text-green-400 flex-shrink-0"
-                      animate={{ 
+                      animate={{
                         rotate: [0, 360],
                       }}
                       transition={{
@@ -577,7 +608,7 @@ const SEOPage = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     {service.features.map((feature, featureIndex) => (
                       <motion.div
@@ -609,11 +640,13 @@ const SEOPage = () => {
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Our SEO
                 <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  {" "}Process
+                  {" "}
+                  Process
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                A systematic approach to achieving and maintaining top search rankings
+                A systematic approach to achieving and maintaining top search
+                rankings
               </p>
             </motion.div>
 
@@ -622,21 +655,24 @@ const SEOPage = () => {
                 {
                   step: "01",
                   title: "SEO Audit & Analysis",
-                  description: "Comprehensive analysis of your website's current SEO performance, technical issues, and opportunities.",
-                  icon: <FaSearchPlus />
+                  description:
+                    "Comprehensive analysis of your website's current SEO performance, technical issues, and opportunities.",
+                  icon: <FaSearchPlus />,
                 },
                 {
                   step: "02",
                   title: "Strategy Development",
-                  description: "Custom SEO strategy based on your industry, competitors, and target keywords for maximum impact.",
-                  icon: <FaLightbulb />
+                  description:
+                    "Custom SEO strategy based on your industry, competitors, and target keywords for maximum impact.",
+                  icon: <FaLightbulb />,
                 },
                 {
                   step: "03",
                   title: "Implementation & Optimization",
-                  description: "Execute SEO improvements, monitor rankings, and continuously optimize for better performance.",
-                  icon: <FaChartLine />
-                }
+                  description:
+                    "Execute SEO improvements, monitor rankings, and continuously optimize for better performance.",
+                  icon: <FaChartLine />,
+                },
               ].map((process, index) => (
                 <motion.div
                   key={index}
@@ -646,14 +682,14 @@ const SEOPage = () => {
                 >
                   <motion.div
                     className="text-6xl text-green-400 mb-6"
-                    animate={{ 
+                    animate={{
                       y: [0, -10, 0],
                     }}
                     transition={{
                       duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: index * 0.5
+                      delay: index * 0.5,
                     }}
                   >
                     {process.icon}
@@ -664,9 +700,7 @@ const SEOPage = () => {
                   <h4 className="text-xl font-semibold text-white mb-4">
                     {process.title}
                   </h4>
-                  <p className="text-gray-300">
-                    {process.description}
-                  </p>
+                  <p className="text-gray-300">{process.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -684,11 +718,13 @@ const SEOPage = () => {
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 SEO
                 <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  {" "}Benefits
+                  {" "}
+                  Benefits
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Why SEO is essential for your business's long-term digital success
+                Why SEO is essential for your business's long-term digital
+                success
               </p>
             </motion.div>
 
@@ -696,40 +732,46 @@ const SEOPage = () => {
               {[
                 {
                   title: "Increased Visibility",
-                  description: "Higher search rankings mean more visibility for your brand and business",
+                  description:
+                    "Higher search rankings mean more visibility for your brand and business",
                   icon: <FaEye />,
-                  color: "text-green-400"
+                  color: "text-green-400",
                 },
                 {
                   title: "Organic Traffic Growth",
-                  description: "Sustainable traffic growth without ongoing advertising costs",
+                  description:
+                    "Sustainable traffic growth without ongoing advertising costs",
                   icon: <FaChartLine />,
-                  color: "text-emerald-400"
+                  color: "text-emerald-400",
                 },
                 {
                   title: "Better User Experience",
-                  description: "SEO improvements enhance overall website usability and performance",
+                  description:
+                    "SEO improvements enhance overall website usability and performance",
                   icon: <FaUsers />,
-                  color: "text-teal-400"
+                  color: "text-teal-400",
                 },
                 {
                   title: "Higher Conversion Rates",
-                  description: "Targeted organic traffic typically converts better than paid traffic",
+                  description:
+                    "Targeted organic traffic typically converts better than paid traffic",
                   icon: <FaTrophy />,
-                  color: "text-green-400"
+                  color: "text-green-400",
                 },
                 {
                   title: "Long-term Results",
-                  description: "SEO provides lasting benefits that compound over time",
+                  description:
+                    "SEO provides lasting benefits that compound over time",
                   icon: <FaAnchor />,
-                  color: "text-emerald-400"
+                  color: "text-emerald-400",
                 },
                 {
                   title: "Cost-Effective",
-                  description: "Better ROI compared to paid advertising in the long run",
+                  description:
+                    "Better ROI compared to paid advertising in the long run",
                   icon: <FaCrown />,
-                  color: "text-teal-400"
-                }
+                  color: "text-teal-400",
+                },
               ].map((benefit, index) => (
                 <motion.div
                   key={index}
@@ -739,15 +781,15 @@ const SEOPage = () => {
                 >
                   <motion.div
                     className={`text-4xl ${benefit.color} mb-4`}
-                    animate={{ 
+                    animate={{
                       scale: [1, 1.1, 1],
-                      rotate: [0, 5, -5, 0]
+                      rotate: [0, 5, -5, 0],
                     }}
                     transition={{
                       duration: 4,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: index * 0.3
+                      delay: index * 0.3,
                     }}
                   >
                     {benefit.icon}
@@ -755,29 +797,26 @@ const SEOPage = () => {
                   <h4 className="text-lg font-semibold text-white mb-3">
                     {benefit.title}
                   </h4>
-                  <p className="text-gray-300 text-sm">
-                    {benefit.description}
-                  </p>
+                  <p className="text-gray-300 text-sm">{benefit.description}</p>
                 </motion.div>
               ))}
             </div>
           </motion.div>
-
         </div>
       </div>
 
       {/* Scanning line effect */}
       <motion.div
         className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-400 to-transparent"
-        initial={{ x: '-100%' }}
-        animate={{ x: '100%' }}
-        transition={{ 
-          duration: 3, 
+        initial={{ x: "-100%" }}
+        animate={{ x: "100%" }}
+        transition={{
+          duration: 3,
           repeat: Infinity,
-          ease: "linear"
+          ease: "linear",
         }}
       />
-          <Footer/>
+      <Footer />
     </div>
   );
 };

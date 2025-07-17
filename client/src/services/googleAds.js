@@ -1,29 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from '../Home/Navbar';
-import Footer from '../Home/footer';
-import { QuickConsultationModal, ConsultationSuccessModal } from '../ContactPage/ContactPage';
-import { 
-  FaGoogle, 
-  FaRocket, 
-  FaChartLine, 
-  FaSearch, 
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Navbar from "../Home/Navbar";
+import Footer from "../Home/footer";
+import {
+  QuickConsultationModal,
+  ConsultationSuccessModal,
+} from "../ContactPage/ContactPage";
+import {
+  FaGoogle,
+  FaRocket,
+  FaChartLine,
+  FaSearch,
   FaBullseye,
   FaEye,
-  FaMousePointer,
   FaArrowDown,
   FaPlay,
   FaCheckCircle,
-  FaStar,
   FaShieldAlt,
   FaCog,
   FaLightbulb,
-  FaUsers,
   FaGlobe,
-  FaMobile,
-  FaDesktop,
-  FaTablet
-} from 'react-icons/fa';
+} from "react-icons/fa";
 
 const FuturisticBackground = () => {
   const [nodes, setNodes] = useState([]);
@@ -60,7 +57,8 @@ const FuturisticBackground = () => {
               linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: window.innerWidth < 768 ? "50px 50px" : "100px 100px",
+            backgroundSize:
+              window.innerWidth < 768 ? "50px 50px" : "100px 100px",
           }}
           animate={{
             backgroundPosition: ["0px 0px", "50px 50px"],
@@ -129,16 +127,14 @@ const GoogleAdsPage = () => {
   const detailsRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Data:", formData);
-    setShowModal(false);
   };
 
   useEffect(() => {
@@ -151,14 +147,14 @@ const GoogleAdsPage = () => {
     const scrollToTop = () => {
       // Method 1: Direct scroll
       window.scrollTo(0, 0);
-      
+
       // Method 2: Smooth scroll
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: 'instant'
+        behavior: "instant",
       });
-      
+
       // Method 3: Document body scroll
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
@@ -166,10 +162,10 @@ const GoogleAdsPage = () => {
 
     // Execute immediately
     scrollToTop();
-    
+
     // Also execute after a short delay to handle any async rendering
     const timeoutId = setTimeout(scrollToTop, 100);
-    
+
     return () => clearTimeout(timeoutId);
   }, []);
 
@@ -178,9 +174,9 @@ const GoogleAdsPage = () => {
   };
 
   const handleLearnMore = () => {
-    detailsRef.current?.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
+    detailsRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -188,57 +184,85 @@ const GoogleAdsPage = () => {
     {
       icon: <FaBullseye />,
       title: "Precision Targeting",
-      description: "AI-powered audience targeting that reaches your ideal customers at the perfect moment."
+      description:
+        "AI-powered audience targeting that reaches your ideal customers at the perfect moment.",
     },
     {
       icon: <FaChartLine />,
       title: "Smart Bidding",
-      description: "Automated bidding strategies that maximize your ROI using machine learning algorithms."
+      description:
+        "Automated bidding strategies that maximize your ROI using machine learning algorithms.",
     },
     {
       icon: <FaEye />,
       title: "Ad Visibility",
-      description: "Dominate search results with strategic ad placement and compelling copy."
+      description:
+        "Dominate search results with strategic ad placement and compelling copy.",
     },
     {
       icon: <FaShieldAlt />,
       title: "Click Protection",
-      description: "Advanced fraud detection to protect your budget from invalid clicks."
-    }
+      description:
+        "Advanced fraud detection to protect your budget from invalid clicks.",
+    },
   ];
 
   const services = [
     {
       title: "Search Campaigns",
       icon: <FaSearch />,
-      description: "Capture high-intent customers actively searching for your products or services.",
-      features: ["Keyword Research", "Ad Copy Optimization", "Landing Page Alignment", "Bid Management"]
+      description:
+        "Capture high-intent customers actively searching for your products or services.",
+      features: [
+        "Keyword Research",
+        "Ad Copy Optimization",
+        "Landing Page Alignment",
+        "Bid Management",
+      ],
     },
     {
       title: "Display Campaigns",
       icon: <FaGlobe />,
-      description: "Build brand awareness across Google's vast network of partner websites.",
-      features: ["Visual Ad Creation", "Audience Targeting", "Remarketing", "Placement Optimization"]
+      description:
+        "Build brand awareness across Google's vast network of partner websites.",
+      features: [
+        "Visual Ad Creation",
+        "Audience Targeting",
+        "Remarketing",
+        "Placement Optimization",
+      ],
     },
     {
       title: "Shopping Campaigns",
       icon: <FaCog />,
-      description: "Showcase your products directly in Google search results with rich visuals.",
-      features: ["Product Feed Setup", "Merchant Center Optimization", "Price Comparison", "Inventory Management"]
+      description:
+        "Showcase your products directly in Google search results with rich visuals.",
+      features: [
+        "Product Feed Setup",
+        "Merchant Center Optimization",
+        "Price Comparison",
+        "Inventory Management",
+      ],
     },
     {
       title: "Video Campaigns",
       icon: <FaPlay />,
-      description: "Engage audiences with compelling video content on YouTube and partner sites.",
-      features: ["Video Ad Creation", "Audience Insights", "View Optimization", "Brand Awareness"]
-    }
+      description:
+        "Engage audiences with compelling video content on YouTube and partner sites.",
+      features: [
+        "Video Ad Creation",
+        "Audience Insights",
+        "View Optimization",
+        "Brand Awareness",
+      ],
+    },
   ];
 
   const stats = [
     { number: "300%", label: "Average ROI Increase" },
     { number: "85%", label: "Click-Through Rate Improvement" },
     { number: "50%", label: "Cost Per Click Reduction" },
-    { number: "24/7", label: "Campaign Monitoring" }
+    { number: "24/7", label: "Campaign Monitoring" },
   ];
 
   const containerVariants = {
@@ -262,28 +286,28 @@ const GoogleAdsPage = () => {
     <div className="min-h-screen bg-black relative overflow-hidden">
       <FuturisticBackground />
       <Navbar isContactPage={true} />
-    <QuickConsultationModal
-      showModal={showModal}
-      setShowModal={setShowModal}
-      formData={formData}
-      setFormData={setFormData}
-      handleChange={handleChange}
-      pageType="googleAds"
-      onSuccess={() => {
-        setShowModal(false);
-        setShowSuccessModal(true);
-      }}
-    />
+      <QuickConsultationModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        formData={formData}
+        setFormData={setFormData}
+        handleChange={handleChange}
+        pageType="googleAds"
+        onSuccess={() => {
+          setShowModal(false);
+          setShowSuccessModal(true);
+        }}
+      />
 
-    {/* Success Modal */}
-    <AnimatePresence>
-      {showSuccessModal && (
-        <ConsultationSuccessModal 
-          onClose={() => setShowSuccessModal(false)}
-          pageType="googleAds"
-        />
-      )}
-    </AnimatePresence>
+      {/* Success Modal */}
+      <AnimatePresence>
+        {showSuccessModal && (
+          <ConsultationSuccessModal
+            onClose={() => setShowSuccessModal(false)}
+            pageType="googleAds"
+          />
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <div className="relative z-10 min-h-screen flex items-center justify-center">
@@ -299,7 +323,8 @@ const GoogleAdsPage = () => {
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
                 <span className="text-cyan-400 font-mono text-sm">
-                  GOOGLE ADS PROTOCOL ACTIVE - {currentTime.toLocaleTimeString()}
+                  GOOGLE ADS PROTOCOL ACTIVE -{" "}
+                  {currentTime.toLocaleTimeString()}
                 </span>
               </div>
             </motion.div>
@@ -335,9 +360,9 @@ const GoogleAdsPage = () => {
               <div className="flex items-center justify-center gap-6 mb-8">
                 <motion.div
                   className="text-6xl text-white"
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.1, 1],
-                    rotate: [0, 10, -10, 0]
+                    rotate: [0, 10, -10, 0],
                   }}
                   transition={{
                     duration: 4,
@@ -358,17 +383,25 @@ const GoogleAdsPage = () => {
             </motion.div>
 
             {/* Subtitle */}
-            <motion.p 
+            <motion.p
               className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto"
               variants={itemVariants}
             >
-              Dominate search results with AI-powered Google Ads campaigns that deliver
-              <span className="text-cyan-400 font-semibold"> maximum ROI</span> and 
-              <span className="text-cyan-400 font-semibold"> precision targeting</span>
+              Dominate search results with AI-powered Google Ads campaigns that
+              deliver
+              <span className="text-cyan-400 font-semibold">
+                {" "}
+                maximum ROI
+              </span>{" "}
+              and
+              <span className="text-cyan-400 font-semibold">
+                {" "}
+                precision targeting
+              </span>
             </motion.p>
 
             {/* Action Buttons */}
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-6 justify-center items-center"
               variants={itemVariants}
             >
@@ -410,7 +443,7 @@ const GoogleAdsPage = () => {
             </motion.div>
 
             {/* Quick Stats */}
-            <motion.div 
+            <motion.div
               className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"
               variants={containerVariants}
             >
@@ -434,7 +467,6 @@ const GoogleAdsPage = () => {
       {/* Detailed Information Section */}
       <div ref={detailsRef} className="relative z-10 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
           {/* Features Section */}
           <motion.div
             initial="hidden"
@@ -445,13 +477,15 @@ const GoogleAdsPage = () => {
           >
             <motion.div variants={itemVariants} className="text-center mb-16">
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Why Choose Our 
+                Why Choose Our
                 <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  {" "}Google Ads
+                  {" "}
+                  Google Ads
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Advanced strategies and cutting-edge technology to maximize your advertising investment
+                Advanced strategies and cutting-edge technology to maximize your
+                advertising investment
               </p>
             </motion.div>
 
@@ -466,15 +500,15 @@ const GoogleAdsPage = () => {
                   <div className="flex items-start gap-6">
                     <motion.div
                       className="text-4xl text-cyan-400 flex-shrink-0"
-                      animate={{ 
+                      animate={{
                         rotate: [0, 10, -10, 0],
-                        scale: [1, 1.1, 1]
+                        scale: [1, 1.1, 1],
                       }}
                       transition={{
                         duration: 4,
                         repeat: Infinity,
                         ease: "easeInOut",
-                        delay: index * 0.5
+                        delay: index * 0.5,
                       }}
                     >
                       {feature.icon}
@@ -483,9 +517,7 @@ const GoogleAdsPage = () => {
                       <h4 className="text-xl font-semibold text-white mb-3">
                         {feature.title}
                       </h4>
-                      <p className="text-gray-300">
-                        {feature.description}
-                      </p>
+                      <p className="text-gray-300">{feature.description}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -505,11 +537,13 @@ const GoogleAdsPage = () => {
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Our Google Ads
                 <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  {" "}Services
+                  {" "}
+                  Services
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Comprehensive campaign management across all Google Ads platforms
+                Comprehensive campaign management across all Google Ads
+                platforms
               </p>
             </motion.div>
 
@@ -524,7 +558,7 @@ const GoogleAdsPage = () => {
                   <div className="flex items-start gap-6 mb-6">
                     <motion.div
                       className="text-4xl text-cyan-400 flex-shrink-0"
-                      animate={{ 
+                      animate={{
                         rotate: [0, 360],
                       }}
                       transition={{
@@ -544,7 +578,7 @@ const GoogleAdsPage = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     {service.features.map((feature, featureIndex) => (
                       <motion.div
@@ -576,7 +610,8 @@ const GoogleAdsPage = () => {
               <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Our
                 <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  {" "}Process
+                  {" "}
+                  Process
                 </span>
               </h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
@@ -589,21 +624,24 @@ const GoogleAdsPage = () => {
                 {
                   step: "01",
                   title: "Strategy & Research",
-                  description: "In-depth analysis of your business, competitors, and target audience to create a winning strategy.",
-                  icon: <FaLightbulb />
+                  description:
+                    "In-depth analysis of your business, competitors, and target audience to create a winning strategy.",
+                  icon: <FaLightbulb />,
                 },
                 {
                   step: "02",
                   title: "Campaign Setup",
-                  description: "Expert campaign configuration, keyword research, ad creation, and landing page optimization.",
-                  icon: <FaCog />
+                  description:
+                    "Expert campaign configuration, keyword research, ad creation, and landing page optimization.",
+                  icon: <FaCog />,
                 },
                 {
                   step: "03",
                   title: "Optimize & Scale",
-                  description: "Continuous monitoring, A/B testing, and optimization to maximize performance and ROI.",
-                  icon: <FaChartLine />
-                }
+                  description:
+                    "Continuous monitoring, A/B testing, and optimization to maximize performance and ROI.",
+                  icon: <FaChartLine />,
+                },
               ].map((process, index) => (
                 <motion.div
                   key={index}
@@ -613,14 +651,14 @@ const GoogleAdsPage = () => {
                 >
                   <motion.div
                     className="text-6xl text-cyan-400 mb-6"
-                    animate={{ 
+                    animate={{
                       y: [0, -10, 0],
                     }}
                     transition={{
                       duration: 3,
                       repeat: Infinity,
                       ease: "easeInOut",
-                      delay: index * 0.5
+                      delay: index * 0.5,
                     }}
                   >
                     {process.icon}
@@ -631,30 +669,26 @@ const GoogleAdsPage = () => {
                   <h4 className="text-xl font-semibold text-white mb-4">
                     {process.title}
                   </h4>
-                  <p className="text-gray-300">
-                    {process.description}
-                  </p>
+                  <p className="text-gray-300">{process.description}</p>
                 </motion.div>
               ))}
             </div>
           </motion.div>
-
-
         </div>
       </div>
 
       {/* Scanning line effect */}
       <motion.div
         className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
-        initial={{ x: '-100%' }}
-        animate={{ x: '100%' }}
-        transition={{ 
-          duration: 3, 
+        initial={{ x: "-100%" }}
+        animate={{ x: "100%" }}
+        transition={{
+          duration: 3,
           repeat: Infinity,
-          ease: "linear"
+          ease: "linear",
         }}
       />
-      <Footer/>
+      <Footer />
     </div>
   );
 };

@@ -20,7 +20,7 @@ import {
   FaCube,
   FaLock,
   FaShieldAlt,
-  FaStar,
+
   FaGoogle,
   FaLightbulb,
   FaFacebook,
@@ -32,9 +32,9 @@ import {
 } from "react-icons/fa";
 
 import {
-  Zap,
+
   Shield,
-  Cpu
+
 } from 'lucide-react';
 
 
@@ -181,7 +181,6 @@ export const QuickConsultationModal = ({
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    console.log('Success modal state:', showSuccess);
   }, [showSuccess]);
 
   if (!showModal && !showSuccess) return null;
