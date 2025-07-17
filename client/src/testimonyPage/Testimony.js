@@ -638,7 +638,7 @@ const getServiceColor = (serviceType) => {
             </div>
 
             {/* Pause indicator */}
-            {isPaused && (
+            {/* {isPaused && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -651,7 +651,7 @@ const getServiceColor = (serviceType) => {
                   </span>
                 </div>
               </motion.div>
-            )}
+            )} */}
           </div>
 
           {/* Manual Control Button (for testing) */}

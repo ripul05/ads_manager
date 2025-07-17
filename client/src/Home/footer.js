@@ -156,13 +156,6 @@ const Footer = ({
   // Pass navigate function from React Router if available
   navigate = null,
   
-  socialLinks = [
-    { icon: <FaShare />, label: "LinkedIn", url: "#" },
-    { icon: <FaComments />, label: "Twitter", url: "#" },
-    { icon: <FaGlobe />, label: "Website", url: "#" },
-    { icon: <FaHeart />, label: "GitHub", url: "#" }
-  ],
-  
   navItems = [
     { label: "Performance", href: "#HomeSection", icon: <FaRocket /> },
     { label: "Campaigns", href: "#AboutSection", icon: <FaAtom /> },
@@ -366,31 +359,6 @@ const Footer = ({
                 ))}
               </div>
               
-              {/* Social Media Links */}
-              <div className="flex gap-3 sm:gap-4">
-                {socialLinks.map((social, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={(e) => handleSocialClick(social.url, e)}
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm border border-cyan-400/20 rounded-lg flex items-center justify-center text-gray-300 hover:text-cyan-400 hover:border-cyan-400/40 transition-all duration-300 cursor-pointer group"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    title={social.label}
-                  >
-                    <motion.div
-                      animate={{ rotate: [0, 360] }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                      className="group-hover:pause"
-                    >
-                      {social.icon}
-                    </motion.div>
-                  </motion.button>
-                ))}
-              </div>
             </motion.div>
 
             {/* Navigation Links */}
