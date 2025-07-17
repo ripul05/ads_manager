@@ -3,10 +3,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import HomePage from './Home/Home';
-import ContactPage from './ContactPage/ContactPage';
+import {ContactPage} from './ContactPage/ContactPage';
 import AboutUs from './aboutPage/AboutPage';
 import TestimonialPage from './testimonyPage/Testimony';
-
+import ServicesPage from "./services/services";
+import GoogleAdsPage from "./services/googleAds";
+import MetaAdsPage from "./services/metaAds";
+import SEOPage from "./services/seo";
+import WebDevPage from "./services/webDevelopment";
+import Footer from "./Home/footer";
+import WebsiteReviewPage from "./WebsiteReview/websiteReview";
 function App() {
   const [activeIndex, setActiveIndex] = useState(0); // ✅ Lifted state
 
@@ -20,10 +26,29 @@ function App() {
               activeIndex={activeIndex}
               setActiveIndex={setActiveIndex}
             />
+            <WebsiteReviewPage/>
             <AboutUs setActiveIndex={setActiveIndex} />
+            <ServicesPage setActiveIndex = {setActiveIndex}/>
             <TestimonialPage setActiveIndex={setActiveIndex} />
+            <Footer/>
           </div>
         }
+      />
+      <Route
+        path="/Google-ads"
+        element={<GoogleAdsPage setActiveIndex={setActiveIndex} />}
+      />
+      {/* <Route
+        path="/Meta-ads"
+        element={<MetaAdsPage setActiveIndex={setActiveIndex} />}
+      /> */}
+      <Route
+        path="/Web-development"
+        element={<WebDevPage setActiveIndex={setActiveIndex} />}
+      />
+      <Route
+        path="/Seo"
+        element={<SEOPage setActiveIndex={setActiveIndex} />}
       />
       <Route
         path="/contact"

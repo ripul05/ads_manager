@@ -138,34 +138,14 @@ const FuturisticBackground = () => {
 };
 
 // Digital Marketing Metrics Dashboard
+
+
 const MarketingMetrics = () => {
-  const [metrics, setMetrics] = useState({
-    campaigns: 0,
-    roi: 0,
-    clients: 0,
-    reach: 0
-  });
-
-  useEffect(() => {
-    const updateMetrics = () => {
-      setMetrics({
-        campaigns: Math.floor(Math.random() * 50) + 150,
-        roi: Math.floor(Math.random() * 200) + 400,
-        clients: Math.floor(Math.random() * 100) + 300,
-        reach: Math.floor(Math.random() * 10) + 45
-      });
-    };
-
-    updateMetrics();
-    const interval = setInterval(updateMetrics, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
   const stats = [
-    { number: metrics.campaigns, label: "Active Campaigns", suffix: "+", color: "#00ffff" },
-    { number: metrics.roi, label: "Average ROI", suffix: "%", color: "#0080ff" },
-    { number: metrics.clients, label: "Happy Clients", suffix: "+", color: "#8000ff" },
-    { number: metrics.reach, label: "Million Reach", suffix: "M+", color: "#ff0080" },
+    { number: 185, label: "Active Campaigns", suffix: "+", color: "#00ffff" },
+    { number: 512, label: "Average ROI", suffix: "%", color: "#0080ff" },
+    { number: 368, label: "Happy Clients", suffix: "+", color: "#8000ff" },
+    { number: 54, label: "Million Reach", suffix: "M+", color: "#ff0080" },
   ];
 
   return (
@@ -218,6 +198,7 @@ const MarketingMetrics = () => {
   );
 };
 
+
 const AboutUs = ({ setActiveIndex }) => {
   const navigate = useNavigate();
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -261,7 +242,6 @@ const AboutUs = ({ setActiveIndex }) => {
 
   const certifications = [
     { name: "Google Ads Certified", icon: <FaGoogle />, level: "Expert" },
-    { name: "Facebook Blueprint", icon: <FaChartLine />, level: "Advanced" },
     { name: "Google Analytics", icon: <FaDatabase />, level: "Certified" },
     { name: "HubSpot Certified", icon: <FaRocket />, level: "Partner" },
   ];
@@ -289,7 +269,7 @@ const AboutUs = ({ setActiveIndex }) => {
   };
 
   const handleViewCaseStudiesClick = () => {
-    const target = document.querySelector('#TestimonySection');
+    const target = document.querySelector('#Clients');
     if (target) {
       setActiveIndex(2); // Testimonials index
       target.scrollIntoView({ behavior: 'smooth' });
@@ -520,19 +500,22 @@ const AboutUs = ({ setActiveIndex }) => {
               <span className="text-cyan-400">Certified</span> Excellence
             </motion.h3>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
-              {certifications.map((cert, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="bg-black/40 backdrop-blur-sm rounded-xl border border-cyan-400/20 p-4 hover:border-cyan-400/50 transition-all group"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <div className="text-2xl text-cyan-400 mb-2">{cert.icon}</div>
-                  <div className="text-white font-semibold text-sm mb-1">{cert.name}</div>
-                  <div className="text-gray-400 text-xs">{cert.level}</div>
-                </motion.div>
-              ))}
+            {/* Centered container for 3 certificates */}
+            <div className="flex justify-center mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-4xl">
+                {certifications.map((cert, index) => (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    className="bg-black/40 backdrop-blur-sm rounded-xl border border-cyan-400/20 p-4 hover:border-cyan-400/50 transition-all group"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <div className="text-2xl text-cyan-400 mb-2">{cert.icon}</div>
+                    <div className="text-white font-semibold text-sm mb-1">{cert.name}</div>
+                    <div className="text-gray-400 text-xs">{cert.level}</div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
             <motion.p variants={itemVariants} className="text-gray-300 max-w-2xl mx-auto">
