@@ -551,6 +551,17 @@ export const ConsultationSuccessModal = ({
         { icon: <FaRocket className="text-red-400" />, text: "Performance optimization" }
       ],
       rocketColor: "text-purple-400"
+    },
+    websiteReview: {
+      title: "Website Review Report Requested!",
+      subtitle: "A detailed website analysis will be mailed to you shortly",
+      icon: <TrendingUp className="text-cyan-400" />,
+      features: [
+        { icon: <FaShieldAlt className="text-green-400" />, text: "Security & performance audit" },
+        { icon: <FaFileAlt className="text-blue-400" />, text: "UX & conversion report" },
+        { icon: <FaLightbulb className="text-yellow-400" />, text: "Improvement suggestions" }
+      ],
+      rocketColor: "text-cyan-400"
     }
   };
 

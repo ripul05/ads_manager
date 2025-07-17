@@ -12,6 +12,7 @@ import MetaAdsPage from "./services/metaAds";
 import SEOPage from "./services/seo";
 import WebDevPage from "./services/webDevelopment";
 import Footer from "./Home/footer";
+import WebsiteReviewPage from "./WebsiteReview/websiteReview";
 function App() {
   const [activeIndex, setActiveIndex] = useState(0); // ✅ Lifted state
 
@@ -25,6 +26,7 @@ function App() {
               activeIndex={activeIndex}
               setActiveIndex={setActiveIndex}
             />
+            <WebsiteReviewPage/>
             <AboutUs setActiveIndex={setActiveIndex} />
             <ServicesPage setActiveIndex = {setActiveIndex}/>
             <TestimonialPage setActiveIndex={setActiveIndex} />

@@ -1,3 +1,12 @@
+const { exec } = require('child_process');
+const path = require('path');
+const fs = require('fs');
+const puppeteer = require('puppeteer');
+const { promisify } = require('util');
+const axios = require('axios');
+
+
+const execPromise = promisify(exec);
 const RequestCallback = require("../models/requestCallback");
 const { sendEmail } = require("../services/emailService"); // Assuming sendEmail function is already implemented
 
@@ -581,7 +590,453 @@ const userEmailBody = `
 };
 
 
+
+const generateWebsiteReport = async (req, res) => {
+  try {
+    const { websiteUrl, email } = req.body;
+
+    if (!websiteUrl || !email) {
+      return res.status(400).json({ error: 'Missing websiteUrl or email' });
+    }
+
+    const apiKey = process.env.PAGESPEED_API_KEY;
+    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(websiteUrl)}&key=${apiKey}&category=PERFORMANCE&category=SEO&category=ACCESSIBILITY&category=BEST_PRACTICES`;
+
+    // Fetch PageSpeed Insights data
+    const { data } = await axios.get(apiUrl);
+    const lighthouseResult = data.lighthouseResult;
+
+    // Process and analyze data
+    const reportData = processLighthouseData(lighthouseResult, websiteUrl);
+    
+    // Generate email content
+    const userEmailSubject = `🚀 Your Website Performance Report for ${websiteUrl} - BuzzBandits Analysis`;
+    const userEmailBody = generateUserEmailHTML(reportData, websiteUrl);
+
+    const teamEmailSubject = `New Website Audit Lead - ${reportData.summary.overallScore}/100 Score`;
+    const teamEmailBody = generateTeamEmailHTML(reportData, websiteUrl, email);
+
+    // Send emails (no attachments needed)
+    await Promise.all([
+      sendEmail(teamEmailSubject, teamEmailBody, null, []), // Send to team
+      sendEmail(userEmailSubject, userEmailBody, email, []), // Send to user
+    ]);
+
+    // Return the beautiful formatted data
+    return res.status(200).json({
+      success: true,
+      message: 'Website analysis completed and report sent successfully!',
+      analyzedAt: new Date().toISOString()
+    });
+
+  } catch (err) {
+    console.error('Error generating report:', err);
+    return res.status(500).json({ 
+      success: false,
+      error: 'Failed to analyze website', 
+      details: err.message 
+    });
+  }
+};
+
+// Enhanced helper function to process Lighthouse data
+const processLighthouseData = (lighthouseResult, websiteUrl) => {
+  const categories = lighthouseResult.categories;
+  const audits = lighthouseResult.audits;
+  
+  // Calculate scores
+  const scores = {
+    performance: Math.round(categories.performance.score * 100),
+    seo: Math.round(categories.seo.score * 100),
+    accessibility: Math.round(categories.accessibility.score * 100),
+    bestPractices: Math.round(categories['best-practices'].score * 100)
+  };
+
+  const overallScore = Math.round((scores.performance + scores.seo + scores.accessibility + scores.bestPractices) / 4);
+
+  // Core Web Vitals with detailed info
+  const coreWebVitals = {
+    firstContentfulPaint: {
+      value: audits['first-contentful-paint']?.numericValue || 0,
+      displayValue: audits['first-contentful-paint']?.displayValue || 'N/A',
+      score: audits['first-contentful-paint']?.score || 0,
+      status: getMetricStatus(audits['first-contentful-paint']?.score || 0)
+    },
+    largestContentfulPaint: {
+      value: audits['largest-contentful-paint']?.numericValue || 0,
+      displayValue: audits['largest-contentful-paint']?.displayValue || 'N/A',
+      score: audits['largest-contentful-paint']?.score || 0,
+      status: getMetricStatus(audits['largest-contentful-paint']?.score || 0)
+    },
+    cumulativeLayoutShift: {
+      value: audits['cumulative-layout-shift']?.numericValue || 0,
+      displayValue: audits['cumulative-layout-shift']?.displayValue || 'N/A',
+      score: audits['cumulative-layout-shift']?.score || 0,
+      status: getMetricStatus(audits['cumulative-layout-shift']?.score || 0)
+    },
+    totalBlockingTime: {
+      value: audits['total-blocking-time']?.numericValue || 0,
+      displayValue: audits['total-blocking-time']?.displayValue || 'N/A',
+      score: audits['total-blocking-time']?.score || 0,
+      status: getMetricStatus(audits['total-blocking-time']?.score || 0)
+    }
+  };
+
+  // Identify critical issues with more details
+  const criticalIssues = [];
+  const opportunities = [];
+  const passedAudits = [];
+
+  Object.entries(audits).forEach(([key, audit]) => {
+    if (audit.score !== null && audit.title) {
+      const auditData = {
+        id: key,
+        title: audit.title,
+        description: audit.description,
+        score: Math.round(audit.score * 100),
+        scoreDisplayMode: audit.scoreDisplayMode,
+        displayValue: audit.displayValue || null,
+        details: audit.details || null
+      };
+
+      if (audit.score < 0.5) {
+        criticalIssues.push({
+          ...auditData,
+          impact: audit.details?.overallSavingsMs || 0,
+          severity: audit.score < 0.3 ? 'high' : 'medium'
+        });
+      } else if (audit.score === 1) {
+        passedAudits.push(auditData);
+      }
+      
+      if (audit.details?.overallSavingsMs > 500) {
+        opportunities.push({
+          ...auditData,
+          savings: audit.details.overallSavingsMs,
+          savingsDisplayValue: formatTime(audit.details.overallSavingsMs),
+          type: 'performance'
+        });
+      }
+    }
+  });
+
+  // Generate specific recommendations based on scores
+  const recommendations = [];
+  
+  if (scores.performance < 70) {
+    recommendations.push({
+      category: 'Performance',
+      title: 'Optimize images and enable compression',
+      priority: 'high',
+      description: 'Compress images and enable text compression to reduce load times.',
+      impact: 'Can improve load time by 20-40%',
+      actionItems: [
+        'Compress images using WebP format',
+        'Enable gzip/brotli compression',
+        'Minify CSS and JavaScript files'
+      ]
+    });
+  }
+
+  if (scores.seo < 80) {
+    recommendations.push({
+      category: 'SEO',
+      title: 'Improve meta descriptions and title tags',
+      priority: 'medium',
+      description: 'Ensure all pages have unique, descriptive meta tags.',
+      impact: 'Better search engine visibility',
+      actionItems: [
+        'Add unique meta descriptions to all pages',
+        'Optimize title tags for target keywords',
+        'Improve heading structure (H1, H2, H3)'
+      ]
+    });
+  }
+
+  if (scores.accessibility < 80) {
+    recommendations.push({
+      category: 'Accessibility',
+      title: 'Add alt text to images and improve color contrast',
+      priority: 'high',
+      description: 'Make your website accessible to all users.',
+      impact: 'Improves usability for disabled users',
+      actionItems: [
+        'Add alt text to all images',
+        'Ensure proper color contrast ratios',
+        'Add ARIA labels where needed'
+      ]
+    });
+  }
+
+  if (scores.bestPractices < 80) {
+    recommendations.push({
+      category: 'Best Practices',
+      title: 'Update to modern web standards',
+      priority: 'medium',
+      description: 'Follow current web development best practices.',
+      impact: 'Better security and performance',
+      actionItems: [
+        'Use HTTPS everywhere',
+        'Update to modern JavaScript features',
+        'Remove deprecated APIs'
+      ]
+    });
+  }
+
+  return {
+    url: websiteUrl,
+    summary: {
+      overallScore,
+      grades: {
+        performance: { score: scores.performance, status: getScoreStatus(scores.performance) },
+        seo: { score: scores.seo, status: getScoreStatus(scores.seo) },
+        accessibility: { score: scores.accessibility, status: getScoreStatus(scores.accessibility) },
+        bestPractices: { score: scores.bestPractices, status: getScoreStatus(scores.bestPractices) }
+      }
+    },
+    coreWebVitals,
+    issues: {
+      critical: criticalIssues,
+      total: criticalIssues.length
+    },
+    opportunities: {
+      items: opportunities,
+      total: opportunities.length,
+      totalSavings: opportunities.reduce((sum, opp) => sum + opp.savings, 0)
+    },
+    recommendations: {
+      items: recommendations,
+      total: recommendations.length,
+      highPriority: recommendations.filter(r => r.priority === 'high').length
+    },
+    passed: {
+      audits: passedAudits,
+      total: passedAudits.length
+    },
+    metadata: {
+      lighthouseVersion: lighthouseResult.lighthouseVersion,
+      fetchTime: lighthouseResult.fetchTime,
+      userAgent: lighthouseResult.userAgent,
+      environment: lighthouseResult.environment
+    }
+  };
+};
+
+// Helper function to get score status
+const getScoreStatus = (score) => {
+  if (score >= 90) return 'excellent';
+  if (score >= 70) return 'good';
+  if (score >= 50) return 'needs-improvement';
+  return 'poor';
+};
+
+// Helper function to get metric status
+const getMetricStatus = (score) => {
+  if (score >= 0.9) return 'good';
+  if (score >= 0.5) return 'needs-improvement';
+  return 'poor';
+};
+
+// Helper function to format time
+const formatTime = (ms) => {
+  if (ms < 1000) return `${Math.round(ms)}ms`;
+  return `${(ms / 1000).toFixed(1)}s`;
+};
+
+// Helper function to get score color for emails
+const getScoreColor = (score) => {
+  if (score >= 90) return '#0CCE6B';
+  if (score >= 70) return '#FFA500';
+  if (score >= 50) return '#FF6B35';
+  return '#FF4458';
+};
+
+// Generate beautiful HTML email for user
+const generateUserEmailHTML = (reportData, websiteUrl) => {
+  const { summary, issues, recommendations } = reportData;
+  
+  // Categorize issues into broad areas
+  const issueCategories = {
+    performance: "Site Speed & Loading",
+    seo: "Search Engine Optimization", 
+    accessibility: "User Experience & Accessibility",
+    security: "Security & Trust Signals",
+    mobile: "Mobile Responsiveness"
+  };
+  
+  // Get top 3 issue categories (you can customize this logic based on your data structure)
+  const topIssues = Object.values(issueCategories).slice(0, 3);
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Analysis Complete</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);">
+  <div style="max-width: 600px; margin: 0 auto; background: rgba(255, 255, 255, 0.03); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(0, 255, 255, 0.2);">
+    
+    <!-- Header -->
+    <div style="background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%); padding: 30px 20px; text-align: center; position: relative; border-bottom: 2px solid #00ffff;">
+      <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #00ffff, transparent);"></div>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
+        <div style="width: 8px; height: 8px; background: #00ffff; border-radius: 50%; box-shadow: 0 0 10px #00ffff; animation: pulse 2s infinite;"></div>
+        <h1 style="color: #00ffff; margin: 0; font-size: 28px; font-weight: 700; letter-spacing: 2px; text-shadow: 0 0 10px #00ffff;">BUZZBANDITS</h1>
+        <div style="width: 8px; height: 8px; background: #00ffff; border-radius: 50%; box-shadow: 0 0 10px #00ffff; animation: pulse 2s infinite;"></div>
+      </div>
+      <p style="color: #00ffff; margin: 0 0 15px 0; font-size: 14px; letter-spacing: 1px; opacity: 0.8;">DIGITAL OPTIMIZATION PROTOCOL</p>
+      <div style="background: rgba(0, 255, 255, 0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.3);">
+        <p style="color: #ffffff; margin: 0; font-size: 16px; font-weight: 500;">⚡ ANALYSIS COMPLETE</p>
+        <p style="margin: 5px 0 0 0; font-size: 14px; color: #00ffff; opacity: 0.9;">${websiteUrl}</p>
+      </div>
+    </div>
+
+    <!-- Issues Section -->
+    <div style="padding: 30px 25px; background: rgba(0, 0, 0, 0.4); border-bottom: 1px solid rgba(0, 255, 255, 0.1);">
+      <h2 style="margin: 0 0 20px 0; color: #00ffff; font-size: 20px; font-weight: 600; text-align: center; letter-spacing: 1px;">OPTIMIZATION TARGETS IDENTIFIED</h2>
+      
+      <div style="display: grid; gap: 12px;">
+        ${topIssues.map(issue => `
+          <div style="background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 8px; border-left: 4px solid #ffc107; backdrop-filter: blur(5px);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 6px; height: 6px; background: #ffc107; border-radius: 50%; box-shadow: 0 0 8px #ffc107;"></div>
+              <p style="margin: 0; color: #ffffff; font-size: 15px; font-weight: 500;">${issue}</p>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div style="background: rgba(220, 53, 69, 0.1); padding: 16px; border-radius: 8px; margin-top: 20px; border: 1px solid rgba(220, 53, 69, 0.3);">
+        <p style="margin: 0; color: #ff6b6b; font-size: 14px; text-align: center; font-weight: 500;">
+          ${issues.total} critical optimization opportunities detected
+        </p>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div style="padding: 30px 25px; background: rgba(0, 0, 0, 0.6); text-align: center;">
+      <h3 style="margin: 0 0 15px 0; font-size: 18px; color: #ffffff; font-weight: 600;">READY TO OPTIMIZE?</h3>
+      <p style="margin: 0 0 25px 0; font-size: 14px; color: #cbd5e1; line-height: 1.5;">
+        Let's transform these issues into competitive advantages.
+      </p>
+      
+      <a href="https://buzzbandits.net?utm_source=audit_email&utm_medium=email&utm_campaign=website_audit" 
+         style="display: inline-block; background: linear-gradient(135deg, #00ffff 0%, #0099cc 100%); color: #000000; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; margin: 10px 0; box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 1px;">
+        ⚡ INITIATE OPTIMIZATION
+      </a>
+      
+      <p style="margin: 15px 0 0 0; font-size: 12px; color: #94a3b8;">
+        Free consultation • Strategic roadmap • 30-minute session
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="padding: 20px; background: rgba(0, 0, 0, 0.8); color: white; text-align: center; border-top: 1px solid rgba(0, 255, 255, 0.1);">
+      <p style="margin: 0 0 5px 0; font-size: 14px; font-weight: 600; color: #00ffff;">BUZZBANDITS</p>
+      <p style="margin: 0; font-size: 12px; color: #adb5bd;">
+        <a href="https://buzzbandits.net" style="color: #00ffff; text-decoration: none;">buzzbandits.net</a> | 
+        <span style="color: #6c757d;">Reply for direct access</span>
+      </p>
+    </div>
+
+  </div>
+  
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</body>
+</html>`;
+};
+// Generate team notification email
+const generateTeamEmailHTML = (reportData, websiteUrl, userEmail) => {
+  const { summary, issues, recommendations } = reportData;
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>New Website Audit Lead</title>
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background-color: #f8f9fa;">
+      <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 30px; text-align: center;">
+          <h1 style="margin: 0; font-size: 24px;">🎯 New Website Audit Lead!</h1>
+          <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Potential client with ${summary.overallScore}/100 score</p>
+        </div>
+
+        <!-- Lead Info -->
+        <div style="padding: 30px; background: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+          <h3 style="margin: 0 0 20px 0; color: #495057;">Lead Information</h3>
+          <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+            <p style="margin: 0 0 10px 0;"><strong>Website:</strong> <a href="${websiteUrl}" style="color: #667eea; text-decoration: none;">${websiteUrl}</a></p>
+            <p style="margin: 0 0 10px 0;"><strong>Email:</strong> ${userEmail}</p>
+            <p style="margin: 0 0 10px 0;"><strong>Overall Score:</strong> <span style="color: ${getScoreColor(summary.overallScore)}; font-weight: bold;">${summary.overallScore}/100</span></p>
+            <p style="margin: 0;"><strong>Analyzed:</strong> ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+          </div>
+        </div>
+
+        <!-- Opportunity Assessment -->
+        <div style="padding: 30px;">
+          <h3 style="margin: 0 0 20px 0; color: #495057;">Opportunity Assessment</h3>
+          
+          <!-- Scores -->
+          <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+            ${Object.entries(summary.grades).map(([key, grade]) => `
+              <div style="flex: 1; min-width: 100px; background: #f8f9fa; padding: 10px; border-radius: 6px; text-align: center; border-left: 3px solid ${getScoreColor(grade.score)};">
+                <div style="font-size: 18px; font-weight: bold; color: ${getScoreColor(grade.score)};">${grade.score}</div>
+                <div style="font-size: 11px; text-transform: uppercase; color: #6c757d;">${key.replace(/([A-Z])/g, ' $1').trim()}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Business Potential -->
+          <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745;">
+            <h4 style="margin: 0 0 15px 0; color: #155724;">💰 Business Potential</h4>
+            <ul style="margin: 0; padding-left: 20px; color: #155724;">
+              <li><strong>Critical Issues:</strong> ${issues.total} issues found (high urgency)</li>
+              <li><strong>Revenue Impact:</strong> ${summary.overallScore < 70 ? 'HIGH' : summary.overallScore < 85 ? 'MEDIUM' : 'LOW'} potential for traffic/conversion gains</li>
+              <li><strong>Competition Advantage:</strong> ${summary.overallScore < 60 ? 'Easy wins available' : 'Optimization opportunities exist'}</li>
+              <li><strong>Estimated Monthly Value:</strong> ${summary.overallScore < 50 ? '2,000-5,000' : summary.overallScore < 70 ? '1,000-3,000' : '500-1,500'}</li>
+            </ul>
+          </div>
+
+          <!-- Action Items -->
+          <div style="margin-top: 20px; background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
+            <h4 style="margin: 0 0 15px 0; color: #856404;">⚡ Immediate Actions</h4>
+            <ul style="margin: 0; padding-left: 20px; color: #856404;">
+              <li>Follow up within 24 hours while report is fresh</li>
+              <li>Highlight the ${issues.total} critical issues found</li>
+              <li>Offer free strategy call to discuss implementation</li>
+              <li>Emphasize competitor advantage opportunities</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div style="padding: 20px 30px; background: #495057; color: white; text-align: center;">
+          <p style="margin: 0; font-size: 14px;">
+            <strong>BuzzBandits Team Dashboard</strong> | 
+            Generated by Website Audit Tool
+          </p>
+        </div>
+
+      </div>
+    </body>
+    </html>
+  `;
+};
+
 module.exports = {
     requestCallback,
-    getInTouch
+    getInTouch,
+    generateWebsiteReport
 };

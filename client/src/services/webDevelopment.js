@@ -2,18 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Footer from '../Home/footer';
 import { QuickConsultationModal,ConsultationSuccessModal } from '../ContactPage/ContactPage';
+import WebsiteReviewPage from '../WebsiteReview/websiteReview';
 
 import { 
   FaCode, 
   FaRocket,
-  FaKeyboard, 
-  FaBullseye,
   FaArrowDown,
   FaCheckCircle,
   FaShieldAlt,
-  FaLightbulb,
   FaGlobe,
-  FaFileAlt,
   FaTachometerAlt,
   FaDatabase,
   FaServer,
@@ -22,26 +19,10 @@ import {
   FaLayerGroup,
   FaShoppingCart,
   FaCompass,
-  FaClock,
-  FaClipboardList,
-  FaVial,
-  FaEdit,
-  FaDollarSign,
   FaMobile,
-  FaDesktop,
-  FaTablet,
-  FaUsers,
   FaChartLine,
-  FaEye,
-  FaMousePointer,
-  FaPlay,
-  FaStar,
-  FaCog,
   FaHeart,
   FaComments,
-  FaShare,
-  FaBars,
-  FaTimes
 } from 'react-icons/fa';
 import Navbar from '../Home/Navbar';
 
@@ -450,6 +431,7 @@ return (
             </motion.div>
 
             {/* Quick Stats */}
+            <WebsiteReviewPage/>
             <motion.div 
               className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 mt-12 sm:mt-16 px-4"
               variants={containerVariants}

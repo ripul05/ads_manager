@@ -108,8 +108,6 @@ try {
 }
 };
 
-  
-
 module.exports = {
     sendEmail,
     generateGoogleMeetLink
