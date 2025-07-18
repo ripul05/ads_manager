@@ -278,7 +278,7 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                     whileTap={{ scale: 0.95 }}
                   >
                     <span className="relative z-10 text-sm sm:text-base">
-                      INITIALIZE PROTOCOL
+                      GET STARTED
                     </span>
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
