@@ -21,7 +21,10 @@ const validateRequest = (schema) => (req, res, next) => {
 
 // Define the callback POST route with validation middleware
 router.post("/", validateRequest(requestCallbackSchema), requestCallback);
-router.post("/getInTouch", validateRequest(getInTouchSchema), getInTouch )
-router.post('/generate-report',validateRequest(websiteReport), generateWebsiteReport)
+router.post("/getInTouch", validateRequest(getInTouchSchema), getInTouch );
+router.post('/generate-report',validateRequest(websiteReport), generateWebsiteReport);
+router.get("/serverUp", (req, res) => {
+  res.status(200).json({ message: "Server is up and running!" });
+});
 
 module.exports = router;

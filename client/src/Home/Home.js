@@ -4,25 +4,15 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import {
-  FaGoogle,
   FaChartLine,
-  FaLayerGroup,
-  FaDatabase,
-  FaCrosshairs,
-  FaCheckCircle,
   FaSearch,
   FaChess,
   FaRocket,
   FaChartBar,
-  FaBolt,
-  FaAtom,
   FaNetworkWired,
   FaCube,
-  FaBars,
-  FaTimes,
-  FaEnvelope,
 } from "react-icons/fa";
-import { BarChart3,ChevronLeft, ChevronRight } from 'lucide-react';
+
 
 // Mobile-optimized Futuristic Background
 const FuturisticBackground = () => {

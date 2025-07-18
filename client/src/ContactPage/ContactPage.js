@@ -314,176 +314,180 @@ export const QuickConsultationModal = ({
       <AnimatePresence>
         {showModal && (
           <motion.div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Modal Box */}
+            {/* Modal Box - Mobile responsive container */}
             <motion.div
-              className={`bg-gray-900/95 backdrop-blur-md border ${colors.border} rounded-2xl max-w-md w-full p-8 relative overflow-hidden shadow-2xl`}
+              className="w-full max-w-md mx-auto my-4 max-h-[90vh] sm:max-h-[85vh] overflow-y-auto"
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -20 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              onClick={(e) => e.stopPropagation()}
             >
-              {/* Animated background */}
-              <div className="absolute inset-0 opacity-5">
-                <motion.div
-                  className="absolute inset-0"
-                  style={{
-                    backgroundImage: `radial-gradient(circle at 2px 2px, ${config.accentColor === 'cyan' ? 'rgba(0,255,255,0.5)' : 'rgba(34,197,94,0.5)'} 1px, transparent 0)`,
-                    backgroundSize: '50px 50px'
-                  }}
-                  animate={{
-                    backgroundPosition: ['0px 0px', '50px 50px'],
-                  }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
-              </div>
-
-              {/* Close Button */}
-              <motion.button
-                onClick={() => setShowModal(false)}
-                className={`absolute top-6 right-6 text-gray-400 hover:${colors.text} transition-colors z-10 p-2 rounded-full hover:bg-${config.accentColor}-400/10`}
-                type="button"
-                whileHover={{
-                  scale: 1.1,
-                  backgroundColor: `rgba(34, 211, 238, 0.15)`
-                }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              <div
+                className={`bg-gray-900/95 backdrop-blur-md border ${colors.border} rounded-2xl p-6 sm:p-8 relative overflow-hidden shadow-2xl`}
+                onClick={(e) => e.stopPropagation()}
               >
-                <X className="w-6 h-6" />
-              </motion.button>
-
-              {/* Header */}
-              <div className="text-center mb-8 relative z-10">
-                <div className="flex items-center justify-center gap-3 mb-4">
+                {/* Animated background */}
+                <div className="absolute inset-0 opacity-5">
                   <motion.div
-                    className={`p-3 rounded-full bg-gradient-to-r ${colors.gradient} text-white shadow-lg`}
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage: `radial-gradient(circle at 2px 2px, ${config.accentColor === 'cyan' ? 'rgba(0,255,255,0.5)' : 'rgba(34,197,94,0.5)'} 1px, transparent 0)`,
+                      backgroundSize: '50px 50px'
+                    }}
                     animate={{
-                      boxShadow: [
-                        `0 0 20px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`,
-                        `0 0 30px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.5)' : 'rgba(34, 197, 94, 0.5)'}`,
-                        `0 0 20px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`
-                      ]
+                      backgroundPosition: ['0px 0px', '50px 50px'],
                     }}
                     transition={{
-                      duration: 2,
+                      duration: 20,
                       repeat: Infinity,
-                      ease: "easeInOut"
+                      ease: "linear",
                     }}
-                  >
-                    {config.icon}
-                  </motion.div>
-                </div>
-
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
-                  {config.title}
-                </h3>
-
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {config.subtitle}
-                </p>
-              </div>
-
-              {/* Form */}
-              <form onSubmit={handleFormSubmit} className="space-y-6 relative z-10">
-                <div className="space-y-4">
-                  <div>
-                    <label className={`block text-sm font-medium ${colors.text} mb-2`}>Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200`}
-                      placeholder="Enter your name"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium ${colors.text} mb-2`}>Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200`}
-                      placeholder="Enter your email"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className={`block text-sm font-medium ${colors.text} mb-2`}>Message</label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      rows={4}
-                      className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200 resize-none`}
-                      placeholder={config.messagePlaceholder}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full px-6 py-4 bg-gradient-to-r ${colors.gradient} text-white rounded-lg font-semibold relative overflow-hidden group transition-all duration-200 disabled:opacity-50 shadow-lg hover:shadow-xl`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {isSubmitting ? (
-                      <>
-                        <motion.div
-                          className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        />
-                        Processing...
-                      </>
-                    ) : (
-                      <>
-                        {config.buttonText}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                      </>
-                    )}
-                  </span>
-
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"
                   />
-                </motion.button>
-              </form>
+                </div>
 
-              {/* Features */}
-              <div className="mt-8 grid grid-cols-2 gap-4 relative z-10">
-                {[
-                  { icon: <CheckCircle className="w-4 h-4" />, text: "Free Consultation" },
-                  { icon: <Clock className="w-4 h-4" />, text: "Quick Response" },
-                  { icon: <Shield className="w-4 h-4" />, text: "Secure & Private" },
-                  { icon: <Globe className="w-4 h-4" />, text: "Expert Team" }
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center gap-2 text-sm text-gray-400"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 * index }}
+                {/* Close Button */}
+                <motion.button
+                  onClick={() => setShowModal(false)}
+                  className={`absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-400 hover:${colors.text} transition-colors z-10 p-2 rounded-full hover:bg-${config.accentColor}-400/10`}
+                  type="button"
+                  whileHover={{
+                    scale: 1.1,
+                    backgroundColor: `rgba(34, 211, 238, 0.15)`
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                </motion.button>
+
+                {/* Header */}
+                <div className="text-center mb-6 sm:mb-8 relative z-10 pt-2">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <motion.div
+                      className={`p-2.5 sm:p-3 rounded-full bg-gradient-to-r ${colors.gradient} text-white shadow-lg`}
+                      animate={{
+                        boxShadow: [
+                          `0 0 20px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`,
+                          `0 0 30px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.5)' : 'rgba(34, 197, 94, 0.5)'}`,
+                          `0 0 20px ${config.accentColor === 'cyan' ? 'rgba(0, 255, 255, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`
+                        ]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      {config.icon}
+                    </motion.div>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                    {config.title}
+                  </h3>
+
+                  <p className="text-gray-400 text-sm leading-relaxed px-2">
+                    {config.subtitle}
+                  </p>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleFormSubmit} className="space-y-4 sm:space-y-6 relative z-10">
+                  <div className="space-y-4">
+                    <div>
+                      <label className={`block text-sm font-medium ${colors.text} mb-2`}>Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200`}
+                        placeholder="Enter your name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className={`block text-sm font-medium ${colors.text} mb-2`}>Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200`}
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className={`block text-sm font-medium ${colors.text} mb-2`}>Message</label>
+                      <textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        rows={3}
+                        className={`w-full px-4 py-3 bg-gray-800/50 border ${colors.border} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-${config.accentColor}-400 focus:ring-2 focus:ring-${config.accentColor}-400/20 transition-all duration-200 resize-none`}
+                        placeholder={config.messagePlaceholder}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full px-6 py-3 sm:py-4 bg-gradient-to-r ${colors.gradient} text-white rounded-lg font-semibold relative overflow-hidden group transition-all duration-200 disabled:opacity-50 shadow-lg hover:shadow-xl`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <span className={colors.text}>{feature.icon}</span>
-                    <span>{feature.text}</span>
-                  </motion.div>
-                ))}
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      {isSubmitting ? (
+                        <>
+                          <motion.div
+                            className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          {config.buttonText}
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                        </>
+                      )}
+                    </span>
+
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+                    />
+                  </motion.button>
+                </form>
+
+                {/* Features - Mobile optimized */}
+                <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-3 sm:gap-4 relative z-10">
+                  {[
+                    { icon: <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, text: "Free Consultation" },
+                    { icon: <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, text: "Quick Response" },
+                    { icon: <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, text: "Secure & Private" },
+                    { icon: <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, text: "Expert Team" }
+                  ].map((feature, index) => (
+                    <motion.div
+                      key={index}
+                      className="flex items-center gap-2 text-xs sm:text-sm text-gray-400"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 * index }}
+                    >
+                      <span className={colors.text}>{feature.icon}</span>
+                      <span className="truncate">{feature.text}</span>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </motion.div>
           </motion.div>

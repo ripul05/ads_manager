@@ -476,7 +476,7 @@ subItems: [
               {/* Holographic Menu Button */}
               <motion.button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-3 bg-black/40 backdrop-blur-sm text-gray-300 hover:text-cyan-400 focus:outline-none border-cyan-400/20"
+                className="md:hidden p-3 bg-transparent text-gray-300 hover:text-cyan-400 focus:outline-none border-cyan-400/20"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
