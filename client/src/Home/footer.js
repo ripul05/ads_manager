@@ -410,7 +410,7 @@ const Footer = ({
 <motion.div variants={itemVariants}>
   <h4 className="text-white font-semibold mb-4 sm:mb-6 text-lg flex items-center gap-2">
     <FaCrosshairs className="text-cyan-400" />
-    CONTACT PROTOCOL
+    CONTACT 
   </h4>
   <div className="space-y-3 sm:space-y-4">
     <motion.div 

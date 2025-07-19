@@ -127,6 +127,7 @@ const GoogleAdsPage = () => {
   const detailsRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -285,7 +286,11 @@ const GoogleAdsPage = () => {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <FuturisticBackground />
-      <Navbar isContactPage={true} />
+<Navbar 
+        isContactPage={true} 
+        activeIndex={activeIndex} 
+        setActiveIndex={setActiveIndex} 
+      />
       <QuickConsultationModal
         showModal={showModal}
         setShowModal={setShowModal}
@@ -323,7 +328,7 @@ const GoogleAdsPage = () => {
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
                 <span className="text-cyan-400 font-mono text-sm">
-                  GOOGLE ADS PROTOCOL ACTIVE -{" "}
+                  GOOGLE ADS ACTIVE -{" "}
                   {currentTime.toLocaleTimeString()}
                 </span>
               </div>

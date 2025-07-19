@@ -133,6 +133,7 @@ const SEOPage = () => {
   const detailsRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(1); 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -298,7 +299,11 @@ const SEOPage = () => {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <FuturisticBackground />
-      <Navbar isContactPage={true} />
+<Navbar 
+        isContactPage={true} 
+        activeIndex={activeIndex} 
+        setActiveIndex={setActiveIndex} 
+      />
       <QuickConsultationModal
         showModal={showModal}
         setShowModal={setShowModal}
@@ -335,7 +340,7 @@ const SEOPage = () => {
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span className="text-green-400 font-mono text-sm">
-                  SEO OPTIMIZATION PROTOCOL ACTIVE -{" "}
+                  SEO OPTIMIZATION ACTIVE -{" "}
                   {currentTime.toLocaleTimeString()}
                 </span>
               </div>

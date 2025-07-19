@@ -885,7 +885,7 @@ const generateUserEmailHTML = (reportData, websiteUrl) => {
         <h1 style="color: #00ffff; margin: 0; font-size: 28px; font-weight: 700; letter-spacing: 2px; text-shadow: 0 0 10px #00ffff;">BUZZBANDITS</h1>
         <div style="width: 8px; height: 8px; background: #00ffff; border-radius: 50%; box-shadow: 0 0 10px #00ffff; animation: pulse 2s infinite;"></div>
       </div>
-      <p style="color: #00ffff; margin: 0 0 15px 0; font-size: 14px; letter-spacing: 1px; opacity: 0.8;">DIGITAL OPTIMIZATION PROTOCOL</p>
+      <p style="color: #00ffff; margin: 0 0 15px 0; font-size: 14px; letter-spacing: 1px; opacity: 0.8;">DIGITAL OPTIMIZATION </p>
       <div style="background: rgba(0, 255, 255, 0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.3);">
         <p style="color: #ffffff; margin: 0; font-size: 16px; font-weight: 500;">⚡ ANALYSIS COMPLETE</p>
         <p style="margin: 5px 0 0 0; font-size: 14px; color: #00ffff; opacity: 0.9;">${websiteUrl}</p>

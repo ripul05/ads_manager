@@ -13,7 +13,6 @@ import {
   FaCube,
 } from "react-icons/fa";
 
-
 // Mobile-optimized Futuristic Background
 const FuturisticBackground = () => {
   const [nodes, setNodes] = useState([]);
@@ -21,7 +20,6 @@ const FuturisticBackground = () => {
   useEffect(() => {
     const generateNodes = () => {
       const newNodes = [];
-      // Reduced nodes for mobile performance
       const nodeCount = window.innerWidth < 768 ? 8 : 15;
       for (let i = 0; i < nodeCount; i++) {
         newNodes.push({
@@ -42,18 +40,17 @@ const FuturisticBackground = () => {
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Simplified grid for mobile */}
       <div className="absolute inset-0">
         <motion.div
           className="absolute inset-0 opacity-10 md:opacity-20"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+              linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px)
             `,
-            backgroundSize:
-              window.innerWidth < 768 ? "50px 50px" : "100px 100px",
+            backgroundSize: window.innerWidth < 768 ? "50px 50px" : "100px 100px",
           }}
           animate={{
             backgroundPosition: ["0px 0px", "50px 50px"],
@@ -65,8 +62,6 @@ const FuturisticBackground = () => {
           }}
         />
       </div>
-
-      {/* Optimized nodes */}
       <svg className="absolute inset-0 w-full h-full">
         {nodes.map((node, i) => (
           <g key={node.id}>
@@ -84,7 +79,7 @@ const FuturisticBackground = () => {
                     y1={`${node.y}%`}
                     x2={`${otherNode.x}%`}
                     y2={`${otherNode.y}%`}
-                    stroke="rgba(0, 255, 255, 0.2)"
+                    stroke="rgba(0,255,255,0.2)"
                     strokeWidth="1"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: [0, 0.6, 0] }}
@@ -96,12 +91,11 @@ const FuturisticBackground = () => {
                   />
                 ) : null;
               })}
-
             <motion.circle
               cx={`${node.x}%`}
               cy={`${node.y}%`}
               r={node.size}
-              fill="rgba(0, 255, 255, 0.6)"
+              fill="rgba(0,255,255,0.6)"
               animate={{
                 r: [node.size, node.size * 1.5, node.size],
                 opacity: [0.3, 0.8, 0.3],
@@ -115,15 +109,12 @@ const FuturisticBackground = () => {
           </g>
         ))}
       </svg>
-
       {/* Scanning lines - hidden on mobile for performance */}
       <div className="hidden md:block">
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"
           style={{ width: "2px" }}
-          animate={{
-            x: ["-100vw", "100vw"],
-          }}
+          animate={{ x: ["-100vw", "100vw"] }}
           transition={{
             duration: 8,
             repeat: Infinity,
@@ -135,10 +126,10 @@ const FuturisticBackground = () => {
   );
 };
 
-// Mobile-optimized Marketing Dashboard
 const HomePage = ({ activeIndex, setActiveIndex }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
+
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -162,48 +153,89 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
   };
 
   const handleContactClick = () => {
-    setActiveIndex(3); // index of Contact
+    setActiveIndex(3);
     navigate("/contact");
   };
 
   const handleAboutClick = () => {
     const targetSection = document.querySelector("#AboutSection");
     if (targetSection) {
-      setActiveIndex(1); // index of About
+      setActiveIndex(1);
       targetSection.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+  const sectionIds = [
+    { id: "HomeSection", index: 0 },
+    { id: "AboutSection", index: 1 },
+    { id: "Services", index: 2 },
+    { id: "TestimonySection", index: 3 }
+  ];
+
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px 0px -60% 0px", // triggers when top of section enters upper 40% of viewport
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const matched = sectionIds.find(section => section.id === entry.target.id);
+        if (matched && activeIndex !== matched.index) {
+          setActiveIndex(matched.index);
+        }
+      }
+    });
+  }, observerOptions);
+
+  sectionIds.forEach(({ id }) => {
+    const element = document.getElementById(id);
+    if (element) {
+      observer.observe(element);
+    }
+  });
+
+  return () => {
+    sectionIds.forEach(({ id }) => {
+      const element = document.getElementById(id);
+      if (element) {
+        observer.unobserve(element);
+      }
+    });
+  };
+}, [setActiveIndex, activeIndex]);
 
   return (
     <div
       id="HomeSection"
       className="min-h-screen bg-black relative overflow-hidden"
     >
-      {/* Futuristic Background */}
       <Navbar activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
       <FuturisticBackground />
 
-      {/* Main Content - Added proper spacing for navbar */}
-      <div className="relative z-10 min-h-screen flex items-center pt-20 md:pt-24 lg:pt-20">
+      <div className="relative z-10 min-h-screen flex flex-col justify-center pt-20 md:pt-24 lg:pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center w-full"
             initial="hidden"
             animate="visible"
             variants={containerVariants}
           >
-            {/* Left Column - Main Content */}
-            <div className="lg:col-span-7 text-center lg:text-left">
-              <motion.div variants={itemVariants}>
+            {/* Left Column */}
+            <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
+              <motion.div variants={itemVariants} className="w-full">
                 {/* Header with time */}
                 <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-4 mb-4 sm:mb-6">
                   <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-cyan-400 rounded-full animate-pulse"></div>
                   <span className="text-cyan-400 font-mono text-xs sm:text-sm">
-                    <span className="hidden sm:inline">SYSTEM ONLINE - </span>
+                    <span className="hidden sm:inline">
+                      SYSTEM ONLINE -{" "}
+                    </span>
                     {currentTime.toLocaleTimeString()}
                   </span>
                 </div>
-
                 {/* Brand */}
                 <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-4 mb-6 sm:mb-8">
                   <motion.div
@@ -223,12 +255,10 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                       />
                     </div>
                   </motion.div>
-
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
                     BUZZBANDITS
                   </h1>
                 </div>
-
                 {/* Main heading */}
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                   NEXT-GEN
@@ -239,16 +269,14 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                   <br />
                   DOMINANCE
                 </h2>
-
                 {/* Description */}
                 <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0">
                   AI-powered marketing automation that maximizes ROI through
                   intelligent targeting, real-time optimization, and predictive
                   audience behavior analysis.
                 </p>
-
-                {/* Stats - Added proper spacing */}
-                <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 lg:mb-16 max-w-md mx-auto lg:max-w-2xl lg:mx-0">
+                {/* Stats */}
+                <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 lg:mb-16 max-w-md mx-auto lg:mx-0">
                   {[
                     { value: "512%", label: "Average ROAS" },
                     { value: "24/7", label: "Campaign Monitoring" },
@@ -268,9 +296,8 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                     </motion.div>
                   ))}
                 </div>
-
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center lg:items-start">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full items-center lg:items-start">
                   <motion.button
                     onClick={handleContactClick}
                     className="relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold overflow-hidden group"
@@ -290,7 +317,6 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                       }}
                     />
                   </motion.button>
-
                   <motion.button
                     onClick={handleAboutClick}
                     className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border border-cyan-400 text-cyan-400 rounded-lg font-semibold hover:bg-cyan-400/10 transition-all text-sm sm:text-base"
@@ -302,17 +328,12 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                 </div>
               </motion.div>
             </div>
-
-            {/* Right Column - Interactive Elements */}
-            <div className="lg:col-span-5 mt-8 lg:mt-0">
-              <motion.div variants={itemVariants}>
-                {/* Marketing Dashboard */}
-                <div className="mb-8 sm:mb-12 lg:mb-16">
-                
-                </div>
-
-                {/* Marketing Feature Cards - Added proper spacing */}
-                <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+            {/* Right Column */}
+            <div className="lg:col-span-5 mt-12 lg:mt-0 flex flex-col justify-center items-center w-full">
+              <motion.div variants={itemVariants} className="w-full">
+                {/* Optionally add dashboard/graph components here */}
+                {/* Marketing feature cards */}
+                <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 w-full">
                   {[
                     {
                       icon: <FaSearch />,
@@ -344,7 +365,7 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
                       className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-xl border border-cyan-400/20 hover:border-cyan-400/50 transition-all group"
                       whileHover={{
                         scale: 1.02,
-                        boxShadow: "0 10px 30px rgba(0, 255, 255, 0.2)",
+                        boxShadow: "0 10px 30px rgba(0,255,255,0.2)",
                       }}
                       variants={itemVariants}
                     >
@@ -370,8 +391,7 @@ const HomePage = ({ activeIndex, setActiveIndex }) => {
           </motion.div>
         </div>
       </div>
-
-      {/* Bottom Process Bar - Added proper spacing */}
+      {/* Bottom Process Bar */}
       <motion.div
         className="relative z-10 bg-black/80 backdrop-blur-sm border-t border-cyan-400/20 p-6 sm:p-8 lg:p-10 mt-20 sm:mt-24 lg:mt-32"
         initial={{ y: 100 }}

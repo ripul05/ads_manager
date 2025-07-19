@@ -1372,6 +1372,7 @@ const WebDevPage = () => {
   const reviewRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(2);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -1475,7 +1476,11 @@ const WebDevPage = () => {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <FuturisticBackground />
-      <Navbar isContactPage={true} />
+<Navbar 
+        isContactPage={true} 
+        activeIndex={activeIndex} 
+        setActiveIndex={setActiveIndex} 
+      />
       <QuickConsultationModal
         showModal={showModal}
         setShowModal={setShowModal}
@@ -1517,7 +1522,7 @@ const WebDevPage = () => {
                 <span className="text-blue-400 font-mono text-xs sm:text-sm">
                   {isMobile
                     ? "WEB DEV ACTIVE"
-                    : `WEB DEVELOPMENT PROTOCOL ACTIVE - ${currentTime.toLocaleTimeString()}`}
+                    : `WEB DEVELOPMENT ACTIVE - ${currentTime.toLocaleTimeString()}`}
                 </span>
               </div>
             </motion.div>

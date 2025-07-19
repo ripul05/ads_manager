@@ -155,7 +155,7 @@ const sendAuditEmails = async ({
     // Enhanced Email to Internal Team - Mobile Optimized
 
 // Enhanced Team Internal Alert Email
-const teamSubject = "🚀 NEURAL SYNC ALERT: Client Matrix Entry Detected - Immediate Protocol Activation";
+const teamSubject = "🚀 NEURAL SYNC ALERT: Client Matrix Entry Detected - Immediate Activation";
 
 const teamBody = `
 <!DOCTYPE html>
@@ -164,7 +164,7 @@ const teamBody = `
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="x-apple-disable-message-reformatting">
-    <title>Neural Network Alert: Client Acquisition Protocol</title>
+    <title>Neural Network Alert: Client Acquisition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
         
