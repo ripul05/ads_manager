@@ -42,7 +42,6 @@ function App() {
             <WebsiteReviewPage />
             <AboutUs setActiveIndex={setActiveIndex} />
             <ServicesPage setActiveIndex={setActiveIndex} />
-            <TestimonialPage setActiveIndex={setActiveIndex} />
             <Footer />
           </div>
         }

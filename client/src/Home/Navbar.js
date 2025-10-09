@@ -85,7 +85,7 @@ const Navbar = ({ isContactPage = false, activeIndex=0, setActiveIndex }) => {
           },
         ],
       },
-      { label: "Clients", href: "#TestimonySection", icon: <FaChartLine className="mr-2" /> },
+      // { label: "Clients", href: "#TestimonySection", icon: <FaChartLine className="mr-2" /> },
       { label: "Contact", href: "/contact", icon: <FaCrosshairs className="mr-2" /> },
     ];
   }, [isContactPage]);
